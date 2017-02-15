@@ -1,0 +1,56 @@
+# German translations for yafowil.widget.datetime.
+# Copyright (C) 2014 ORGANIZATION
+# This file is distributed under the same license as the
+# yafowil.widget.datetime
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: yafowil.widget.datetime 1.5.2\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2014-07-30 16:45+0200\n"
+"PO-Revision-Date: 2014-04-30 18:38+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: de <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Generated-By: Babel 1.3\n"
+
+#. Default: Not a valid time input.
+#: src/yafowil/widget/datetime/widget.py:47
+msgid "input_not_valid_time"
+msgstr "Eingabe ist keine gültige Zeit"
+
+#. Default: Hours not a number.
+#: src/yafowil/widget/datetime/widget.py:65
+msgid "hours_not_a_number"
+msgstr "Stundeneingabe ist keie Zahl"
+
+#. Default: Minutes not a number.
+#: src/yafowil/widget/datetime/widget.py:71
+msgid "minutes_not_a_number"
+msgstr "Minuteneingabe ist keine Zahl"
+
+#. Default: Hours must be in range 0..23.
+#: src/yafowil/widget/datetime/widget.py:78
+msgid "invalid_hours_range"
+msgstr "Stundeneingabe nicht im gültigen Bereich 0..23"
+
+#. Default: Minutes must be in range 0..59.
+#: src/yafowil/widget/datetime/widget.py:82
+msgid "invalid_minutes_range"
+msgstr "Minuteneingabe nicht im gültigen Bereich 0..23"
+
+#. Default: Not a valid date input.
+#: src/yafowil/widget/datetime/widget.py:226
+msgid "input_not_valid_date"
+msgstr "Eingabe ist kein gültiges Datum"
+
+#. Default: Failed to parse time input.
+#: src/yafowil/widget/datetime/widget.py:58
+msgid "failed_to_parse_time"
+msgstr "Eingabe konnte nicht als Zeiteingabe identifiziert werden"
