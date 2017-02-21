@@ -16,10 +16,26 @@ from yafowil.utils import managedprops
 _ = TSF('yafowil.widget.cron')
 
 
-def render_cron_input(widget, data, value, postfix=None, css_class=False):
+# Create actions blueprint
+#
+def action_edit_renderer(widget, data):
+    tag = data.tag
+    return tag(
+        'button',
+        _('label_edit', u'Edit'),
+        class_='edit icon-plus-sign'
+    )
 
-    import pdb
-    pdb.set_trace()
+
+factory.register(
+    'action_edit',
+    edit_renderers=[action_edit_renderer]
+)
+# don't document internal widget
+factory.doc['blueprint']['action_edit'] = UNSET
+
+
+def render_cron_input(widget, data, value, postfix=None, css_class=False):
 
     tag = data.tag
     widgetname = widget.dottedpath
@@ -33,43 +49,62 @@ def render_cron_input(widget, data, value, postfix=None, css_class=False):
 
     summary = make_cron_summary(value)
 
+    compound = factory(
+        'compound',
+        name=widget.dottedpath,
+    )
+    compound['minute'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_minute', u'Minute'),
+        }
+    )
+    compound['hour'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_hour', u'Hour'),
+        }
+    )
+    compound['dow'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_dow', u'Day of Week'),
+        }
+    )
+
+    compound['dom'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_dom', u'Day of Month'),
+        }
+    )
+
+    compound['month'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_month', u'Month'),
+        }
+    )
+
+    import pdb
+    pdb.set_trace()
+
     return\
         tag('div',
-            tag('label',
-                _('label_minute', u'Minute'),
-                tag('input', type='text', name=widgetname+'_minute'),
-                tag('a', 'edit', class_=widgetname+' minute edit')
-                ),
-            tag('label',
-                _('label_hour', u'Hour'),
-                tag('input', type='text', name=widgetname+'_hour'),
-                tag('a', 'edit', class_=widgetname+' hour edit')
-                ),
-            tag('label',
-                _('label_dow', u'Day of Week'),
-                tag('input', type='text', name=widgetname+'_dow'),
-                tag('a', 'edit', class_=widgetname+' dow edit')
-                ),
-            tag('label',
-                _('label_dom', u'Day of Month'),
-                tag('input', type='text', name=widgetname+'_dom'),
-                tag('a', 'edit', class_=widgetname+' dom edit')
-                ),
-            tag('label',
-                _('label_month', u'Month'),
-                tag('input', type='text', name=widgetname+'_month'),
-                tag('a', 'edit', class_=widgetname+' month edit')
-                ),
+            compound(),
             tag('p', summary, class_=widgetname+' summary'),
             id=cssid(widget, 'input', postfix),
             class_=cssclasses(widget, data) or '' + ' crontab widget'
             )
 
+# compound_extractor vor eigenem extractor reinhängen
+# child_widget
+# builder ----
+# widget_minute = factory(...
+# yafowil factory
+
 
 def cron_extractor(widget, data):
-    import pdb
-    pdb.set_trace()
-
     extracted = data.extracted
     if extracted == UNSET or extracted == '':
         return UNSET
