@@ -5,6 +5,7 @@ from yafowil.base import factory
 from yafowil.base import fetch_value
 from yafowil.common import generic_extractor
 from yafowil.common import generic_required_extractor
+from yafowil.compound import compound_extractor
 from yafowil.tsf import TSF
 from yafowil.utils import attr_value
 from yafowil.utils import css_managed_props
@@ -35,68 +36,6 @@ factory.register(
 factory.doc['blueprint']['action_edit'] = UNSET
 
 
-def render_cron_input(widget, data, value, postfix=None, css_class=False):
-
-    tag = data.tag
-    widgetname = widget.dottedpath
-    if postfix:
-        widgetname = u'{0}.{1}'.format(widgetname, postfix)
-
-    if value is True:
-        value = ''
-    if not value and data.request:
-        value = data.request.get(widgetname)
-
-    summary = make_cron_summary(value)
-
-    compound = factory(
-        'compound',
-        name=widget.dottedpath,
-    )
-    compound['minute'] = factory(
-        'label:text:action_edit',
-        props={
-            'label': _('label_minute', u'Minute'),
-        }
-    )
-    compound['hour'] = factory(
-        'label:text:action_edit',
-        props={
-            'label': _('label_hour', u'Hour'),
-        }
-    )
-    compound['dow'] = factory(
-        'label:text:action_edit',
-        props={
-            'label': _('label_dow', u'Day of Week'),
-        }
-    )
-
-    compound['dom'] = factory(
-        'label:text:action_edit',
-        props={
-            'label': _('label_dom', u'Day of Month'),
-        }
-    )
-
-    compound['month'] = factory(
-        'label:text:action_edit',
-        props={
-            'label': _('label_month', u'Month'),
-        }
-    )
-
-    import pdb
-    pdb.set_trace()
-
-    return\
-        tag('div',
-            compound(),
-            tag('p', summary, class_=widgetname+' summary'),
-            id=cssid(widget, 'input', postfix),
-            class_=cssclasses(widget, data) or '' + ' crontab widget'
-            )
-
 # compound_extractor vor eigenem extractor reinhängen
 # child_widget
 # builder ----
@@ -116,7 +55,56 @@ def make_cron_summary(value):
 
 
 def cron_edit_renderer(widget, data):
-    return render_cron_input(widget, data, None)
+
+    tag = data.tag
+    widgetname = widget.dottedpath
+
+    value = data.request.get(widgetname) if data.request else UNSET
+
+    compound = factory(
+        'compound',
+        name=widgetname,
+    )
+    compound['minute'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_minute', u'Minute'),
+        }
+    )
+    compound['hour'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_hour', u'Hour'),
+        }
+    )
+    compound['dow'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_dow', u'Day of Week'),
+        }
+    )
+    compound['dom'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_dom', u'Day of Month'),
+        }
+    )
+    compound['month'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_month', u'Month'),
+        }
+    )
+
+    summary = make_cron_summary(value)
+
+    return\
+        tag('div',
+            compound(),
+            tag('p', summary, class_='summary'),
+            id=cssid(widget, 'input'),
+            class_=cssclasses(widget, data) or '' + ' crontab widget'
+            )
 
 
 def cron_display_renderer(widget, data):
@@ -134,6 +122,7 @@ factory.register(
     extractors=[
         generic_extractor,
         generic_required_extractor,
+        compound_extractor,
         cron_extractor
     ],
     edit_renderers=[cron_edit_renderer],
