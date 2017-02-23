@@ -20,11 +20,10 @@ _ = TSF('yafowil.widget.cron')
 # Create actions blueprint
 #
 def action_edit_renderer(widget, data):
-    tag = data.tag
-    return tag(
+    return data.rendered or '' + data.tag(
         'button',
-        _('label_edit', u'Edit'),
-        class_='edit icon-plus-sign'
+        data.tag('span', u'', class_='icon-plus-sign') + _('label_edit', u'Edit'),  # noqa
+        class_='btn btn-sm edit'
     )
 
 
@@ -42,6 +41,8 @@ factory.doc['blueprint']['action_edit'] = UNSET
 # widget_minute = factory(...
 # yafowil factory
 
+# custom text renderer: cron_field ... dahinter dann link/tag anhängen
+#
 
 def cron_extractor(widget, data):
     extracted = data.extracted
@@ -56,9 +57,7 @@ def make_cron_summary(value):
 
 def cron_edit_renderer(widget, data):
 
-    tag = data.tag
     widgetname = widget.dottedpath
-
     value = data.request.get(widgetname) if data.request else UNSET
 
     compound = factory(
@@ -69,42 +68,48 @@ def cron_edit_renderer(widget, data):
         'label:text:action_edit',
         props={
             'label': _('label_minute', u'Minute'),
+            'position': 'inner-before'
         }
     )
     compound['hour'] = factory(
         'label:text:action_edit',
         props={
             'label': _('label_hour', u'Hour'),
+            'position': 'inner-before'
         }
     )
     compound['dow'] = factory(
         'label:text:action_edit',
         props={
             'label': _('label_dow', u'Day of Week'),
+            'position': 'inner-before'
         }
     )
     compound['dom'] = factory(
         'label:text:action_edit',
         props={
             'label': _('label_dom', u'Day of Month'),
+            'position': 'inner-before'
         }
     )
     compound['month'] = factory(
         'label:text:action_edit',
         props={
             'label': _('label_month', u'Month'),
+            'position': 'inner-before'
         }
     )
 
     summary = make_cron_summary(value)
 
     return\
-        tag('div',
+        data.tag(
+            'div',
             compound(),
-            tag('p', summary, class_='summary'),
+            data.tag('p', summary, class_='summary'),
             id=cssid(widget, 'input'),
             class_=cssclasses(widget, data) or '' + ' crontab widget'
-            )
+        )
 
 
 def cron_display_renderer(widget, data):
@@ -120,8 +125,6 @@ def cron_display_renderer(widget, data):
 factory.register(
     'cron',
     extractors=[
-        generic_extractor,
-        generic_required_extractor,
         compound_extractor,
         cron_extractor
     ],

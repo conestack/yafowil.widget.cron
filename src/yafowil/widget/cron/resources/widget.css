@@ -1,0 +1,12 @@
+.crontab.widget label {
+    display: block;
+    margin-bottom: 1em;
+    text-align: left;
+}
+.crontab.widget button.edit {
+    float: right;
+    margin-bottom: 0.5em;
+}
+.crontab.widget button.edit span {
+    margin-right: 0.2em;
+}
