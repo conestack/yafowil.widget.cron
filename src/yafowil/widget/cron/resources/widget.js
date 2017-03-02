@@ -38,6 +38,7 @@ if (window.yafowil === undefined) {
             binder: function (context) {
                 $('.crontab.widget button.edit').on('click', function (event) {
                     event.preventDefault();
+                    var cnt;
                     var $el = $(this);
                     var $container = $el.closest('label');
                     var mode = $container.attr('class');
@@ -45,12 +46,34 @@ if (window.yafowil === undefined) {
 
                     var header = $('<h2 />');
                     var content = $('<div class="editcontainer" />');
+
                     if (mode.indexOf('minute') != -1) {
                         header.text('Select Minutes');
-                        for (var cnt=0; cnt < 60; cnt++) {
+                        for (cnt=0; cnt < 60; cnt++) {
+                            content.append(yafowil.cron.valuebutton(cnt));
+                        }
+                    } else if (mode.indexOf('hour') != -1) {
+                        header.text('Select Hours');
+                        for (cnt=1; cnt <= 24; cnt++) {
+                            content.append(yafowil.cron.valuebutton(cnt));
+                        }
+                    } else if (mode.indexOf('dow') != -1) {
+                        header.text('Select Day of Week');
+                        for (cnt=1; cnt <= 7; cnt++) {
+                            content.append(yafowil.cron.valuebutton(cnt));
+                        }
+                    } else if (mode.indexOf('dom') != -1) {
+                        header.text('Select Day of Month');
+                        for (cnt=1; cnt <= 31; cnt++) {
+                            content.append(yafowil.cron.valuebutton(cnt));
+                        }
+                    } else if (mode.indexOf('month') != -1) {
+                        header.text('Select Month');
+                        for (cnt=1; cnt <= 12; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt));
                         }
                     }
+
                     content = header.add(content);
                     $editarea.html(content);
                     $editarea.show();

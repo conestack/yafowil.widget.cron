@@ -44,3 +44,23 @@
 .crontab.widget .minute .editcontainer button:nth-child(51) {
   clear: left;
 }
+.crontab.widget .hour .editcontainer button {
+  width: 3em;
+}
+.crontab.widget .hour .editcontainer button:nth-child(13) {
+  clear: left;
+}
+.crontab.widget .dow .editcontainer button {
+  width: 3em;
+}
+.crontab.widget .dom .editcontainer button {
+  width: 3em;
+}
+.crontab.widget .dom .editcontainer button:nth-child(11),
+.crontab.widget .dom .editcontainer button:nth-child(21),
+.crontab.widget .dom .editcontainer button:nth-child(31) {
+  clear: left;
+}
+.crontab.widget .month .editcontainer button {
+  width: 3em;
+}
