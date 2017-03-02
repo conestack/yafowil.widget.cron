@@ -1,0 +1,59 @@
+.clearfix {
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+
+.crontab.widget {
+
+    label {
+        display: block;
+        margin-bottom: 1em;
+        text-align: left;
+    }
+
+    button.edit {
+        float: right;
+        margin-bottom: 0.5em;
+        span {
+            margin-right: 0.2em;
+        }
+    }
+
+    .editarea {
+        display: none;
+        .active {
+            background-color: orange;
+        }
+    }
+
+    .editcontainer {
+        .clearfix;
+
+        button {
+            display: block;
+            vertical-align: top;
+            float: left;
+
+            &:last-child::after {
+                clear: both;
+            }
+        }
+    }
+    
+    .minute .editcontainer button {
+        width: 3em;
+
+        &:nth-child(11),
+        &:nth-child(21),
+        &:nth-child(31),
+        &:nth-child(41),
+        &:nth-child(51) {
+            clear: left;
+        }
+    }
+
+}
