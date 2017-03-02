@@ -44,6 +44,12 @@ if (window.yafowil === undefined) {
                     var mode = $container.attr('class');
                     var $editarea = $('.editarea', $container);
 
+                    if ($editarea.is(':visible')) {
+                        $el.removeClass('active');
+                        $editarea.hide();
+                        return;
+                    }
+
                     var header = $('<h2 />');
                     var content = $('<div class="editcontainer" />');
 
@@ -77,6 +83,7 @@ if (window.yafowil === undefined) {
                     content = header.add(content);
                     $editarea.html(content);
                     $editarea.show();
+                    $el.addClass('active');
                 });
             },
 
