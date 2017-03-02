@@ -21,7 +21,7 @@ default_css = [{
 
 @entry_point(order=10)
 def register():
-    import widget
+    import widget  # noqa
     factory.register_theme(
         'default',
         'yafowil.widget.cron',

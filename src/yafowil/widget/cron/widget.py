@@ -21,11 +21,20 @@ _ = TSF('yafowil.widget.cron')
 # Create actions blueprint
 #
 def action_edit_renderer(widget, data):
-    return data.rendered or '' + data.tag(
-        'button',
-        data.tag('span', u'', class_='icon-plus-sign') + _('label_edit', u'Edit'),  # noqa
-        class_='btn btn-sm edit'
-    )
+    return data.rendered or '' +\
+        data.tag(
+            'button',
+            data.tag(
+                'span', u'',
+                class_='icon-plus-sign'
+            ) +
+            _(
+                'label_edit',
+                u'Edit'
+            ),
+            class_='btn btn-sm edit'
+        ) +\
+        data.tag('div', u'', class_='editarea')
 
 
 factory.register(
@@ -35,15 +44,6 @@ factory.register(
 # don't document internal widget
 factory.doc['blueprint']['action_edit'] = UNSET
 
-
-# compound_extractor vor eigenem extractor reinhängen
-# child_widget
-# builder ----
-# widget_minute = factory(...
-# yafowil factory
-
-# custom text renderer: cron_field ... dahinter dann link/tag anhängen
-#
 
 def cron_extractor(widget, data):
 
@@ -79,6 +79,7 @@ def cron_edit_renderer(widget, data):
         'label:text:action_edit',
         props={
             'label': _('label_minute', u'Minute'),
+            'label.class': 'minute',
             'position': 'inner-before'
         }
     )
@@ -86,6 +87,7 @@ def cron_edit_renderer(widget, data):
         'label:text:action_edit',
         props={
             'label': _('label_hour', u'Hour'),
+            'label.class': 'hour',
             'position': 'inner-before'
         }
     )
@@ -93,6 +95,7 @@ def cron_edit_renderer(widget, data):
         'label:text:action_edit',
         props={
             'label': _('label_dow', u'Day of Week'),
+            'label.class': 'dow',
             'position': 'inner-before'
         }
     )
@@ -100,6 +103,7 @@ def cron_edit_renderer(widget, data):
         'label:text:action_edit',
         props={
             'label': _('label_dom', u'Day of Month'),
+            'label.class': 'dom',
             'position': 'inner-before'
         }
     )
@@ -107,6 +111,7 @@ def cron_edit_renderer(widget, data):
         'label:text:action_edit',
         props={
             'label': _('label_month', u'Month'),
+            'label.class': 'month',
             'position': 'inner-before'
         }
     )

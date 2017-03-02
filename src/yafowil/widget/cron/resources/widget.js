@@ -1,9 +1,8 @@
 /* jslint browser: true */
 /* global jQuery, yafowil */
 /* 
- * yafowil datepicker widget
+ * yafowil cron widget
  * 
- * Requires: jquery ui datepicker
  * Optional: bdajax
  */
 
@@ -16,93 +15,64 @@ if (window.yafowil === undefined) {
 
     $(document).ready(function() {
         // initial binding
-        yafowil.datepicker.binder();
+        yafowil.cron.binder();
 
         // add after ajax binding if bdajax present
         if (window.bdajax !== undefined) {
             $.extend(window.bdajax.binders, {
-                datepicker_binder: yafowil.datepicker.binder
+                cron_binder: yafowil.cron.binder
             });
         }
 
         // add binder to yafowil.widget.array hooks
         if (yafowil.array !== undefined) {
             $.extend(yafowil.array.hooks.add, {
-                datepicker_binder: yafowil.datepicker.binder
+                cron: yafowil.cron.binder
             });
         }
     });
 
     $.extend(yafowil, {
 
-        datepicker: {
+        cron: {
+            binder: function (context) {
+                $('.crontab.widget button.edit').on('click', function (event) {
+                    event.preventDefault();
+                    var $el = $(this);
+                    var $container = $el.closest('label');
+                    var mode = $container.attr('class');
+                    var $editarea = $('.editarea', $container);
 
-            binder: function(context) {
-                $('input.datepicker', context).datepicker({
-                    showAnim: null,
-                    showOn: 'both'
+                    var header = $('<h2 />');
+                    var content = $('<div class="editcontainer" />');
+                    if (mode.indexOf('minute') != -1) {
+                        header.text('Select Minutes');
+                        for (var cnt=0; cnt < 60; cnt++) {
+                            content.append(yafowil.cron.valuebutton(cnt));
+                        }
+                    }
+                    content = header.add(content);
+                    $editarea.html(content);
+                    $editarea.show();
                 });
-                $('input.timepicker', context).timepicker({
-                    showPeriodLabels: false,
-                    showOn: 'both'
-                });
+            },
+
+            valuebutton: function (name, value) {
+                if (typeof value === 'undefined') {
+                    value = name;
+                }
+                return $('<button name=' + value + '>' + name + '</button>')
+                    .on('click', function (event) {
+                        event.preventDefault();
+                        var $el = $(this);
+                        if ($el.attr('class') === 'active') {
+                            $el.attr('class', '');
+                        } else {
+                            $el.attr('class', 'active');
+                        }
+                    });
             }
         }
-    });
-
-    // Configure jQuery.UI datepicker languages.
-    $(function() {
-        $.datepicker.regional.de = {
-            clearText: 'löschen',
-            clearStatus: 'aktuelles Datum löschen',
-            closeText: 'schließen',
-            closeStatus: 'ohne Änderungen schließen',
-            prevText: '&#x3c;zurück',
-            prevStatus: 'letzten Monat zeigen',
-            nextText: 'Vor&#x3e;',
-            nextStatus: 'nächsten Monat zeigen',
-            currentText: 'heute',
-            currentStatus: '',
-            monthNames: [
-                'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
-            ],
-            monthNamesShort: [
-                'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'
-            ],
-            monthStatus: 'anderen Monat anzeigen',
-            yearStatus: 'anderes Jahr anzeigen',
-            weekHeader: 'Wo',
-            weekStatus: 'Woche des Monats',
-            dayNames: [
-                'Sonntag', 'Montag', 'Dienstag', 'Mittwoch',
-                'Donnerstag', 'Freitag', 'Samstag'
-            ],
-            dayNamesShort: [
-                'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'
-            ],
-            dayNamesMin: [
-                'So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'
-            ],
-            dayStatus: 'Setze DD als ersten Wochentag',
-            dateStatus: 'Wähle D, M d',
-            dateFormat: 'dd.mm.yy',
-            firstDay: 1, 
-            initStatus: 'Wähle ein Datum',
-            isRTL: false
-        };
-        $.datepicker.setDefaults($.datepicker.regional.de);
-
-        $.timepicker.regional.de = {
-            hourText: 'Stunde',
-            minuteText: 'Minuten',
-            amPmText: ['AM', 'PM'] ,
-            closeButtonText: 'Beenden',
-            nowButtonText: 'Aktuelle Zeit',
-            deselectButtonText: 'Wischen'
-        };
-        $.timepicker.setDefaults($.timepicker.regional.de);
     });
 
 })(jQuery, yafowil);
