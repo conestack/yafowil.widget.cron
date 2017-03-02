@@ -1,43 +1,46 @@
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .crontab.widget label {
-    display: block;
-    margin-bottom: 1em;
-    text-align: left;
+  display: block;
+  margin-bottom: 1em;
+  text-align: left;
 }
 .crontab.widget button.edit {
-    float: right;
-    margin-bottom: 0.5em;
+  float: right;
+  margin-bottom: 0.5em;
 }
 .crontab.widget button.edit span {
-    margin-right: 0.2em;
+  margin-right: 0.2em;
 }
 .crontab.widget .editarea {
-    display: none;
+  display: none;
 }
 .crontab.widget .editarea .active {
-    background-color: orange;
+  background-color: orange;
 }
-.crontab.widget .minute .editcontainer::after {
-    content: "";
-    display: table;
-    clear: both;
+.crontab.widget .editcontainer::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.crontab.widget .editcontainer button {
+  display: block;
+  vertical-align: top;
+  float: left;
+}
+.crontab.widget .editcontainer button:last-child::after {
+  clear: both;
 }
 .crontab.widget .minute .editcontainer button {
-    display: block;
-    vertical-align: top;
-    float: left;
+  width: 3em;
 }
 .crontab.widget .minute .editcontainer button:nth-child(11),
 .crontab.widget .minute .editcontainer button:nth-child(21),
 .crontab.widget .minute .editcontainer button:nth-child(31),
 .crontab.widget .minute .editcontainer button:nth-child(41),
 .crontab.widget .minute .editcontainer button:nth-child(51) {
-    clear: left;
+  clear: left;
 }
-.crontab.widget .minute .editcontainer button:last-child::after {
-    clear: both;
-}
-
-
-    .clearfix:after {
-    }
-
