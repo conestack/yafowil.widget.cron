@@ -175,6 +175,7 @@ if (window.yafowil === undefined) {
                         }
                     }
                     vals.sort(function(a, b) {
+                        // int-sort - otherwise it's a lexical sort.
                         return parseInt(a, 10) - parseInt(b, 10);
                     });
                     return vals.join(',');
