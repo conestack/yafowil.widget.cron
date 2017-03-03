@@ -115,6 +115,14 @@ def cron_edit_renderer(widget, data):
             'position': 'inner-before'
         }
     )
+    compound['year'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_year', u'Year'),
+            'label.class': 'year',
+            'position': 'inner-before'
+        }
+    )
 
     summary = make_cron_summary(value)
 

@@ -55,17 +55,17 @@ if (window.yafowil === undefined) {
 
                     if (mode.indexOf('minute') != -1) {
                         header.text('Select Minutes');
-                        for (cnt=0; cnt < 60; cnt++) {
+                        for (cnt=0; cnt <= 59; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt));
                         }
                     } else if (mode.indexOf('hour') != -1) {
                         header.text('Select Hours');
-                        for (cnt=1; cnt <= 24; cnt++) {
+                        for (cnt=0; cnt <= 23; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt));
                         }
                     } else if (mode.indexOf('dow') != -1) {
                         header.text('Select Day of Week');
-                        for (cnt=1; cnt <= 7; cnt++) {
+                        for (cnt=0; cnt <= 6; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt));
                         }
                     } else if (mode.indexOf('dom') != -1) {
@@ -76,6 +76,11 @@ if (window.yafowil === undefined) {
                     } else if (mode.indexOf('month') != -1) {
                         header.text('Select Month');
                         for (cnt=1; cnt <= 12; cnt++) {
+                            content.append(yafowil.cron.valuebutton(cnt));
+                        }
+                    } else if (mode.indexOf('year') != -1) {
+                        header.text('Select Year');
+                        for (cnt=1970; cnt <= 2099; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt));
                         }
                     }
