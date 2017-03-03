@@ -97,15 +97,24 @@ if (window.yafowil === undefined) {
                     value = name;
                 }
                 return $('<button name=' + value + '>' + name + '</button>')
-                    .on('click', function (event) {
-                        event.preventDefault();
-                        var $el = $(this);
-                        if ($el.attr('class') === 'active') {
-                            $el.attr('class', '');
-                        } else {
-                            $el.attr('class', 'active');
+                    .on('click', yafowil.cron.valuebutton_eventhandler)
+                    .on('mouseenter', function (event) {
+                        // support multiple selection by holding down the "shift" key.
+                        if (event.shiftKey === false) {
+                            return;
                         }
+                        yafowil.cron.valuebutton_eventhandler.bind(this)(event);
                     });
+            },
+
+            valuebutton_eventhandler: function (event) {
+                event.preventDefault();
+                var $el = $(this);
+                if ($el.attr('class') === 'active') {
+                    $el.attr('class', '');
+                } else {
+                    $el.attr('class', 'active');
+                }
             }
         }
     });
