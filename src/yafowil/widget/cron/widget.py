@@ -49,7 +49,7 @@ def cron_extractor(widget, data):
 
     def _extract_part(widget, name):
         try:
-            return data.request[widget.dottedpath + '.' + name] or UNSET
+            return data.request.get(widget.dottedpath + '.' + name, UNSET) or UNSET  # noqa
         except KeyError:
             return UNSET
 
@@ -68,12 +68,19 @@ def make_cron_summary(value):
 
 def cron_edit_renderer(widget, data):
 
-    widgetname = widget.dottedpath
-    value = data.request.get(widgetname) if data.request else UNSET
+    def _get_value(name):
+        value = data.value.get(
+            widget.dottedpath + '.' +
+            name,
+            UNSET
+        ) or UNSET
+        if isinstance(value, list):
+            value = ','.join(str(it) for it in value)
+        return value
 
     compound = factory(
         'compound',
-        name=widgetname,
+        name=widget.dottedpath
     )
     compound['minute'] = factory(
         'label:text:action_edit',
@@ -81,7 +88,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_minute', u'Minute'),
             'label.class': 'minute',
             'position': 'inner-before'
-        }
+        },
+        value=_get_value('minute')
     )
     compound['hour'] = factory(
         'label:text:action_edit',
@@ -89,7 +97,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_hour', u'Hour'),
             'label.class': 'hour',
             'position': 'inner-before'
-        }
+        },
+        value=_get_value('hour')
     )
     compound['dow'] = factory(
         'label:text:action_edit',
@@ -97,7 +106,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_dow', u'Day of Week'),
             'label.class': 'dow',
             'position': 'inner-before'
-        }
+        },
+        value=_get_value('dow')
     )
     compound['dom'] = factory(
         'label:text:action_edit',
@@ -105,7 +115,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_dom', u'Day of Month'),
             'label.class': 'dom',
             'position': 'inner-before'
-        }
+        },
+        value=_get_value('dom')
     )
     compound['month'] = factory(
         'label:text:action_edit',
@@ -113,7 +124,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_month', u'Month'),
             'label.class': 'month',
             'position': 'inner-before'
-        }
+        },
+        value=_get_value('month')
     )
     compound['year'] = factory(
         'label:text:action_edit',
@@ -121,16 +133,17 @@ def cron_edit_renderer(widget, data):
             'label': _('label_year', u'Year'),
             'label.class': 'year',
             'position': 'inner-before'
-        }
+        },
+        value=_get_value('year')
     )
 
-    summary = make_cron_summary(value)
+    # summary = make_cron_summary(value)
 
     return\
         data.tag(
             'div',
             compound(),
-            data.tag('p', summary, class_='summary'),
+            # data.tag('p', summary, class_='summary'),
             id=cssid(widget, 'input'),
             class_=cssclasses(widget, data) or '' + ' crontab widget'
         )
