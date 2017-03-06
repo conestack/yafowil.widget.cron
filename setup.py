@@ -38,8 +38,8 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'crontab',
         'yafowil>2.1.99',
-        'yafowil.widget.datetime',
     ],
     tests_require=tests_require,
     extras_require=dict(
