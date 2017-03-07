@@ -10,28 +10,43 @@
 .crontab.widget {
 
     label {
-        display: block;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
         margin-bottom: 1em;
+        padding: 0.5em;
         text-align: left;
         vertical-align: middle;
+        min-width: 5em;
+        
+        &.active {
+            background-color: lightgrey;
+            border: 1px solid black;
+        }
+
+        input {
+            flex-grow: 1;
+            margin: 0 1em;
+            width: auto;
+        }
 
         button.edit {
-            float: right;
             margin-bottom: 0.5em;
-
-            &.active {
-                background-color: green;
-                color: white;
-            }
-
             span {
                 margin-right: 0.2em;
             }
-
         }
+        &.active button.edit {
+            background-color: green;
+            color: white;
+        }
+
 
         .editarea {
             display: none;
+            width: 100%;
+
             .active {
                 background-color: orange;
             }

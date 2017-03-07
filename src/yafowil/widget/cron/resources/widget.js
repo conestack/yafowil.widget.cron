@@ -65,7 +65,20 @@ if (window.yafowil === undefined) {
                 return $el.closest('label');
             },
             getMode: function ($el) {
-                return yafowil.cron.getContainer($el).attr('class');
+                var klass = yafowil.cron.getContainer($el).attr('class');
+                if (klass.indexOf('minute') != -1) {
+                    return 'minute';
+                } else if (klass.indexOf('hour') != -1) {
+                    return 'hour';
+                } else if (klass.indexOf('dow') != -1) {
+                    return 'dow';
+                } else if (klass.indexOf('dom') != -1) {
+                    return 'dom';
+                } else if (klass.indexOf('month') != -1) {
+                    return 'month';
+                } else if (klass.indexOf('year') != -1) {
+                    return 'year';
+                }
             },
             getEditarea: function ($el) {
                 return $('.editarea', yafowil.cron.getContainer($el));
@@ -76,11 +89,12 @@ if (window.yafowil === undefined) {
                     event.preventDefault();
                     var cnt;
                     var $el = $(this);
+                    var $container = yafowil.cron.getContainer($el);
                     var mode = yafowil.cron.getMode($el);
                     var $editarea = yafowil.cron.getEditarea($el);
 
                     if ($editarea.is(':visible')) {
-                        $el.removeClass('active');
+                        $container.removeClass('active');
                         $editarea.hide();
                         return;
                     }
@@ -90,18 +104,18 @@ if (window.yafowil === undefined) {
                     var header = $('<h2 />');
                     var content = $('<div class="editcontainer" />');
 
-                    if (mode.indexOf('minute') != -1) {
+                    if (mode === 'minute') {
                         header.text('Select Minutes');
                         for (cnt=0; cnt <= 59; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
                         }
-                    } else if (mode.indexOf('hour') != -1) {
+                    } else if (mode === 'hour') {
                         header.text('Select Hours');
                         for (cnt=1; cnt <= 24; cnt++) {
                             var hour = cnt < 24 ? cnt : 0;  // "0" should be rendered as last element.
                             content.append(yafowil.cron.valuebutton(hour, hour, mode));
                         }
-                    } else if (mode.indexOf('dow') != -1) {
+                    } else if (mode === 'dow') {
                         header.text('Select Day of Week');
                         for (cnt=1; cnt <= 7; cnt++) {
                             var dow = cnt < 7 ? cnt : 0;  // "0" should be rendered as last element.
@@ -111,12 +125,12 @@ if (window.yafowil === undefined) {
                                 mode
                             ));
                         }
-                    } else if (mode.indexOf('dom') != -1) {
+                    } else if (mode === 'dom') {
                         header.text('Select Day of Month');
                         for (cnt=1; cnt <= 31; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
                         }
-                    } else if (mode.indexOf('month') != -1) {
+                    } else if (mode === 'month') {
                         header.text('Select Month');
                         for (cnt=1; cnt <= 12; cnt++) {
                             content.append(yafowil.cron.valuebutton(
@@ -125,7 +139,7 @@ if (window.yafowil === undefined) {
                                 mode
                             ));
                         }
-                    } else if (mode.indexOf('year') != -1) {
+                    } else if (mode === 'year') {
                         header.text('Select Year');
                         var current_year = new Date().getFullYear()
                         for (cnt=current_year; cnt <= 2099; cnt++) {
@@ -136,7 +150,7 @@ if (window.yafowil === undefined) {
                     content = header.add(content);
                     $editarea.html(content);
                     $editarea.show();
-                    $el.addClass('active');
+                    $container.addClass('active');
                 });
             },
 
