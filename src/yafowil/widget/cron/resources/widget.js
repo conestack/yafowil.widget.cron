@@ -173,14 +173,14 @@ if (window.yafowil === undefined) {
             valuebutton_eventhandler: function (event) {
                 event.preventDefault();
                 var $el = $(this);
-                if ($el.attr('class') === 'active') {
+                if ($el.hasClass('active')) {
                     yafowil.cron.value.remove($(this).attr('name'), yafowil.cron.getMode($el));
                     yafowil.cron.value.serializeToInput($el);
-                    $el.attr('class', '');
+                    $el.removeClass('active');
                 } else {
                     yafowil.cron.value.add($(this).attr('name'), yafowil.cron.getMode($el));
                     yafowil.cron.value.serializeToInput($el);
-                    $el.attr('class', 'active');
+                    $el.addClass('active');
                 }
             },
 
