@@ -73,7 +73,7 @@ def cron_edit_renderer(widget, data):
             widget.dottedpath + '.' +
             name,
             UNSET
-        ) or UNSET
+        ) if data.value else UNSET
         if isinstance(value, list):
             value = ','.join(str(it) for it in value)
         return value
