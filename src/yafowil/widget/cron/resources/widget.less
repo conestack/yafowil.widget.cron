@@ -78,16 +78,37 @@
     .dom .editcontainer button {
         width: 3em;
 
-        &:nth-child(11),
-        &:nth-child(21),
-        &:nth-child(31) {
+        &:nth-child(8),
+        &:nth-child(15),
+        &:nth-child(22),
+        &:nth-child(29) {
             clear: left;
         }
     }
 
     .month .editcontainer button {
         min-width: 7em;
-
+        
+        &:nth-child(4),
+        &:nth-child(7),
+        &:nth-child(10) {
+            clear: left;
+        }
     }
 
+    .year .editcontainer button {
+        min-width: 5em;
+
+        &:nth-child(11),
+        &:nth-child(21),
+        &:nth-child(31),
+        &:nth-child(41),
+        &:nth-child(51),
+        &:nth-child(61),
+        &:nth-child(71),
+        &:nth-child(81),
+        &:nth-child(91) {
+            clear: left;
+        }
+    }
 }

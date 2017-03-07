@@ -97,15 +97,17 @@ if (window.yafowil === undefined) {
                         }
                     } else if (mode.indexOf('hour') != -1) {
                         header.text('Select Hours');
-                        for (cnt=0; cnt <= 23; cnt++) {
-                            content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
+                        for (cnt=1; cnt <= 24; cnt++) {
+                            var hour = cnt < 24 ? cnt : 0;  // "0" should be rendered as last element.
+                            content.append(yafowil.cron.valuebutton(hour, hour, mode));
                         }
                     } else if (mode.indexOf('dow') != -1) {
                         header.text('Select Day of Week');
-                        for (cnt=0; cnt <= 6; cnt++) {
+                        for (cnt=1; cnt <= 7; cnt++) {
+                            var dow = cnt < 7 ? cnt : 0;  // "0" should be rendered as last element.
                             content.append(yafowil.cron.valuebutton(
-                                cnt,
-                                yafowil.cron.dowmap[cnt],
+                                dow,
+                                yafowil.cron.dowmap[dow],
                                 mode
                             ));
                         }
@@ -125,7 +127,8 @@ if (window.yafowil === undefined) {
                         }
                     } else if (mode.indexOf('year') != -1) {
                         header.text('Select Year');
-                        for (cnt=1970; cnt <= 2099; cnt++) {
+                        var current_year = new Date().getFullYear()
+                        for (cnt=current_year; cnt <= 2099; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
                         }
                     }
