@@ -46,6 +46,7 @@
         .editarea {
             display: none;
             width: 100%;
+            text-align: center;
 
             .active {
                 background-color: orange;
@@ -53,6 +54,8 @@
 
             .editcontainer {
                 .clearfix;
+
+                display: inline-block;
 
                 button {
                     display: block;
@@ -109,7 +112,6 @@
             }
         }
         &.year .editcontainer button {
-            min-width: 5em;
 
             &:nth-child(11),
             &:nth-child(21),
