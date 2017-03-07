@@ -64,7 +64,6 @@ def cron_edit_renderer(widget, data):
     })
     container['minute'] = factory(
         'label:text:action_edit',
-        value=value.get('minute', UNSET),
         props={
             'label': _('label_minute', u'Minute'),
             'label.class': 'minute',
@@ -73,7 +72,6 @@ def cron_edit_renderer(widget, data):
     )
     container['hour'] = factory(
         'label:text:action_edit',
-        value=value.get('hour', UNSET),
         props={
             'label': _('label_hour', u'Hour'),
             'label.class': 'hour',
@@ -82,7 +80,6 @@ def cron_edit_renderer(widget, data):
     )
     container['dow'] = factory(
         'label:text:action_edit',
-        value=value.get('dow', UNSET),
         props={
             'label': _('label_dow', u'Day of Week'),
             'label.class': 'dow',
@@ -91,7 +88,6 @@ def cron_edit_renderer(widget, data):
     )
     container['dom'] = factory(
         'label:text:action_edit',
-        value=value.get('dom', UNSET),
         props={
             'label': _('label_dom', u'Day of Month'),
             'label.class': 'dom',
@@ -100,7 +96,6 @@ def cron_edit_renderer(widget, data):
     )
     container['month'] = factory(
         'label:text:action_edit',
-        value=value.get('month', UNSET),
         props={
             'label': _('label_month', u'Month'),
             'label.class': 'month',
@@ -109,7 +104,6 @@ def cron_edit_renderer(widget, data):
     )
     container['year'] = factory(
         'label:text:action_edit',
-        value=value.get('year', UNSET),
         props={
             'label': _('label_year', u'Year'),
             'label.class': 'year',
