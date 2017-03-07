@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from node.utils import UNSET
+from odict import odict
 from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import fetch_value
@@ -24,17 +25,10 @@ def action_edit_renderer(widget, data):
     return data.rendered or '' +\
         data.tag(
             'button',
-            data.tag(
-                'span', u'',
-                class_='icon-plus-sign'
-            ) +
-            _(
-                'label_edit',
-                u'Edit'
-            ),
+            data.tag('span', u'', class_='icon-plus-sign') +
+            _('label_edit', u'Edit'),  # never gets translated
             class_='btn btn-sm edit'
-        ) +\
-        data.tag('div', u'', class_='editarea')
+        ) + data.tag('div', u'', class_='editarea')
 
 
 factory.register(
@@ -46,20 +40,13 @@ factory.doc['blueprint']['action_edit'] = UNSET
 
 
 def cron_extractor(widget, data):
-
-    def _extract_part(widget, name):
-        try:
-            return data.request.get(widget.dottedpath + '.' + name, UNSET) or UNSET  # noqa
-        except KeyError:
-            return UNSET
-
-    return {
-        'minute': _extract_part(widget, 'minute'),
-        'hour': _extract_part(widget, 'hour'),
-        'dow': _extract_part(widget, 'dow'),
-        'dom': _extract_part(widget, 'dom'),
-        'month': _extract_part(widget, 'month')
-    }
+    extracted = odict()
+    extracted['minute'] = data['minute'].extracted
+    extracted['hour'] = data['hour'].extracted
+    extracted['dow'] = data['dow'].extracted
+    extracted['dom'] = data['dom'].extracted
+    extracted['month'] = data['month'].extracted
+    return extracted
 
 
 def make_cron_summary(value):
@@ -67,86 +54,73 @@ def make_cron_summary(value):
 
 
 def cron_edit_renderer(widget, data):
-
-    def _get_value(name):
-        value = data.value.get(
-            widget.dottedpath + '.' +
-            name,
-            UNSET
-        ) if data.value else UNSET
-        if isinstance(value, list):
-            value = ','.join(str(it) for it in value)
-        return value
-
-    compound = factory(
-        'compound',
-        name=widget.dottedpath
-    )
-    compound['minute'] = factory(
+    value = fetch_value(widget, data)
+    if value is UNSET:
+        value = dict()
+    container = widget['container'] = factory('div', props={
+        'structural': True,
+        'id': cssid(widget, 'input'),
+        'class': cssclasses(widget, data)
+    })
+    container['minute'] = factory(
         'label:text:action_edit',
+        value=value.get('minute', UNSET),
         props={
             'label': _('label_minute', u'Minute'),
             'label.class': 'minute',
             'position': 'inner-before'
-        },
-        value=_get_value('minute')
+        }
     )
-    compound['hour'] = factory(
+    container['hour'] = factory(
         'label:text:action_edit',
+        value=value.get('hour', UNSET),
         props={
             'label': _('label_hour', u'Hour'),
             'label.class': 'hour',
             'position': 'inner-before'
-        },
-        value=_get_value('hour')
+        }
     )
-    compound['dow'] = factory(
+    container['dow'] = factory(
         'label:text:action_edit',
+        value=value.get('dow', UNSET),
         props={
             'label': _('label_dow', u'Day of Week'),
             'label.class': 'dow',
             'position': 'inner-before'
-        },
-        value=_get_value('dow')
+        }
     )
-    compound['dom'] = factory(
+    container['dom'] = factory(
         'label:text:action_edit',
+        value=value.get('dom', UNSET),
         props={
             'label': _('label_dom', u'Day of Month'),
             'label.class': 'dom',
             'position': 'inner-before'
-        },
-        value=_get_value('dom')
+        }
     )
-    compound['month'] = factory(
+    container['month'] = factory(
         'label:text:action_edit',
+        value=value.get('month', UNSET),
         props={
             'label': _('label_month', u'Month'),
             'label.class': 'month',
             'position': 'inner-before'
-        },
-        value=_get_value('month')
+        }
     )
-    compound['year'] = factory(
+    container['year'] = factory(
         'label:text:action_edit',
+        value=value.get('year', UNSET),
         props={
             'label': _('label_year', u'Year'),
             'label.class': 'year',
             'position': 'inner-before'
-        },
-        value=_get_value('year')
+        }
     )
-
-    # summary = make_cron_summary(value)
-
-    return\
-        data.tag(
-            'div',
-            compound(),
-            # data.tag('p', summary, class_='summary'),
-            id=cssid(widget, 'input'),
-            class_=cssclasses(widget, data) or '' + ' crontab widget'
-        )
+    container['summary'] = factory('tag', props={
+        'structural': True,
+        'tag': 'p',
+        'text': make_cron_summary(value=UNSET)
+    })
 
 
 def cron_display_renderer(widget, data):
@@ -161,8 +135,14 @@ def cron_display_renderer(widget, data):
 
 factory.register(
     'cron',
-    extractors=[cron_extractor],
-    edit_renderers=[cron_edit_renderer],
+    extractors=[
+        compound_extractor,
+        cron_extractor,
+    ],
+    edit_renderers=[
+        cron_edit_renderer,
+        compound_renderer
+    ],
     display_renderers=[
         cron_display_renderer,
         compound_renderer
@@ -170,3 +150,5 @@ factory.register(
 )
 
 factory.doc['blueprint']['cron'] = "Add-on blueprint `yafowil.widget.cron <http://github.com/bluedynamics/yafowil.widget.cron/>`_ ."  # noqa
+
+factory.defaults['cron.class'] = 'crontab widget'

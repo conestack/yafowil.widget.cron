@@ -7,35 +7,51 @@ Load requirements::
     >>> import yafowil.widget.cron
     >>> from yafowil.base import factory
 
-
 Render widget::
 
     >>> widget = factory('cron', 'cronwidget')
     >>> widget()
-    u'<div class=" crontab widget" id="input-cronwidget">...<input class="text" id="input-cronwidget-minute"...<input class="text" id="input-cronwidget-hour"...<input class="text" id="input-cronwidget-dow"...<input class="text" id="input-cronwidget-dom"...<input class="text" id="input-cronwidget-month"...<input class="text" id="input-cronwidget-year"...
-
+    u'<div class="crontab widget" id="input-cronwidget">...</div>'
 
 Base extraction::
 
     >>> data = widget.extract({})
     >>> data.printtree()
-    <RuntimeData cronwidget, value=<UNSET>, extracted={'month': <UNSET>, 'dom': <UNSET>, 'hour': <UNSET>, 'minute': <UNSET>, 'dow': <UNSET>} at 0x7fea2aa8b65>
+    <RuntimeData cronwidget, value=<UNSET>, extracted=odict([('minute', <UNSET>), ('hour', <UNSET>), ('dow', <UNSET>), ('dom', <UNSET>), ('month', <UNSET>)]) at ...>
+      <RuntimeData cronwidget.minute, value=<UNSET>, extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.hour, value=<UNSET>, extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.dow, value=<UNSET>, extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.dom, value=<UNSET>, extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.month, value=<UNSET>, extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.year, value=<UNSET>, extracted=<UNSET> at ...>
 
+    >>> data.extracted
+    odict([('minute', <UNSET>), 
+    ('hour', <UNSET>), 
+    ('dow', <UNSET>), 
+    ('dom', <UNSET>), 
+    ('month', <UNSET>)])
 
 Valid widget extraction. Returns a datastructure, whic can be used with python-crontab::
 
-    >>> request = {'cronwidget': {'month': u'3,6,9,12', 'dom': u'1,15,30', 'hour': u'0,6,12,18', 'minute': u'0,10,20,30,40,50', 'dow': u'1,3,5'}}
+    >>> request = {
+    ...     'cronwidget.month': u'3,6,9,12',
+    ...     'cronwidget.dom': u'1,15,30',
+    ...     'cronwidget.hour': u'0,6,12,18',
+    ...     'cronwidget.minute': u'0,10,20,30,40,50',
+    ...     'cronwidget.dow': u'1,3,5'
+    ... }
+
     >>> data = widget.extract(request)
-    >>> interact(locals())
+    >>> value = data.extracted
+    >>> value
+    odict([('minute', u'0,10,20,30,40,50'), 
+    ('hour', u'0,6,12,18'), 
+    ('dow', u'1,3,5'), 
+    ('dom', u'1,15,30'), 
+    ('month', u'3,6,9,12')])
 
-    >>> data.errors
-    [ExtractionError('Not a valid date input.',)]
+Widget with value::
 
-    >>> data.extracted
-    'xyz'
-
-    >>> widget(data)
-    u'<input class="datetime required" id="input-dt" name="dt" size="10"
-    type="text"
-    value="xyz" />'
-
+    >> widget = factory('cron', name='cronwidget', value=value)
+    >> widget()
