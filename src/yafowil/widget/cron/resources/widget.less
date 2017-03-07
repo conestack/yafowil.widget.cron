@@ -62,6 +62,14 @@
                     vertical-align: top;
                     float: left;
 
+                    // reset button styles
+                    border: none;
+                    font-size: inherit;
+                    font-weight: normal;
+                    height: auto;
+                    margin: 0;
+                    padding: 0.2em;
+
                     &:last-child::after {
                         clear: both;
                     }
@@ -91,6 +99,8 @@
         }
         &.dow .editcontainer button {
             min-width: 5em;
+            margin: 0.2em;
+            padding: 0.2em 0.4em;
         }
         &.dom .editcontainer button {
             width: 3em;
@@ -104,6 +114,7 @@
         }
         &.month .editcontainer button {
             min-width: 7em;
+            margin: 0.2em;
             
             &:nth-child(4),
             &:nth-child(7),
@@ -112,6 +123,7 @@
             }
         }
         &.year .editcontainer button {
+            min-width: 4em;
 
             &:nth-child(11),
             &:nth-child(21),

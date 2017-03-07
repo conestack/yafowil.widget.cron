@@ -155,7 +155,7 @@ if (window.yafowil === undefined) {
             },
 
             valuebutton: function (value, name, mode) {
-                var button = $('<button name=' + value + '>' + name + '</button>');
+                var button = $('<button class="btn btn-sm" name=' + value + '>' + name + '</button>');
                 if (yafowil.cron.value.has(value, mode)) {
                     button.addClass('active');
                 }
