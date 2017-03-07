@@ -25,8 +25,8 @@ def action_edit_renderer(widget, data):
     return data.rendered or '' +\
         data.tag(
             'button',
-            data.tag('span', u'', class_='icon-plus-sign') +
-            _('label_edit', u'Edit'),  # never gets translated
+            data.tag('span', u'', class_='icon-plus-sign'),
+            _('label_edit', u'Edit'),
             class_='btn btn-sm edit'
         ) + data.tag('div', u'', class_='editarea')
 
