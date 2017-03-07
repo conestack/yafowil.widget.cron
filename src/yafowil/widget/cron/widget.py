@@ -63,7 +63,8 @@ def cron_edit_renderer(widget, data):
         props={
             'label': _('label_minute', u'Minute'),
             'label.class': 'minute',
-            'position': 'inner-before'
+            'label.position': 'inner-before',
+            'text.disabled': True
         }
     )
     container['hour'] = factory(
@@ -71,7 +72,8 @@ def cron_edit_renderer(widget, data):
         props={
             'label': _('label_hour', u'Hour'),
             'label.class': 'hour',
-            'position': 'inner-before'
+            'label.position': 'inner-before',
+            'text.disabled': True
         }
     )
     container['dow'] = factory(
@@ -79,7 +81,8 @@ def cron_edit_renderer(widget, data):
         props={
             'label': _('label_dow', u'Day of Week'),
             'label.class': 'dow',
-            'position': 'inner-before'
+            'label.position': 'inner-before',
+            'text.disabled': True
         }
     )
     container['dom'] = factory(
@@ -87,7 +90,8 @@ def cron_edit_renderer(widget, data):
         props={
             'label': _('label_dom', u'Day of Month'),
             'label.class': 'dom',
-            'position': 'inner-before'
+            'label.position': 'inner-before',
+            'text.disabled': True
         }
     )
     container['month'] = factory(
@@ -95,7 +99,8 @@ def cron_edit_renderer(widget, data):
         props={
             'label': _('label_month', u'Month'),
             'label.class': 'month',
-            'position': 'inner-before'
+            'label.position': 'inner-before',
+            'text.disabled': True
         }
     )
     container['year'] = factory(
@@ -103,7 +108,8 @@ def cron_edit_renderer(widget, data):
         props={
             'label': _('label_year', u'Year'),
             'label.class': 'year',
-            'position': 'inner-before'
+            'label.position': 'inner-before',
+            'text.disabled': True
         }
     )
     container['summary'] = factory('tag', props={

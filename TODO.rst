@@ -6,7 +6,7 @@
 - [x] year: alles vor aktuellem jahr weg.
 
 - [x] inputs schmäler, label davor, edit hinten
-- inputs inaktiv?
+- [x] inputs inaktiv?
 
 - [x] buttons weniger minesweeper, mehr bootstrap (eventuell wegen active class?)
 - [x] bootstrap basis style, hintergrundfarbe
