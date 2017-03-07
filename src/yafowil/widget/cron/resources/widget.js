@@ -36,6 +36,31 @@ if (window.yafowil === undefined) {
 
         cron: {
 
+            monthmap: {
+                1: 'January',
+                2: 'February',
+                3: 'March',
+                4: 'April',
+                5: 'May',
+                6: 'June',
+                7: 'July',
+                8: 'August',
+                9: 'September',
+                10: 'October',
+                11: 'November',
+                12: 'December'
+            },
+
+            dowmap: {
+                1: 'Monday',
+                2: 'Tuesday',
+                3: 'Wednesday',
+                4: 'Thursday',
+                5: 'Friday',
+                6: 'Saturday',
+                0: 'Sunday'
+            },
+
             getContainer: function ($el) {
                 return $el.closest('label');
             },
@@ -44,8 +69,8 @@ if (window.yafowil === undefined) {
             },
             getEditarea: function ($el) {
                 return $('.editarea', yafowil.cron.getContainer($el));
-
             },
+
             binder: function (context) {
                 $('.crontab.widget button.edit').on('click', function (event) {
                     event.preventDefault();
@@ -78,7 +103,11 @@ if (window.yafowil === undefined) {
                     } else if (mode.indexOf('dow') != -1) {
                         header.text('Select Day of Week');
                         for (cnt=0; cnt <= 6; cnt++) {
-                            content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
+                            content.append(yafowil.cron.valuebutton(
+                                cnt,
+                                yafowil.cron.dowmap[cnt],
+                                mode
+                            ));
                         }
                     } else if (mode.indexOf('dom') != -1) {
                         header.text('Select Day of Month');
@@ -88,7 +117,11 @@ if (window.yafowil === undefined) {
                     } else if (mode.indexOf('month') != -1) {
                         header.text('Select Month');
                         for (cnt=1; cnt <= 12; cnt++) {
-                            content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
+                            content.append(yafowil.cron.valuebutton(
+                                cnt,
+                                yafowil.cron.monthmap[cnt],
+                                mode
+                            ));
                         }
                     } else if (mode.indexOf('year') != -1) {
                         header.text('Select Year');
@@ -104,7 +137,7 @@ if (window.yafowil === undefined) {
                 });
             },
 
-            valuebutton: function (name, value, mode) {
+            valuebutton: function (value, name, mode) {
                 var button = $('<button name=' + value + '>' + name + '</button>');
                 if (yafowil.cron.value.has(value, mode)) {
                     button.addClass('active');
@@ -120,7 +153,7 @@ if (window.yafowil === undefined) {
                 return button;
             },
 
-            valuebutton_eventhandler: function (event, mode) {
+            valuebutton_eventhandler: function (event) {
                 event.preventDefault();
                 var $el = $(this);
                 if ($el.attr('class') === 'active') {
@@ -160,7 +193,7 @@ if (window.yafowil === undefined) {
                     this.value[mode] = {};
                     for (var cnt=0; cnt<value.length; cnt++) {
                         var val = value[cnt];
-                        if (val === "") {
+                        if (val === '') {
                             continue;
                         }
                         val = parseInt(val, 10).toString();

@@ -55,7 +55,7 @@
   clear: left;
 }
 .crontab.widget .dow .editcontainer button {
-  width: 3em;
+  min-width: 5em;
 }
 .crontab.widget .dom .editcontainer button {
   width: 3em;
@@ -66,5 +66,5 @@
   clear: left;
 }
 .crontab.widget .month .editcontainer button {
-  width: 3em;
+  min-width: 7em;
 }
