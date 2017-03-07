@@ -7,64 +7,85 @@
   display: block;
   margin-bottom: 1em;
   text-align: left;
+  vertical-align: middle;
 }
-.crontab.widget button.edit {
+.crontab.widget label button.edit {
   float: right;
   margin-bottom: 0.5em;
 }
-.crontab.widget button.edit.active {
+.crontab.widget label button.edit.active {
   background-color: green;
   color: white;
 }
-.crontab.widget button.edit span {
+.crontab.widget label button.edit span {
   margin-right: 0.2em;
 }
-.crontab.widget .editarea {
+.crontab.widget label .editarea {
   display: none;
 }
-.crontab.widget .editarea .active {
+.crontab.widget label .editarea .active {
   background-color: orange;
 }
-.crontab.widget .editcontainer::after {
+.crontab.widget label .editarea .editcontainer::after {
   content: "";
   display: table;
   clear: both;
 }
-.crontab.widget .editcontainer button {
+.crontab.widget label .editarea .editcontainer button {
   display: block;
   vertical-align: top;
   float: left;
 }
-.crontab.widget .editcontainer button:last-child::after {
+.crontab.widget label .editarea .editcontainer button:last-child::after {
   clear: both;
 }
-.crontab.widget .minute .editcontainer button {
+.crontab.widget label.minute .editcontainer button {
   width: 3em;
 }
-.crontab.widget .minute .editcontainer button:nth-child(11),
-.crontab.widget .minute .editcontainer button:nth-child(21),
-.crontab.widget .minute .editcontainer button:nth-child(31),
-.crontab.widget .minute .editcontainer button:nth-child(41),
-.crontab.widget .minute .editcontainer button:nth-child(51) {
+.crontab.widget label.minute .editcontainer button:nth-child(11),
+.crontab.widget label.minute .editcontainer button:nth-child(21),
+.crontab.widget label.minute .editcontainer button:nth-child(31),
+.crontab.widget label.minute .editcontainer button:nth-child(41),
+.crontab.widget label.minute .editcontainer button:nth-child(51) {
   clear: left;
 }
-.crontab.widget .hour .editcontainer button {
+.crontab.widget label.hour .editcontainer button {
   width: 3em;
 }
-.crontab.widget .hour .editcontainer button:nth-child(13) {
+.crontab.widget label.hour .editcontainer button:nth-child(13) {
   clear: left;
 }
-.crontab.widget .dow .editcontainer button {
+.crontab.widget label.dow .editcontainer button {
   min-width: 5em;
 }
-.crontab.widget .dom .editcontainer button {
+.crontab.widget label.dom .editcontainer button {
   width: 3em;
 }
-.crontab.widget .dom .editcontainer button:nth-child(11),
-.crontab.widget .dom .editcontainer button:nth-child(21),
-.crontab.widget .dom .editcontainer button:nth-child(31) {
+.crontab.widget label.dom .editcontainer button:nth-child(8),
+.crontab.widget label.dom .editcontainer button:nth-child(15),
+.crontab.widget label.dom .editcontainer button:nth-child(22),
+.crontab.widget label.dom .editcontainer button:nth-child(29) {
   clear: left;
 }
-.crontab.widget .month .editcontainer button {
+.crontab.widget label.month .editcontainer button {
   min-width: 7em;
+}
+.crontab.widget label.month .editcontainer button:nth-child(4),
+.crontab.widget label.month .editcontainer button:nth-child(7),
+.crontab.widget label.month .editcontainer button:nth-child(10) {
+  clear: left;
+}
+.crontab.widget label.year .editcontainer button {
+  min-width: 5em;
+}
+.crontab.widget label.year .editcontainer button:nth-child(11),
+.crontab.widget label.year .editcontainer button:nth-child(21),
+.crontab.widget label.year .editcontainer button:nth-child(31),
+.crontab.widget label.year .editcontainer button:nth-child(41),
+.crontab.widget label.year .editcontainer button:nth-child(51),
+.crontab.widget label.year .editcontainer button:nth-child(61),
+.crontab.widget label.year .editcontainer button:nth-child(71),
+.crontab.widget label.year .editcontainer button:nth-child(81),
+.crontab.widget label.year .editcontainer button:nth-child(91) {
+  clear: left;
 }
