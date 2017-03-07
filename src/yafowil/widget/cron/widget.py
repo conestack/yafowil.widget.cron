@@ -40,13 +40,8 @@ factory.doc['blueprint']['action_edit'] = UNSET
 
 
 def cron_extractor(widget, data):
-    extracted = odict()
-    extracted['minute'] = data['minute'].extracted
-    extracted['hour'] = data['hour'].extracted
-    extracted['dow'] = data['dow'].extracted
-    extracted['dom'] = data['dom'].extracted
-    extracted['month'] = data['month'].extracted
-    return extracted
+    # XXX: translate to cron rule
+    pass
 
 
 def make_cron_summary(value):
@@ -54,6 +49,7 @@ def make_cron_summary(value):
 
 
 def cron_edit_renderer(widget, data):
+    # XXX: cron rule expected as value, translate to dict
     value = fetch_value(widget, data)
     if value is UNSET:
         value = dict()
@@ -130,8 +126,8 @@ def cron_display_renderer(widget, data):
 factory.register(
     'cron',
     extractors=[
-        compound_extractor,
-        cron_extractor,
+        #cron_extractor,
+        compound_extractor
     ],
     edit_renderers=[
         cron_edit_renderer,

@@ -17,7 +17,7 @@ Base extraction::
 
     >>> data = widget.extract({})
     >>> data.printtree()
-    <RuntimeData cronwidget, value=<UNSET>, extracted=odict([('minute', <UNSET>), ('hour', <UNSET>), ('dow', <UNSET>), ('dom', <UNSET>), ('month', <UNSET>)]) at ...>
+    <RuntimeData cronwidget, value=<UNSET>, extracted=odict([('minute', <UNSET>), ('hour', <UNSET>), ('dow', <UNSET>), ('dom', <UNSET>), ('month', <UNSET>), ('year', <UNSET>)]) at ...>
       <RuntimeData cronwidget.minute, value=<UNSET>, extracted=<UNSET> at ...>
       <RuntimeData cronwidget.hour, value=<UNSET>, extracted=<UNSET> at ...>
       <RuntimeData cronwidget.dow, value=<UNSET>, extracted=<UNSET> at ...>
@@ -30,7 +30,8 @@ Base extraction::
     ('hour', <UNSET>), 
     ('dow', <UNSET>), 
     ('dom', <UNSET>), 
-    ('month', <UNSET>)])
+    ('month', <UNSET>), 
+    ('year', <UNSET>)])
 
 Valid widget extraction. Returns a datastructure, whic can be used with python-crontab::
 
@@ -39,7 +40,8 @@ Valid widget extraction. Returns a datastructure, whic can be used with python-c
     ...     'cronwidget.dom': u'1,15,30',
     ...     'cronwidget.hour': u'0,6,12,18',
     ...     'cronwidget.minute': u'0,10,20,30,40,50',
-    ...     'cronwidget.dow': u'1,3,5'
+    ...     'cronwidget.dow': u'1,3,5',
+    ...     'cronwidget.year': u'2017'
     ... }
 
     >>> data = widget.extract(request)
@@ -49,7 +51,8 @@ Valid widget extraction. Returns a datastructure, whic can be used with python-c
     ('hour', u'0,6,12,18'), 
     ('dow', u'1,3,5'), 
     ('dom', u'1,15,30'), 
-    ('month', u'3,6,9,12')])
+    ('month', u'3,6,9,12'), 
+    ('year', u'2017')])
 
 Widget with value::
 
@@ -60,5 +63,5 @@ Widget with value::
     ...name="cronwidget.dow" type="text" value="1,3,5" 
     ...name="cronwidget.dom" type="text" value="1,15,30" 
     ...name="cronwidget.month" type="text" value="3,6,9,12" 
-    ...name="cronwidget.year" type="text" value="" 
+    ...name="cronwidget.year" type="text" value="2017" 
     ...<p>summary: blabla</p>...'
