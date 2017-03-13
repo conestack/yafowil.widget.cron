@@ -40,8 +40,7 @@ factory.doc['blueprint']['action_edit'] = UNSET
 
 
 def cron_extractor(widget, data):
-    # XXX: translate to cron rule
-    pass
+    return data.extracted
 
 
 def make_cron_summary(value):
@@ -49,10 +48,17 @@ def make_cron_summary(value):
 
 
 def cron_edit_renderer(widget, data):
-    # XXX: cron rule expected as value, translate to dict
     value = fetch_value(widget, data)
     if value is UNSET:
         value = dict()
+
+    value = [it.strip() for it in value.split(' ') if it.strip()]
+
+    try:
+        assert(len(value) >= 5)
+    except AssertionError:
+        raise ValueError('Invalid cron rule')
+
     container = widget['container'] = factory('div', props={
         'structural': True,
         'id': cssid(widget, 'input'),
@@ -64,8 +70,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_minute', u'Minute'),
             'label.class': 'minute',
             'label.position': 'inner-before',
-            'text.disabled': True
-        }
+        },
+        value=value[0]
     )
     container['hour'] = factory(
         'label:text:action_edit',
@@ -73,8 +79,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_hour', u'Hour'),
             'label.class': 'hour',
             'label.position': 'inner-before',
-            'text.disabled': True
-        }
+        },
+        value=value[1]
     )
     container['dow'] = factory(
         'label:text:action_edit',
@@ -82,8 +88,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_dow', u'Day of Week'),
             'label.class': 'dow',
             'label.position': 'inner-before',
-            'text.disabled': True
-        }
+        },
+        value=value[4]
     )
     container['dom'] = factory(
         'label:text:action_edit',
@@ -91,8 +97,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_dom', u'Day of Month'),
             'label.class': 'dom',
             'label.position': 'inner-before',
-            'text.disabled': True
-        }
+        },
+        value=value[2]
     )
     container['month'] = factory(
         'label:text:action_edit',
@@ -100,8 +106,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_month', u'Month'),
             'label.class': 'month',
             'label.position': 'inner-before',
-            'text.disabled': True
-        }
+        },
+        value=value[3]
     )
     container['year'] = factory(
         'label:text:action_edit',
@@ -109,8 +115,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_year', u'Year'),
             'label.class': 'year',
             'label.position': 'inner-before',
-            'text.disabled': True
-        }
+        },
+        value=value[5] if len(value) == 6 else '*'
     )
     container['summary'] = factory('tag', props={
         'structural': True,
@@ -132,12 +138,12 @@ def cron_display_renderer(widget, data):
 factory.register(
     'cron',
     extractors=[
-        #cron_extractor,
+        cron_extractor,
         compound_extractor
     ],
     edit_renderers=[
         cron_edit_renderer,
-        compound_renderer
+        # compound_renderer
     ],
     display_renderers=[
         cron_display_renderer,

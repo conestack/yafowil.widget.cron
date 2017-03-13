@@ -16,15 +16,8 @@ Cron input.
 
 
 def cron_example():
-#     value = {
-#         'minute': '0,10,20,30,40,50',
-#         'hour': '0,6,12,18',
-#         'dow': '1,3,5',
-#         'dom': '1,15,30',
-#         'month': '3,6,9,12',
-#         'year': '2017,2018,2019,2020'
-#     }
-    value = UNSET
+    # Minute Hour DayOfMonth Month DayOfWeek Year
+    value = '0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017,2018,2019'
     form = factory('fieldset', name='yafowil.widget.cron.default')
     form['cron'] = factory('#field:cron', value=value)
     return {
