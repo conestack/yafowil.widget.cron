@@ -40,7 +40,25 @@ factory.doc['blueprint']['action_edit'] = UNSET
 
 
 def cron_extractor(widget, data):
-    return data.extracted
+
+    extracted = data.extracted
+
+    if extracted is UNSET:
+        return extracted
+
+    if not extracted:
+        extracted = odict()
+
+    value = '{0} {1} {2} {3} {4} {5}'.format(
+        data.get('minute', '*'),
+        data.get('hour', '*'),
+        data.get('dom', '*'),
+        data.get('month', '*'),
+        data.get('dow', '*'),
+        data.get('year', '*'),
+    )
+
+    return value
 
 
 def make_cron_summary(value):
@@ -48,30 +66,44 @@ def make_cron_summary(value):
 
 
 def cron_edit_renderer(widget, data):
+
     value = fetch_value(widget, data)
     if value is UNSET:
-        value = dict()
-
+        value = '* * * * * *'
     value = [it.strip() for it in value.split(' ') if it.strip()]
 
-    try:
-        assert(len(value) >= 5)
-    except AssertionError:
+    if len(value) == 5:
+        value.append('*')
+    if len(value) < 6:
         raise ValueError('Invalid cron rule')
 
-    container = widget['container'] = factory('div', props={
-        'structural': True,
-        'id': cssid(widget, 'input'),
-        'class': cssclasses(widget, data)
-    })
+    value = {
+        'minute': value[0],
+        'hour': value[1],
+        'dom': value[2],
+        'month': value[3],
+        'dow': value[4],
+        'year': value[5]
+    }
+
+    container = widget['container'] = factory(
+        'compound',
+        name="cron",
+        props={
+            'structural': True,
+            # 'id': cssid(widget, 'input'),
+            # 'class': cssclasses(widget, data)
+        },
+        value=value
+    )
     container['minute'] = factory(
         'label:text:action_edit',
         props={
             'label': _('label_minute', u'Minute'),
             'label.class': 'minute',
             'label.position': 'inner-before',
-        },
-        value=value[0]
+            'text.readonly': True
+        }
     )
     container['hour'] = factory(
         'label:text:action_edit',
@@ -79,8 +111,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_hour', u'Hour'),
             'label.class': 'hour',
             'label.position': 'inner-before',
-        },
-        value=value[1]
+            'text.readonly': True
+        }
     )
     container['dow'] = factory(
         'label:text:action_edit',
@@ -88,8 +120,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_dow', u'Day of Week'),
             'label.class': 'dow',
             'label.position': 'inner-before',
-        },
-        value=value[4]
+            'text.readonly': True
+        }
     )
     container['dom'] = factory(
         'label:text:action_edit',
@@ -97,8 +129,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_dom', u'Day of Month'),
             'label.class': 'dom',
             'label.position': 'inner-before',
-        },
-        value=value[2]
+            'text.readonly': True
+        }
     )
     container['month'] = factory(
         'label:text:action_edit',
@@ -106,8 +138,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_month', u'Month'),
             'label.class': 'month',
             'label.position': 'inner-before',
-        },
-        value=value[3]
+            'text.readonly': True
+        }
     )
     container['year'] = factory(
         'label:text:action_edit',
@@ -115,8 +147,8 @@ def cron_edit_renderer(widget, data):
             'label': _('label_year', u'Year'),
             'label.class': 'year',
             'label.position': 'inner-before',
-        },
-        value=value[5] if len(value) == 6 else '*'
+            'text.readonly': True
+        }
     )
     container['summary'] = factory('tag', props={
         'structural': True,
@@ -139,11 +171,11 @@ factory.register(
     'cron',
     extractors=[
         cron_extractor,
-        compound_extractor
+        compound_extractor,
     ],
     edit_renderers=[
         cron_edit_renderer,
-        # compound_renderer
+        compound_renderer,
     ],
     display_renderers=[
         cron_display_renderer,
