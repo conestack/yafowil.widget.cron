@@ -19,3 +19,16 @@
 ... extractor + render value translator
 
 
+
+- document the 4 test cases from widgets.rst in yafowil main docs:
+  - extraction without preset value and request form set,
+  - extraction without preset value but request form set,
+  - extraction with preset value but no request form set,
+  - extraction with preset value and request form set.
+
+
+- verify:
+  "This causes the callable chains of each blueprint beeing executed in order. Extractors are executed from right to left while all others are executed left to right."
+  it seems to be the other way around.
+  http://docs.yafowil.info/architecture.html
+
