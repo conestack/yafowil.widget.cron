@@ -41,16 +41,15 @@ factory.doc['blueprint']['action_edit'] = UNSET
 
 def cron_extractor(widget, data):
     extracted = data.extracted
-    container = widget['container']
-    if fetch_value(container['minute'], data['minute']) is UNSET:
+    if data['minute'].extracted is UNSET:
         return UNSET
     value = '{0} {1} {2} {3} {4} {5}'.format(
-        fetch_value(container['minute'], data['minute']),
-        fetch_value(container['hour'], data['hour']),
-        fetch_value(container['dom'], data['dom']),
-        fetch_value(container['month'], data['month']),
-        fetch_value(container['dow'], data['dow']),
-        fetch_value(container['year'], data['year'])
+        data['minute'].extracted,
+        data['hour'].extracted,
+        data['dom'].extracted,
+        data['month'].extracted,
+        data['dow'].extracted,
+        data['year'].extracted
     )
     return value
 

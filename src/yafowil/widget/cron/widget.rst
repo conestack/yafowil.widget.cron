@@ -25,9 +25,6 @@ Base extraction::
       <RuntimeData cronwidget.month, value=<UNSET>, extracted=<UNSET> at ...>
       <RuntimeData cronwidget.year, value=<UNSET>, extracted=<UNSET> at ...>
 
-    >>> data.extracted
-    <UNSET>
-
 Valid widget extraction. Returns a datastructure, whic can be used with python-crontab::
 
     >>> request = {
@@ -64,6 +61,19 @@ Widget with value::
     ...name="cronwidget.month" type="text" value="3,6,9,12" 
     ...name="cronwidget.year" type="text" value="2017" 
     ...<p>summary: blabla</p>...'
+
+    >>> data = widget.extract({})
+    >>> data.printtree()
+    <RuntimeData cronwidget, value='0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017', extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.minute, value='0,10,20,30,40,50', extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.hour, value='0,6,12,18', extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.dow, value='1,3,5', extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.dom, value='1,15,30', extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.month, value='3,6,9,12', extracted=<UNSET> at ...>
+      <RuntimeData cronwidget.year, value='2017', extracted=<UNSET> at ...>
+
+    >>> data.extracted
+    <UNSET>
 
     >>> request = {
     ...     'cronwidget.month': u'3,6',
