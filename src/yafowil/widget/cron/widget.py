@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
 from node.utils import UNSET
-from odict import odict
-from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import fetch_value
-from yafowil.common import generic_extractor
-from yafowil.common import generic_required_extractor
 from yafowil.compound import compound_extractor
 from yafowil.compound import compound_renderer
 from yafowil.tsf import TSF
 from yafowil.utils import attr_value
-from yafowil.utils import css_managed_props
 from yafowil.utils import cssclasses
 from yafowil.utils import cssid
-from yafowil.utils import managedprops
 
 
 _ = TSF('yafowil.widget.cron')
@@ -40,8 +34,9 @@ factory.doc['blueprint']['action_edit'] = UNSET
 
 
 def cron_extractor(widget, data):
-    extracted = data.extracted
-    if data['minute'].extracted is UNSET:
+    minute = data.get('minute', None)
+    if not minute or minute.extracted is UNSET:
+        # If minute not set, others are empty too.
         return UNSET
     value = '{0} {1} {2} {3} {4} {5}'.format(
         data['minute'].extracted,
@@ -55,6 +50,7 @@ def cron_extractor(widget, data):
 
 
 def make_cron_summary(value):
+    # TODO
     return 'summary: blabla'
 
 
@@ -74,13 +70,14 @@ def cron_edit_renderer(widget, data):
             'dow': value[4],
             'year': value[5]
         }
+
     container = widget['container'] = factory(
         'div',
         name="cron",
         props={
             'structural': True,
             'id': cssid(widget, 'input'),
-            'class': cssclasses(widget, data)
+            'class': cssclasses(widget, data),
         },
         value=value
     )
