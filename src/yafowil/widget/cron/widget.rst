@@ -40,6 +40,15 @@ Valid widget extraction. Returns a datastructure, whic can be used with python-c
     ... }
 
     >>> data = widget.extract(request)
+    >>> data.printtree()
+    <RuntimeData cronwidget, value=<UNSET>, extracted='0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017' at ...>
+      <RuntimeData cronwidget.minute, value=<UNSET>, extracted=u'0,10,20,30,40,50' at ...>
+      <RuntimeData cronwidget.hour, value=<UNSET>, extracted=u'0,6,12,18' at ...>
+      <RuntimeData cronwidget.dow, value=<UNSET>, extracted=u'1,3,5' at ...>
+      <RuntimeData cronwidget.dom, value=<UNSET>, extracted=u'1,15,30' at ...>
+      <RuntimeData cronwidget.month, value=<UNSET>, extracted=u'3,6,9,12' at ...>
+      <RuntimeData cronwidget.year, value=<UNSET>, extracted=u'2017' at ...>
+
     >>> value = data.extracted
     >>> value
     '0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017'
@@ -55,3 +64,25 @@ Widget with value::
     ...name="cronwidget.month" type="text" value="3,6,9,12" 
     ...name="cronwidget.year" type="text" value="2017" 
     ...<p>summary: blabla</p>...'
+
+    >>> request = {
+    ...     'cronwidget.month': u'3,6',
+    ...     'cronwidget.dom': u'1,15',
+    ...     'cronwidget.hour': u'12,18',
+    ...     'cronwidget.minute': u'0,10,20',
+    ...     'cronwidget.dow': u'1',
+    ...     'cronwidget.year': u'*'
+    ... }
+
+    >>> data = widget.extract(request)
+    >>> data.printtree()
+    <RuntimeData cronwidget, value='0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017', extracted='0,10,20 12,18 1,15 3,6 1 *' at ...>
+      <RuntimeData cronwidget.minute, value='0,10,20,30,40,50', extracted=u'0,10,20' at ...>
+      <RuntimeData cronwidget.hour, value='0,6,12,18', extracted=u'12,18' at ...>
+      <RuntimeData cronwidget.dow, value='1,3,5', extracted=u'1' at ...>
+      <RuntimeData cronwidget.dom, value='1,15,30', extracted=u'1,15' at ...>
+      <RuntimeData cronwidget.month, value='3,6,9,12', extracted=u'3,6' at ...>
+      <RuntimeData cronwidget.year, value='2017', extracted=u'*' at ...>
+
+    >>> data.extracted
+    '0,10,20 12,18 1,15 3,6 1 *'
