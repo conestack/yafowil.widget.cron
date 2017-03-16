@@ -11,17 +11,18 @@ Cron input.
 
 .. code-block:: python
 
-    cron = factory('#field:cron')
+    value = '0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017,2018,2019'
+    cron = factory('cron', name='cronwidget', value=value)
 """
 
 
 def cron_example():
     # Minute Hour DayOfMonth Month DayOfWeek Year
     value = '0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017,2018,2019'
-    form = factory('fieldset', name='yafowil.widget.cron.default')
-    form['cron'] = factory('#field:cron', value=value)
+    cron = factory('cron', name='cronwidget', value=value)
+
     return {
-        'widget': form,
+        'widget': cron,
         'doc': DOC_CRON,
         'title': 'Cron',
     }
