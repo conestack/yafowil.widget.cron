@@ -36,6 +36,9 @@ if (window.yafowil === undefined) {
 
         cron: {
 
+            max_year: 2099,
+            current_year: new Date().getFullYear(),
+
             monthmap: {
                 1: 'January',
                 2: 'February',
@@ -141,8 +144,7 @@ if (window.yafowil === undefined) {
                         }
                     } else if (mode === 'year') {
                         header.text('Select Year');
-                        var current_year = new Date().getFullYear()
-                        for (cnt=current_year; cnt <= 2099; cnt++) {
+                        for (cnt=yafowil.cron.current_year; cnt <= yafowil.cron.max_year; cnt++) {
                             content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
                         }
                     }
@@ -206,15 +208,36 @@ if (window.yafowil === undefined) {
                     if (typeof value === 'string') {
                         value = value.split(',');
                     }
-                    // TODO: support for special characters.
                     this.value[mode] = {};
-                    for (var cnt=0; cnt<value.length; cnt++) {
-                        var val = value[cnt];
-                        if (val === '') {
-                            continue;
+                    var cnt;
+                    if (value[0] === '*') {
+                        var start, end;
+                        if (mode === 'minute') {
+                            start = 0; end = 59;
+                        } else if (mode === 'hour') {
+                            start = 0; end = 23;
+                        } else if (mode === 'dow') {
+                            start = 0; end = 6;
+                        } else if (mode === 'dom') {
+                            start = 1; end = 31;
+                        } else if (mode === 'month') {
+                            start = 1; end = 12;
+                        } else if (mode === 'year') {
+                            start = yafowil.cron.current_year;
+                            end = yafowil.cron.max_year;
                         }
-                        val = parseInt(val, 10).toString();
-                        this.value[mode][val] = true;
+                        for (cnt=start; cnt<end+1; cnt++) {
+                            this.value[mode][cnt] = true;
+                        }
+                    } else {
+                        for (cnt=0; cnt<value.length; cnt++) {
+                            var val = value[cnt];
+                            if (val === '') {
+                                continue;
+                            }
+                            val = parseInt(val, 10).toString();
+                            this.value[mode][val] = true;
+                        }
                     }
                 },
                 serialize: function (mode) {
@@ -228,7 +251,26 @@ if (window.yafowil === undefined) {
                         // int-sort - otherwise it's a lexical sort.
                         return parseInt(a, 10) - parseInt(b, 10);
                     });
-                    return vals.join(',');
+                    var maxlength;
+                    if (mode === 'minute') {
+                        maxlength = 60;
+                    } else if (mode === 'hour') {
+                        maxlength = 24;
+                    } else if (mode === 'dow') {
+                        maxlength = 7;
+                    } else if (mode === 'dom') {
+                        maxlength = 31;
+                    } else if (mode === 'month') {
+                        maxlength = 12;
+                    } else if (mode === 'year') {
+                        maxlength = yafowil.cron.max_year - yafowil.cron.current_year + 1;
+                    }
+
+                    if (vals.length >= maxlength) {
+                        return '*';
+                    } else {
+                        return vals.join(',');
+                    }
                 },
                 parseFromInput: function ($el) {
                     var $input = $('input', yafowil.cron.getContainer($el));

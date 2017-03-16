@@ -28,7 +28,33 @@ def cron_example():
     }
 
 
+DOC_CRON2 = """
+Crontab widget example 2
+------------------------
+
+Cron input with ``*`` as values.
+
+.. code-block:: python
+
+    value = '* * * * * *'
+    cron = factory('cron', name='cronwidget', value=value)
+"""
+
+
+def cron_example2():
+    # Minute Hour DayOfMonth Month DayOfWeek Year
+    value2 = '* * * * * *'
+    cron2 = factory('cron', name='cronwidget', value=value2)
+
+    return {
+        'widget': cron2,
+        'doc': DOC_CRON2,
+        'title': 'Cron',
+    }
+
+
 def get_example():
     return [
         cron_example(),
+        cron_example2(),
     ]
