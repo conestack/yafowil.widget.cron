@@ -49,11 +49,6 @@ def cron_extractor(widget, data):
     return value
 
 
-def make_cron_summary(value):
-    # TODO
-    return 'summary: blabla'
-
-
 def cron_edit_renderer(widget, data):
     value = fetch_value(widget, data)
     if value is not UNSET:
@@ -135,21 +130,15 @@ def cron_edit_renderer(widget, data):
             #'text.readonly': True
         }
     )
-    container['summary'] = factory('tag', props={
-        'structural': True,
-        'tag': 'p',
-        'text': make_cron_summary(value=UNSET)
-    })
 
 
 def cron_display_renderer(widget, data):
-    # value = data.value
-    # TODO: Convert to summary and display.
+    value = fetch_value(widget, data)
     attrs = {
         'id': cssid(widget, 'display'),
         'class_': 'display-%s' % attr_value('class', widget, data)
     }
-    return data.tag('p', u'TODO', **attrs),
+    return data.tag('div', data.tag('code', value), **attrs)
 
 
 factory.register(
