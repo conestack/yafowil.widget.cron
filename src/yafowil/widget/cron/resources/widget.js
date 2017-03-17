@@ -23,13 +23,6 @@ if (window.yafowil === undefined) {
                 cron_binder: yafowil.cron.binder
             });
         }
-
-        // add binder to yafowil.widget.array hooks
-        if (yafowil.array !== undefined) {
-            $.extend(yafowil.array.hooks.add, {
-                cron: yafowil.cron.binder
-            });
-        }
     });
 
     $.extend(yafowil, {
@@ -38,6 +31,17 @@ if (window.yafowil === undefined) {
 
             max_year: 2099,
             current_year: new Date().getFullYear(),
+
+            maxlengths: function () {
+                return {
+                    'minute': 60,
+                    'hour': 24,
+                    'dom': 31,
+                    'month': 12,
+                    'dow': 7,
+                    'year': this.max_year - this.current_year + 1
+                };
+            },
 
             monthmap: {
                 1: 'January',
@@ -73,12 +77,12 @@ if (window.yafowil === undefined) {
                     return 'minute';
                 } else if (klass.indexOf('hour') != -1) {
                     return 'hour';
-                } else if (klass.indexOf('dow') != -1) {
-                    return 'dow';
                 } else if (klass.indexOf('dom') != -1) {
                     return 'dom';
                 } else if (klass.indexOf('month') != -1) {
                     return 'month';
+                } else if (klass.indexOf('dow') != -1) {
+                    return 'dow';
                 } else if (klass.indexOf('year') != -1) {
                     return 'year';
                 }
@@ -87,7 +91,7 @@ if (window.yafowil === undefined) {
                 return $('.editarea', yafowil.cron.getContainer($el));
             },
 
-            binder: function (context) {
+            binder: function () {
                 $('.crontab.widget button.edit').on('click', function (event) {
                     event.preventDefault();
                     var cnt;
@@ -118,16 +122,6 @@ if (window.yafowil === undefined) {
                             var hour = cnt < 24 ? cnt : 0;  // "0" should be rendered as last element.
                             content.append(yafowil.cron.valuebutton(hour, hour, mode));
                         }
-                    } else if (mode === 'dow') {
-                        header.text('Select Day of Week');
-                        for (cnt=1; cnt <= 7; cnt++) {
-                            var dow = cnt < 7 ? cnt : 0;  // "0" should be rendered as last element.
-                            content.append(yafowil.cron.valuebutton(
-                                dow,
-                                yafowil.cron.dowmap[dow],
-                                mode
-                            ));
-                        }
                     } else if (mode === 'dom') {
                         header.text('Select Day of Month');
                         for (cnt=1; cnt <= 31; cnt++) {
@@ -139,6 +133,16 @@ if (window.yafowil === undefined) {
                             content.append(yafowil.cron.valuebutton(
                                 cnt,
                                 yafowil.cron.monthmap[cnt],
+                                mode
+                            ));
+                        }
+                    } else if (mode === 'dow') {
+                        header.text('Select Day of Week');
+                        for (cnt=1; cnt <= 7; cnt++) {
+                            var dow = cnt < 7 ? cnt : 0;  // "0" should be rendered as last element.
+                            content.append(yafowil.cron.valuebutton(
+                                dow,
+                                yafowil.cron.dowmap[dow],
                                 mode
                             ));
                         }
@@ -154,6 +158,33 @@ if (window.yafowil === undefined) {
                     $editarea.show();
                     $container.addClass('active');
                 });
+
+                // Add Summary
+                var summarycontainer_template = '' +
+                    '<article class="crontab_summary">' +
+                        '<strong>Summary</strong>' +
+                        '<p class="summary"></p>' +
+                    '</article>';
+
+                $('.crontab.widget').each(function () {
+                    $('input[type="text"]', $(this)).each(function () {
+                        yafowil.cron.value.parse_part(
+                            $(this).val(),
+                            yafowil.cron.getMode($(this))
+                        );
+                    });
+                    $(this).append($(summarycontainer_template));
+                    yafowil.cron.update_summary($(this));
+                });
+
+                $('.display-crontab.widget').each(function () {
+                    yafowil.cron.value.parse(
+                        $('code', $(this)).text()
+                    );
+                    $(this).append($(summarycontainer_template));
+                    yafowil.cron.update_summary($(this));
+                });
+
             },
 
             valuebutton: function (value, name, mode) {
@@ -178,21 +209,30 @@ if (window.yafowil === undefined) {
                 if ($el.hasClass('active')) {
                     yafowil.cron.value.remove($(this).attr('name'), yafowil.cron.getMode($el));
                     yafowil.cron.value.serializeToInput($el);
+                    yafowil.cron.update_summary($el);
                     $el.removeClass('active');
                 } else {
                     yafowil.cron.value.add($(this).attr('name'), yafowil.cron.getMode($el));
                     yafowil.cron.value.serializeToInput($el);
+                    yafowil.cron.update_summary($el);
                     $el.addClass('active');
                 }
+            },
+
+            update_summary: function ($el) {
+                var container = $el.closest('div.widget');
+                $('.crontab_summary .summary', container).html(
+                    yafowil.cron.value.summarize()
+                );
             },
 
             value: {
                 value: {
                     'minute': [],
                     'hour': [],
-                    'dow': [],
                     'dom': [],
                     'month': [],
+                    'dow': [],
                     'year': []
                 },
                 add: function (value, mode) {
@@ -207,7 +247,20 @@ if (window.yafowil === undefined) {
                 has: function (value, mode) {
                     return this.value[mode].indexOf(value.toString()) > -1;
                 },
-                parse: function (value, mode) {
+                parse: function (value) {
+                    value = value.split(' ');
+                    if (value.length === 5) {
+                        // year is optional
+                        value.push('*');
+                    }
+                    this.parse_part(value[0].trim(), 'minute');
+                    this.parse_part(value[1].trim(), 'hour');
+                    this.parse_part(value[2].trim(), 'dom');
+                    this.parse_part(value[3].trim(), 'month');
+                    this.parse_part(value[4].trim(), 'dow');
+                    this.parse_part(value[5].trim(), 'year');
+                },
+                parse_part: function (value, mode) {
                     if (typeof value === 'string') {
                         value = value.split(',');
                     }
@@ -219,12 +272,12 @@ if (window.yafowil === undefined) {
                             start = 0; end = 59;
                         } else if (mode === 'hour') {
                             start = 0; end = 23;
-                        } else if (mode === 'dow') {
-                            start = 0; end = 6;
                         } else if (mode === 'dom') {
                             start = 1; end = 31;
                         } else if (mode === 'month') {
                             start = 1; end = 12;
+                        } else if (mode === 'dow') {
+                            start = 0; end = 6;
                         } else if (mode === 'year') {
                             start = yafowil.cron.current_year;
                             end = yafowil.cron.max_year;
@@ -249,21 +302,8 @@ if (window.yafowil === undefined) {
                         // int-sort - otherwise it's a lexical sort.
                         return parseInt(a, 10) - parseInt(b, 10);
                     });
-                    var maxlength;
-                    if (mode === 'minute') {
-                        maxlength = 60;
-                    } else if (mode === 'hour') {
-                        maxlength = 24;
-                    } else if (mode === 'dow') {
-                        maxlength = 7;
-                    } else if (mode === 'dom') {
-                        maxlength = 31;
-                    } else if (mode === 'month') {
-                        maxlength = 12;
-                    } else if (mode === 'year') {
-                        maxlength = yafowil.cron.max_year - yafowil.cron.current_year + 1;
-                    }
 
+                    var maxlength = yafowil.cron.maxlengths()[mode];
                     if (vals.length >= maxlength) {
                         return '*';
                     } else {
@@ -273,12 +313,74 @@ if (window.yafowil === undefined) {
                 parseFromInput: function ($el) {
                     var $input = $('input', yafowil.cron.getContainer($el));
                     var mode = yafowil.cron.getMode($el);
-                    this.parse($input.val(), mode);
+                    this.parse_part($input.val(), mode);
                 },
                 serializeToInput: function ($el) {
                     var $input = $('input', yafowil.cron.getContainer($el));
                     var mode = yafowil.cron.getMode($el);
                     $input.val(this.serialize(mode));
+                },
+                summarize: function () {
+                    var text = {
+                        'minute': '',
+                        'hour': '',
+                        'dom': '',
+                        'month': '',
+                        'dow': '',
+                        'year': ''
+                    };
+                    var maxlengths = yafowil.cron.maxlengths();
+
+                    if (this.value['minute'].length < maxlengths['minute']) {
+                        text['minute'] = 'Every ' + this.value['minute'].join('., ') + '. minute, ';
+                    } else {
+                        text['minute'] = 'Each minute, ';
+                    }
+
+                    if (this.value['hour'].length < maxlengths['hour']) {
+                        text['hour'] = 'every ' + this.value['hour'].join('., ') + '. hour, ';
+                    } else {
+                        text['hour'] = 'each hour, ';
+                    }
+
+                    if (this.value['dom'].length < maxlengths['dom']) {
+                        text['dom'] = 'every ' + this.value['dom'].join('., ') + '. day of the month, ';
+                    } else {
+                        text['dom'] = 'any day of the month, ';
+                    }
+
+                    if (this.value['month'].length < maxlengths['month']) {
+                        text['month'] = 'in the months: ' + this.value['month'].map(
+                            function (el) {
+                                return yafowil.cron.monthmap[el];
+                            }
+                        ).join(', ') + ', ';
+                    } else {
+                        text['month'] = 'any month, ';
+                    }
+
+                    if (this.value['dow'].length < maxlengths['dow']) {
+                        text['dow'] = 'on ' + this.value['dow'].map(
+                            function (el) {
+                                return yafowil.cron.dowmap[el];
+                            }
+                        ).join('s, ') + 's, ';
+                    } else {
+                        text['dow'] = 'on any day, ';
+                    }
+
+                    if (this.value['year'].length < maxlengths['year']) {
+                        text['year'] = 'in the years: ' + this.value['year'].join(', ') + '.';
+                    } else {
+                        text['year'] = 'any year.';
+                    }
+
+                    return text['minute'] + '<br/>' +
+                           text['hour'] + '<br/>' +
+                           text['dom'] + '<br/>' +
+                           text['month'] + '<br/>' +
+                           text['dow'] + '<br/>' +
+                           text['year'] + '<br/>';
                 }
             }
         }
