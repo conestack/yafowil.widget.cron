@@ -56,5 +56,5 @@ def cron_example2():
 def get_example():
     return [
         cron_example(),
-        cron_example2(),
+        # cron_example2(),
     ]
