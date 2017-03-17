@@ -1,4 +1,6 @@
 
+https://github.com/josiahcarlson/parse-crontab
+https://pypi.python.org/pypi/crontab
 
 - [x] Buttonfarbe,
 - [x] 7er block bei dom
