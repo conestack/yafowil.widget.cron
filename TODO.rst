@@ -11,13 +11,21 @@
 - [x] buttons weniger minesweeper, mehr bootstrap (eventuell wegen active class?)
 - [x] bootstrap basis style, hintergrundfarbe
 
+
+
+obsolete:
+
 - bootstrap btn (yafowil.plone) via fatcory defaults...
+
+nice to have:
+
+- JavaScript: do not use a global value, which prevents support for multiple widgets on one side.
+  this is at least a problem for the summary.
 
 - widget auflösen?
 - ranges,...?
 ... touchup ?
 ... extractor + render value translator
-
 
 
 - document the 4 test cases from widgets.rst in yafowil main docs:
