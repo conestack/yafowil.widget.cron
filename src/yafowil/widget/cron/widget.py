@@ -94,15 +94,6 @@ def cron_edit_renderer(widget, data):
             #'text.readonly': True
         }
     )
-    container['dow'] = factory(
-        'label:text:action_edit',
-        props={
-            'label': _('label_dow', u'Day of Week'),
-            'label.class': 'dow',
-            'label.position': 'inner-before',
-            #'text.readonly': True
-        }
-    )
     container['dom'] = factory(
         'label:text:action_edit',
         props={
@@ -117,6 +108,15 @@ def cron_edit_renderer(widget, data):
         props={
             'label': _('label_month', u'Month'),
             'label.class': 'month',
+            'label.position': 'inner-before',
+            #'text.readonly': True
+        }
+    )
+    container['dow'] = factory(
+        'label:text:action_edit',
+        props={
+            'label': _('label_dow', u'Day of Week'),
+            'label.class': 'dow',
             'label.position': 'inner-before',
             #'text.readonly': True
         }
@@ -152,8 +152,7 @@ factory.register(
         compound_renderer
     ],
     display_renderers=[
-        cron_display_renderer,
-        compound_renderer
+        cron_display_renderer
     ]
 )
 
