@@ -188,27 +188,30 @@ if (window.yafowil === undefined) {
 
             value: {
                 value: {
-                    'minute': {},
-                    'hour': {},
-                    'dow': {},
-                    'dom': {},
-                    'month': {},
-                    'year': {}
+                    'minute': [],
+                    'hour': [],
+                    'dow': [],
+                    'dom': [],
+                    'month': [],
+                    'year': []
                 },
                 add: function (value, mode) {
-                    this.value[mode][value.toString()] = true;
+                    this.value[mode].push(value.toString());
                 },
                 remove: function (value, mode) {
-                    delete this.value[mode][value.toString()];
+                    var index = this.value[mode].indexOf(value.toString());
+                    if (index > -1) {
+                        this.value[mode].splice(index, 1);
+                    }
                 },
                 has: function (value, mode) {
-                    return this.value[mode][value.toString()] === true;
+                    return this.value[mode].indexOf(value.toString()) > -1;
                 },
                 parse: function (value, mode) {
                     if (typeof value === 'string') {
                         value = value.split(',');
                     }
-                    this.value[mode] = {};
+                    this.value[mode] = [];
                     var cnt;
                     if (value[0] === '*') {
                         var start, end;
@@ -227,7 +230,7 @@ if (window.yafowil === undefined) {
                             end = yafowil.cron.max_year;
                         }
                         for (cnt=start; cnt<end+1; cnt++) {
-                            this.value[mode][cnt] = true;
+                            this.value[mode].push(cnt);
                         }
                     } else {
                         for (cnt=0; cnt<value.length; cnt++) {
@@ -236,17 +239,12 @@ if (window.yafowil === undefined) {
                                 continue;
                             }
                             val = parseInt(val, 10).toString();
-                            this.value[mode][val] = true;
+                            this.value[mode].push(val);
                         }
                     }
                 },
                 serialize: function (mode) {
-                    var vals = [];
-                    for (var prop in this.value[mode]) {
-                        if (this.value[mode].hasOwnProperty(prop)) {
-                            vals.push(prop);
-                        }
-                    }
+                    var vals = this.value[mode];
                     vals.sort(function(a, b) {
                         // int-sort - otherwise it's a lexical sort.
                         return parseInt(a, 10) - parseInt(b, 10);
