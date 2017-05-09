@@ -1,4 +1,12 @@
 
+- userselect - disablen, wenn man mit mouse down aus 
+- tab switchen - editarea setzt sich zurück
+- years + 10yrs bzw. konfigurierbar machen
+
+
+
+
+
 https://github.com/josiahcarlson/parse-crontab
 https://pypi.python.org/pypi/crontab
 
