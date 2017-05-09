@@ -23,7 +23,7 @@ def action_edit_renderer(widget, data):
             #_('label_edit', u'Edit'),
             attr_value('label', widget, data),
             class_='btn btn-sm edit'
-        ) + data.tag('div', u'', class_='editarea')
+        ) # + data.tag('div', u'', class_='editarea')
 
 
 factory.register(
@@ -66,17 +66,15 @@ def cron_edit_renderer(widget, data):
             'dow': value[4],
             'year': value[5]
         }
-
     container = widget['container'] = factory(
         'div',
         name="cron",
+        value=value,
         props={
             'structural': True,
             'id': cssid(widget, 'input'),
             'class': cssclasses(widget, data),
-        },
-        value=value
-    )
+        })
     container['minute'] = factory(
         'div:hidden:action_edit',
         #'label:text:action_edit',
@@ -86,8 +84,7 @@ def cron_edit_renderer(widget, data):
             #'label.class': 'minute',
             #'label.position': 'inner-before',
             #'text.readonly': True
-        }
-    )
+        })
     container['hour'] = factory(
         'div:hidden:action_edit',
         #'label:text:action_edit',
@@ -97,8 +94,7 @@ def cron_edit_renderer(widget, data):
             #'label.class': 'hour',
             #'label.position': 'inner-before',
             #'text.readonly': True
-        }
-    )
+        })
     container['dom'] = factory(
         'div:hidden:action_edit',
         #'label:text:action_edit',
@@ -108,8 +104,7 @@ def cron_edit_renderer(widget, data):
             #'label.class': 'dom',
             #'label.position': 'inner-before',
             #'text.readonly': True
-        }
-    )
+        })
     container['month'] = factory(
         'div:hidden:action_edit',
         #'label:text:action_edit',
@@ -119,8 +114,7 @@ def cron_edit_renderer(widget, data):
             #'label.class': 'month',
             #'label.position': 'inner-before',
             #'text.readonly': True
-        }
-    )
+        })
     container['dow'] = factory(
         'div:hidden:action_edit',
         #'label:text:action_edit',
@@ -130,8 +124,7 @@ def cron_edit_renderer(widget, data):
             #'label.class': 'dow',
             #'label.position': 'inner-before',
             #'text.readonly': True
-        }
-    )
+        })
     container['year'] = factory(
         'div:hidden:action_edit',
         #'label:text:action_edit',
@@ -141,8 +134,14 @@ def cron_edit_renderer(widget, data):
             #'label.class': 'year',
             #'label.position': 'inner-before',
             #'text.readonly': True
-        }
-    )
+        })
+    container['editarea'] = factory(
+        'div',
+        value='',
+        props={
+            'structural': True,
+            'class': 'editarea',
+        })
 
 
 def cron_display_renderer(widget, data):
