@@ -31,6 +31,7 @@ if (window.yafowil === undefined) {
 
             max_year: 2099,
             current_year: new Date().getFullYear(),
+            instant: false,
 
             maxlengths: function () {
                 return {
@@ -92,6 +93,16 @@ if (window.yafowil === undefined) {
             },
 
             binder: function () {
+                $('.crontab.widget .editarea').on('mousedown touchstart', function (event) {
+                    console.log('mark instant on press/touch');
+                    yafowil.cron.instant = true;
+                }).on('mousemove touchmove', function (event) {
+                    console.log('perform selection on move if instant');
+                }).on('mouseup touchend', function (event) {
+                    console.log('perform selection on release');
+                    yafowil.cron.instant = false;
+                });
+
                 $('.crontab.widget button.edit').on('click', function (event) {
                     event.preventDefault();
                     var cnt;
