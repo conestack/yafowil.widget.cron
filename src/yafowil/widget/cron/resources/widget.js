@@ -34,12 +34,12 @@ if (window.yafowil === undefined) {
 
             maxlengths: function () {
                 return {
-                    'minute': 60,
-                    'hour': 24,
-                    'dom': 31,
-                    'month': 12,
-                    'dow': 7,
-                    'year': this.max_year - this.current_year + 1
+                    minute: 60,
+                    hour: 24,
+                    dom: 31,
+                    month: 12,
+                    dow: 7,
+                    year: this.max_year - this.current_year + 1
                 };
             },
 
@@ -321,66 +321,66 @@ if (window.yafowil === undefined) {
                     $input.val(this.serialize(mode));
                 },
                 summarize: function () {
-                    var text = {
-                        'minute': '',
-                        'hour': '',
-                        'dom': '',
-                        'month': '',
-                        'dow': '',
-                        'year': ''
-                    };
                     var maxlengths = yafowil.cron.maxlengths();
-
-                    if (this.value['minute'].length < maxlengths['minute']) {
-                        text['minute'] = 'Every ' + this.value['minute'].join('., ') + '. minute, ';
+                    var value = this.value;
+                    var minute_len = value.minute.length,
+                        hour_len = value.hour.length,
+                        dom_len = value.dom.length,
+                        month_len = value.month.length,
+                        dow_len = value.dow.length,
+                        year_len = value.year.length;
+                    var minute, hour, dom, month, dow, year;
+                    if (minute_len === 0) {
+                        minute = 'No minute selected';
+                    } else if (minute_len < maxlengths.minute) {
+                        minute = 'Every ';
+                        minute += value.minute.join(', ') + ' minute';
                     } else {
-                        text['minute'] = 'Each minute, ';
+                        minute = 'Each minute';
                     }
-
-                    if (this.value['hour'].length < maxlengths['hour']) {
-                        text['hour'] = 'every ' + this.value['hour'].join('., ') + '. hour, ';
+                    if (hour_len === 0) {
+                        hour = 'No hour selected';
+                    } else if (hour_len < maxlengths.hour) {
+                        hour = 'Every ' + value.hour.join(', ') + ' hour';
                     } else {
-                        text['hour'] = 'each hour, ';
+                        hour = 'Each hour';
                     }
-
-                    if (this.value['dom'].length < maxlengths['dom']) {
-                        text['dom'] = 'every ' + this.value['dom'].join('., ') + '. day of the month, ';
+                    if (dom_len === 0) {
+                        dom = 'No day of month selected';
+                    } else if (dom_len < maxlengths.dom) {
+                        dom = 'Every ' + value.dom.join(', ');
+                        dom += ' day of the month';
                     } else {
-                        text['dom'] = 'any day of the month, ';
+                        dom = 'Any day of the month';
                     }
-
-                    if (this.value['month'].length < maxlengths['month']) {
-                        text['month'] = 'in the months: ' + this.value['month'].map(
-                            function (el) {
-                                return yafowil.cron.monthmap[el];
-                            }
-                        ).join(', ') + ', ';
+                    if (month_len === 0) {
+                        month = 'No month selected';
+                    } else if (month_len < maxlengths.month) {
+                        month = 'In the months: ';
+                        month += value.month.map(
+                            function (el) { return yafowil.cron.monthmap[el]; }
+                        ).join(', ');
                     } else {
-                        text['month'] = 'any month, ';
+                        month = 'Any month';
                     }
-
-                    if (this.value['dow'].length < maxlengths['dow']) {
-                        text['dow'] = 'on ' + this.value['dow'].map(
-                            function (el) {
-                                return yafowil.cron.dowmap[el];
-                            }
-                        ).join('s, ') + 's, ';
+                    if (dow_len === 0) {
+                        dow = 'No day of week selected';
+                    } else if (dow_len < maxlengths.dow) {
+                        dow = 'On ';
+                        dow += value.dow.map(
+                            function (el) { return yafowil.cron.dowmap[el]; }
+                        ).join(', ');
                     } else {
-                        text['dow'] = 'on any day, ';
+                        dow = 'On any day';
                     }
-
-                    if (this.value['year'].length < maxlengths['year']) {
-                        text['year'] = 'in the years: ' + this.value['year'].join(', ') + '.';
+                    if (year_len === 0) {
+                        year = 'No year selected';
+                    } else if (year_len < maxlengths.year) {
+                        year = 'In the years: ' + value.year.join(', ');
                     } else {
-                        text['year'] = 'any year.';
+                        year = 'Any year';
                     }
-
-                    return text['minute'] + '<br/>' +
-                           text['hour'] + '<br/>' +
-                           text['dom'] + '<br/>' +
-                           text['month'] + '<br/>' +
-                           text['dow'] + '<br/>' +
-                           text['year'] + '<br/>';
+                    return [minute, hour, dom, month, dow, year].join('<br/>');
                 }
             }
         }
