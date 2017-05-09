@@ -16,14 +16,11 @@ _ = TSF('yafowil.widget.cron')
 # Create actions blueprint
 #
 def action_edit_renderer(widget, data):
-    return data.rendered or '' +\
-        data.tag(
-            'button',
-            data.tag('span', u'', class_='glyphicon-pencil'),
-            #_('label_edit', u'Edit'),
-            attr_value('label', widget, data),
-            class_='btn btn-sm edit'
-        ) # + data.tag('div', u'', class_='editarea')
+    return data.rendered or data.tag(
+        'button',
+        attr_value('label', widget, data),
+        class_='btn btn-sm edit'
+    )
 
 
 factory.register(
@@ -77,67 +74,42 @@ def cron_edit_renderer(widget, data):
         })
     container['minute'] = factory(
         'div:hidden:action_edit',
-        #'label:text:action_edit',
         props={
             'label': _('label_minute', u'Minute'),
-            'div.class': 'cron-value minute',
-            #'label.class': 'minute',
-            #'label.position': 'inner-before',
-            #'text.readonly': True
+            'div.class': 'cron-value minute'
         })
     container['hour'] = factory(
         'div:hidden:action_edit',
-        #'label:text:action_edit',
         props={
             'label': _('label_hour', u'Hour'),
-            'div.class': 'cron-value hour',
-            #'label.class': 'hour',
-            #'label.position': 'inner-before',
-            #'text.readonly': True
+            'div.class': 'cron-value hour'
         })
     container['dom'] = factory(
         'div:hidden:action_edit',
-        #'label:text:action_edit',
         props={
             'label': _('label_dom', u'Day of Month'),
-            'div.class': 'cron-value dom',
-            #'label.class': 'dom',
-            #'label.position': 'inner-before',
-            #'text.readonly': True
+            'div.class': 'cron-value dom'
         })
     container['month'] = factory(
         'div:hidden:action_edit',
-        #'label:text:action_edit',
         props={
             'label': _('label_month', u'Month'),
-            'div.class': 'cron-value month',
-            #'label.class': 'month',
-            #'label.position': 'inner-before',
-            #'text.readonly': True
+            'div.class': 'cron-value month'
         })
     container['dow'] = factory(
         'div:hidden:action_edit',
-        #'label:text:action_edit',
         props={
             'label': _('label_dow', u'Day of Week'),
-            'div.class': 'cron-value dow',
-            #'label.class': 'dow',
-            #'label.position': 'inner-before',
-            #'text.readonly': True
+            'div.class': 'cron-value dow'
         })
     container['year'] = factory(
         'div:hidden:action_edit',
-        #'label:text:action_edit',
         props={
             'label': _('label_year', u'Year'),
-            'div.class': 'cron-value year',
-            #'label.class': 'year',
-            #'label.position': 'inner-before',
-            #'text.readonly': True
+            'div.class': 'cron-value year'
         })
     container['editarea'] = factory(
         'div',
-        value='',
         props={
             'structural': True,
             'class': 'editarea',

@@ -54,12 +54,12 @@ Widget with value::
 
     >>> widget = factory('cron', name='cronwidget', value=value)
     >>> widget()
-    u'...name="cronwidget.minute" type="text" value="0,10,20,30,40,50" 
-    ...name="cronwidget.hour" type="text" value="0,6,12,18" 
-    ...name="cronwidget.dom" type="text" value="1,15,30" 
-    ...name="cronwidget.month" type="text" value="3,6,9,12" 
-    ...name="cronwidget.dow" type="text" value="1,3,5" 
-    ...name="cronwidget.year" type="text" value="2017"
+    u'...name="cronwidget.minute" type="hidden" value="0,10,20,30,40,50" 
+    ...name="cronwidget.hour" type="hidden" value="0,6,12,18" 
+    ...name="cronwidget.dom" type="hidden" value="1,15,30" 
+    ...name="cronwidget.month" type="hidden" value="3,6,9,12" 
+    ...name="cronwidget.dow" type="hidden" value="1,3,5" 
+    ...name="cronwidget.year" type="hidden" value="2017"
     ...' 
 
     >>> data = widget.extract({})
