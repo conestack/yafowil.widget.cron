@@ -71,6 +71,9 @@ if (window.yafowil === undefined) {
             getContainer: function ($el) {
                 return $el.closest('.cron-value');
             },
+            getEditarea: function ($el) {
+                return $('.editarea', $el.closest('.crontab.widget'));
+            },
             getMode: function ($el) {
                 var klass = yafowil.cron.getContainer($el).attr('class');
                 if (klass.indexOf('minute') != -1) {
@@ -86,9 +89,6 @@ if (window.yafowil === undefined) {
                 } else if (klass.indexOf('year') != -1) {
                     return 'year';
                 }
-            },
-            getEditarea: function ($el) {
-                return $('.editarea', yafowil.cron.getContainer($el));
             },
 
             binder: function () {
