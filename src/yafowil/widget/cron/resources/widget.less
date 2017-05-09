@@ -11,89 +11,41 @@
 
     .cron-value {
         display: inline-block;
-        margin-right: 0.2em;
+        margin-right: 2px;
+        margin-bottom: 2em;
     }
 
-    label {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+    .editarea {
+        display: none;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 2em;
 
-        margin-bottom: 1em;
-        padding: 0.5em;
-        text-align: left;
-        vertical-align: middle;
-        min-width: 5em;
-        border: 1px solid transparent;
-        
-        &.active {
-            background-color: #EEE;
-            border: 1px solid black;
+        .active {
+            background-color: yellow;
         }
 
-        input {
-            flex-grow: 1;
-            margin: 0 1em;
-            width: auto;
-        }
+        .editcontainer {
+            .clearfix;
 
-        button.edit {
-            margin-bottom: 0.5em;
-            span {
-                margin-right: 0.2em;
-            }
-        }
-        &.active button.edit {
-            background-color: green;
-            color: white;
-        }
+            display: inline-block;
 
+            button {
+                display: block;
+                vertical-align: top;
+                float: left;
 
-        .editarea {
-            display: none;
-            width: 100%;
-            text-align: center;
-            margin-bottom: 1em;
+                // reset button styles
+                margin: 0 2px 2px 0;
+                padding: 0.4em;
 
-            .active {
-                background-color: orange;
-            }
-
-            .editcontainer {
-                .clearfix;
-
-                display: inline-block;
-
-                button {
-                    display: block;
-                    vertical-align: top;
-                    float: left;
-
-                    // reset button styles
-                    border: none;
-                    border-radius: 0;
-                    font-size: inherit;
-                    font-weight: normal;
-                    height: auto;
-                    margin: 0;
-                    padding: 0.2em;
-
-                    &:last-child::after {
-                        clear: both;
-                    }
+                &:last-child::after {
+                    clear: both;
                 }
             }
-
         }
 
-        &.dow .editarea .editcontainer button,
-        &.dow .editarea .editcontainer button.active,
-        &.month .editarea .editcontainer button,
-        &.month .editarea .editcontainer button.active {
-            border-radius: 0.3em;
-        }
-    
-        &.minute .editcontainer button {
+        &.minute button {
             width: 3em;
 
             &:nth-child(11),
@@ -104,19 +56,17 @@
                 clear: left;
             }
         }
-        &.hour .editcontainer button {
+        &.hour button {
             width: 3em;
 
             &:nth-child(13) {
                 clear: left;
             }
         }
-        &.dow .editcontainer button {
+        &.dow button {
             min-width: 5em;
-            margin: 0.2em;
-            padding: 0.2em 0.4em;
         }
-        &.dom .editcontainer button {
+        &.dom button {
             width: 3em;
 
             &:nth-child(8),
@@ -126,9 +76,8 @@
                 clear: left;
             }
         }
-        &.month .editcontainer button {
+        &.month button {
             min-width: 7em;
-            margin: 0.2em;
             
             &:nth-child(4),
             &:nth-child(7),
@@ -136,7 +85,7 @@
                 clear: left;
             }
         }
-        &.year .editcontainer button {
+        &.year button {
             min-width: 4em;
 
             &:nth-child(11),
@@ -153,4 +102,5 @@
         }
 
     }
+
 }

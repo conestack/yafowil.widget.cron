@@ -110,7 +110,7 @@ if (window.yafowil === undefined) {
 
                     if ($editarea.is(':visible') && $editarea.hasClass(mode)) {
                         $container.removeClass('active');
-                        $editarea.removeClass().addClass('editarea').html('').hide();
+                        $editarea.attr('class', 'editarea').html('').hide();
                         return;
                     }
 
@@ -162,8 +162,7 @@ if (window.yafowil === undefined) {
                     }
 
                     content = header.add(content);
-                    $editarea.html(content);
-                    $editarea.removeClass('').addClass('editarea').addClass(mode).show();
+                    $editarea.html(content).attr('class', 'editarea ' + mode).show();
                     $container.addClass('active');
                 });
 
