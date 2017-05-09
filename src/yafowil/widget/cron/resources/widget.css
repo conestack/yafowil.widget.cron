@@ -3,6 +3,10 @@
   display: table;
   clear: both;
 }
+.crontab.widget .cron-value {
+  display: inline-block;
+  margin-right: 0.2em;
+}
 .crontab.widget label {
   display: flex;
   flex-direction: row;

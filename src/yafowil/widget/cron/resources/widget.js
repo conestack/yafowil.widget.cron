@@ -69,7 +69,7 @@ if (window.yafowil === undefined) {
             },
 
             getContainer: function ($el) {
-                return $el.closest('label');
+                return $el.closest('.cron-value');
             },
             getMode: function ($el) {
                 var klass = yafowil.cron.getContainer($el).attr('class');
