@@ -100,9 +100,9 @@ if (window.yafowil === undefined) {
                     var mode = yafowil.cron.getMode($el);
                     var $editarea = yafowil.cron.getEditarea($el);
 
-                    if ($editarea.is(':visible')) {
+                    if ($editarea.is(':visible') && $editarea.hasClass(mode)) {
                         $container.removeClass('active');
-                        $editarea.hide();
+                        $editarea.removeClass().addClass('editarea').html('').hide();
                         return;
                     }
 
@@ -155,7 +155,7 @@ if (window.yafowil === undefined) {
 
                     content = header.add(content);
                     $editarea.html(content);
-                    $editarea.show();
+                    $editarea.removeClass('').addClass('editarea').addClass(mode).show();
                     $container.addClass('active');
                 });
 
