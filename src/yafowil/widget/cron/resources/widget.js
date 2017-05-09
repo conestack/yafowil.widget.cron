@@ -116,7 +116,7 @@ if (window.yafowil === undefined) {
                         return;
                     }
                     cron.value.parse_from_input($el);
-                    var header = $('<h2 />');
+                    var header = $('<h4 />');
                     var content = $('<div class="editcontainer" />');
                     if (mode === 'minute') {
                         header.text('Select Minutes');

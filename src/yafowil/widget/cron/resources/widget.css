@@ -6,13 +6,13 @@
 .crontab.widget .cron-value {
   display: inline-block;
   margin-right: 2px;
-  margin-bottom: 2em;
+}
+.crontab.widget .crontab_summary {
+  margin-top: 1em;
 }
 .crontab.widget .editarea {
   display: none;
   width: 100%;
-  text-align: center;
-  margin-bottom: 2em;
 }
 .crontab.widget .editarea .active {
   background-color: yellow;
