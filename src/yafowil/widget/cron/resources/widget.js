@@ -94,12 +94,9 @@ if (window.yafowil === undefined) {
 
             binder: function () {
                 $('.crontab.widget .editarea').on('mousedown touchstart', function (event) {
-                    console.log('mark instant on press/touch');
                     yafowil.cron.instant = true;
-                }).on('mousemove touchmove', function (event) {
-                    console.log('perform selection on move if instant');
-                }).on('mouseup touchend', function (event) {
-                    console.log('perform selection on release');
+                });
+                $(document).on('mouseup touchend', function (event) {
                     yafowil.cron.instant = false;
                 });
 
