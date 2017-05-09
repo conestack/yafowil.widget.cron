@@ -72,9 +72,11 @@ if (window.yafowil === undefined) {
             getContainer: function ($el) {
                 return $el.closest('.cron-value');
             },
+
             getEditarea: function ($el) {
                 return $('.editarea', $el.closest('.crontab.widget'));
             },
+
             getMode: function ($el) {
                 var klass = $el.attr('class');
                 if (klass.indexOf('minute') != -1) {
@@ -93,137 +95,141 @@ if (window.yafowil === undefined) {
             },
 
             binder: function () {
-                $('.crontab.widget .editarea').on('mousedown touchstart', function (event) {
-                    yafowil.cron.instant = true;
+                var cron = yafowil.cron;
+                var editarea = $('.crontab.widget .editarea');
+                editarea.on('mousedown touchstart', function (event) {
+                    cron.instant = true;
                 });
                 $(document).on('mouseup touchend', function (event) {
-                    yafowil.cron.instant = false;
+                    cron.instant = false;
                 });
-
                 $('.crontab.widget button.edit').on('click', function (event) {
                     event.preventDefault();
                     var cnt;
                     var $el = $(this);
-                    var $container = yafowil.cron.getContainer($el);
-                    var mode = yafowil.cron.getMode($container);
-                    var $editarea = yafowil.cron.getEditarea($el);
-
+                    var $container = cron.getContainer($el);
+                    var mode = cron.getMode($container);
+                    var $editarea = cron.getEditarea($el);
                     if ($editarea.is(':visible') && $editarea.hasClass(mode)) {
                         $container.removeClass('active');
                         $editarea.attr('class', 'editarea').html('').hide();
                         return;
                     }
-
-                    yafowil.cron.value.parseFromInput($el);
-
+                    cron.value.parseFromInput($el);
                     var header = $('<h2 />');
                     var content = $('<div class="editcontainer" />');
-
                     if (mode === 'minute') {
                         header.text('Select Minutes');
                         for (cnt=0; cnt <= 59; cnt++) {
-                            content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
+                            content.append(cron.valuebutton(cnt, cnt, mode));
                         }
                     } else if (mode === 'hour') {
                         header.text('Select Hours');
                         for (cnt=1; cnt <= 24; cnt++) {
-                            var hour = cnt < 24 ? cnt : 0;  // "0" should be rendered as last element.
-                            content.append(yafowil.cron.valuebutton(hour, hour, mode));
+                            // "0" should be rendered as last element.
+                            var hour = cnt < 24 ? cnt : 0;
+                            content.append(cron.valuebutton(hour, hour, mode));
                         }
                     } else if (mode === 'dom') {
                         header.text('Select Day of Month');
                         for (cnt=1; cnt <= 31; cnt++) {
-                            content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
+                            content.append(cron.valuebutton(cnt, cnt, mode));
                         }
                     } else if (mode === 'month') {
                         header.text('Select Month');
                         for (cnt=1; cnt <= 12; cnt++) {
-                            content.append(yafowil.cron.valuebutton(
-                                cnt,
-                                yafowil.cron.monthmap[cnt],
-                                mode
+                            content.append(cron.valuebutton(
+                                cnt, cron.monthmap[cnt], mode
                             ));
                         }
                     } else if (mode === 'dow') {
                         header.text('Select Day of Week');
                         for (cnt=1; cnt <= 7; cnt++) {
-                            var dow = cnt < 7 ? cnt : 0;  // "0" should be rendered as last element.
-                            content.append(yafowil.cron.valuebutton(
-                                dow,
-                                yafowil.cron.dowmap[dow],
-                                mode
+                            // "0" should be rendered as last element.
+                            var dow = cnt < 7 ? cnt : 0;
+                            content.append(cron.valuebutton(
+                                dow, cron.dowmap[dow], mode
                             ));
                         }
                     } else if (mode === 'year') {
                         header.text('Select Year');
-                        for (cnt=yafowil.cron.current_year; cnt <= yafowil.cron.max_year; cnt++) {
-                            content.append(yafowil.cron.valuebutton(cnt, cnt, mode));
+                        for (cnt=cron.current_year; cnt <= cron.max_year; cnt++) {
+                            content.append(cron.valuebutton(cnt, cnt, mode));
                         }
                     }
-
                     content = header.add(content);
-                    $editarea.html(content).attr('class', 'editarea ' + mode).show();
+                    $editarea.html(content).attr(
+                        'class', 'editarea ' + mode
+                    ).show();
                     $container.addClass('active');
                 });
-
                 // Add Summary
                 var summarycontainer_template = '' +
                     '<article class="crontab_summary">' +
                         '<strong>Summary</strong>' +
                         '<p class="summary"></p>' +
                     '</article>';
-
                 $('.crontab.widget').each(function () {
                     $('input[type="hidden"]', $(this)).each(function () {
-                        var $container = yafowil.cron.getContainer($(this));
-                        yafowil.cron.value.parse_part(
+                        var $container = cron.getContainer($(this));
+                        cron.value.parse_part(
                             $(this).val(),
-                            yafowil.cron.getMode($container)
+                            cron.getMode($container)
                         );
                     });
                     $(this).append($(summarycontainer_template));
-                    yafowil.cron.update_summary($(this));
+                    cron.update_summary($(this));
                 });
-
                 $('.display-crontab.widget').each(function () {
-                    yafowil.cron.value.parse(
+                    cron.value.parse(
                         $('code', $(this)).text()
                     );
                     $(this).append($(summarycontainer_template));
-                    yafowil.cron.update_summary($(this));
+                    cron.update_summary($(this));
                 });
-
             },
 
             valuebutton: function (value, name, mode) {
-                var button = $('<button class="btn btn-sm" name=' + value + '>' + name + '</button>');
-                if (yafowil.cron.value.has(value, mode)) {
+                var cron = yafowil.cron;
+                var button = $(
+                    '<button class="btn btn-sm" name=' +
+                    value + '>' + name + '</button>'
+                );
+                if (cron.value.has(value, mode)) {
                     button.addClass('active');
                 }
-                button.on('click', yafowil.cron.valuebutton_eventhandler);
-                button.on('mouseenter', function (event) {
-                    // support multiple selection by holding down the "shift" key.
-                    if (event.shiftKey === false) {
+                return button.on('click', function (event) {
+                    event.preventDefault();
+                }).on('mousedown touchstart',
+                    cron.valuebutton_eventhandler
+                ).on('mouseenter touchenter', function (event) {
+                    if (event.shiftKey === false && cron.instant === false) {
                         return;
                     }
-                    yafowil.cron.valuebutton_eventhandler.bind(this)(event);
+                    cron.valuebutton_eventhandler.bind(this)(event);
+                }).on('mouseup touchend', function (event) {
+                    cron.instant = false;
                 });
-                return button;
             },
 
             valuebutton_eventhandler: function (event) {
                 event.preventDefault();
                 var $el = $(this);
                 var $container = $el.closest('.editarea');
+                var cron = yafowil.cron;
                 if ($el.hasClass('active')) {
-                    yafowil.cron.value.remove($(this).attr('name'), yafowil.cron.getMode($container));
-                    yafowil.cron.value.serializeToInput($el);
-                    yafowil.cron.update_summary($el);
+                    cron.value.remove(
+                        $(this).attr('name'),cron.getMode($container)
+                    );
+                    cron.value.serializeToInput($el);
+                    cron.update_summary($el);
                     $el.removeClass('active');
                 } else {
-                    yafowil.cron.value.add($(this).attr('name'), yafowil.cron.getMode($container));
-                    yafowil.cron.value.serializeToInput($el);
-                    yafowil.cron.update_summary($el);
+                    cron.value.add(
+                        $(this).attr('name'), cron.getMode($container)
+                    );
+                    cron.value.serializeToInput($el);
+                    cron.update_summary($el);
                     $el.addClass('active');
                 }
             },
@@ -236,26 +242,31 @@ if (window.yafowil === undefined) {
             },
 
             value: {
+
                 value: {
-                    'minute': [],
-                    'hour': [],
-                    'dom': [],
-                    'month': [],
-                    'dow': [],
-                    'year': []
+                    minute: [],
+                    hour: [],
+                    dom: [],
+                    month: [],
+                    dow: [],
+                    year: []
                 },
+
                 add: function (value, mode) {
                     this.value[mode].push(value.toString());
                 },
+
                 remove: function (value, mode) {
                     var index = this.value[mode].indexOf(value.toString());
                     if (index > -1) {
                         this.value[mode].splice(index, 1);
                     }
                 },
+
                 has: function (value, mode) {
                     return this.value[mode].indexOf(value.toString()) > -1;
                 },
+
                 parse: function (value) {
                     value = value.split(' ');
                     if (value.length === 5) {
@@ -269,6 +280,7 @@ if (window.yafowil === undefined) {
                     this.parse_part(value[4].trim(), 'dow');
                     this.parse_part(value[5].trim(), 'year');
                 },
+
                 parse_part: function (value, mode) {
                     if (typeof value === 'string') {
                         value = value.split(',');
@@ -305,6 +317,7 @@ if (window.yafowil === undefined) {
                         }
                     }
                 },
+
                 serialize: function (mode) {
                     var vals = this.value[mode];
                     vals.sort(function(a, b) {
@@ -319,18 +332,21 @@ if (window.yafowil === undefined) {
                         return vals.join(',');
                     }
                 },
+
                 parseFromInput: function ($el) {
                     var $container = yafowil.cron.getContainer($el);
                     var $input = $('input', $container);
                     var mode = yafowil.cron.getMode($container);
                     this.parse_part($input.val(), mode);
                 },
+
                 serializeToInput: function ($el) {
                     var $container = $el.closest('.editarea');
                     var mode = yafowil.cron.getMode($container);
                     var $input = $('.cron.value.' + mode + ' input', $container.closest('.yafowil.widget'));
                     $input.val(this.serialize(mode));
                 },
+
                 summarize: function () {
                     var maxlengths = yafowil.cron.maxlengths();
                     var value = this.value;
