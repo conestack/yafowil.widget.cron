@@ -13,6 +13,22 @@ Render widget::
     >>> widget()
     u'<div class="crontab widget" id="input-cronwidget">...</div>'
 
+Render with JS config properties::
+
+    >>> widget = factory(
+    ...     'cron',
+    ...     'cronwidget',
+    ...     props={
+    ...         'lang': 'de',
+    ...         'start_year': 2010,
+    ...         'end_year': 2020
+    ...     })
+    >>> widget()
+    u'<div class="crontab widget" 
+    data-end_year=\'2020\' 
+    data-lang=\'de\' 
+    data-start_year=\'2010\' id="input-cronwidget">...</div>'
+
 Base extraction::
 
     >>> data = widget.extract({})

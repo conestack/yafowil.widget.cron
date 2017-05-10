@@ -134,9 +134,10 @@ if (window.yafowil === undefined) {
 
             // read lang from widget DOM wrapper data attribute
             lang: 'de',
-            // read max_year from widget DOM wrapper data attribute
-            max_year: new Date().getFullYear() + 9,
-            current_year: new Date().getFullYear(),
+            // read start_year from widget DOM wrapper data attribute
+            start_year: new Date().getFullYear(),
+            // read end_year from widget DOM wrapper data attribute
+            end_year: new Date().getFullYear() + 9,
             instant: false,
 
             maxlengths: function () {
@@ -146,7 +147,7 @@ if (window.yafowil === undefined) {
                     dom: 31,
                     month: 12,
                     dow: 7,
-                    year: this.max_year - this.current_year + 1
+                    year: this.end_year - this.start_year + 1
                 };
             },
 
@@ -190,16 +191,17 @@ if (window.yafowil === undefined) {
                 }
             },
 
-            binder: function () {
+            binder: function (context) {
                 var cron = yafowil.cron;
-                var editarea = $('.crontab.widget .editarea');
+                var editarea = $('.crontab.widget .editarea', context);
                 editarea.on('mousedown touchstart', function (evt) {
                     cron.instant = true;
                 });
                 $(document).on('mouseup touchend', function (evt) {
                     cron.instant = false;
                 });
-                $('.crontab.widget button.edit').on('click', function (evt) {
+                $('.crontab.widget button.edit',
+                  context).on('click', function (evt) {
                     evt.preventDefault();
                     var cnt;
                     var $el = $(this);
@@ -251,7 +253,7 @@ if (window.yafowil === undefined) {
                         }
                     } else if (mode === 'year') {
                         header.text(cron.translate('select_year'));
-                        for (cnt=cron.current_year; cnt <= cron.max_year; cnt++) {
+                        for (cnt=cron.start_year; cnt <= cron.end_year; cnt++) {
                             content.append(cron.valuebutton(cnt, cnt, mode));
                         }
                     }
@@ -266,7 +268,7 @@ if (window.yafowil === undefined) {
                         '<strong>' + cron.translate('summary') + '</strong>' +
                         '<p class="summary"></p>' +
                     '</article>';
-                $('.crontab.widget').each(function () {
+                $('.crontab.widget', context).each(function () {
                     $('input[type="hidden"]', $(this)).each(function () {
                         var $container = cron.get_container($(this));
                         cron.value.parse_part(
@@ -277,7 +279,7 @@ if (window.yafowil === undefined) {
                     $(this).append($(summarycontainer_template));
                     cron.update_summary($(this));
                 });
-                $('.display-crontab.widget').each(function () {
+                $('.display-crontab.widget', context).each(function () {
                     cron.value.parse(
                         $('code', $(this)).text()
                     );
@@ -397,8 +399,8 @@ if (window.yafowil === undefined) {
                         } else if (mode === 'dow') {
                             start = 0; end = 6;
                         } else if (mode === 'year') {
-                            start = yafowil.cron.current_year;
-                            end = yafowil.cron.max_year;
+                            start = yafowil.cron.start_year;
+                            end = yafowil.cron.end_year;
                         }
                         for (cnt=start; cnt < end + 1; cnt++) {
                             this.value[mode].push(cnt);

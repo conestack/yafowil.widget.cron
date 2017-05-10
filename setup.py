@@ -39,7 +39,7 @@ setup(
     install_requires=[
         'setuptools',
         'crontab',
-        'yafowil>2.1.99',
+        'yafowil>2.2',
     ],
     tests_require=tests_require,
     extras_require=dict(

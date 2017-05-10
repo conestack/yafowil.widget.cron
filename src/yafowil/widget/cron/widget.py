@@ -71,6 +71,11 @@ def cron_edit_renderer(widget, data):
             'structural': True,
             'id': cssid(widget, 'input'),
             'class': cssclasses(widget, data),
+            'data': {
+                'lang': attr_value('lang', widget, data),
+                'start_year': attr_value('start_year', widget, data),
+                'end_year': attr_value('end_year', widget, data)
+            }
         })
     container['minute'] = factory(
         'div:hidden:action_edit',
@@ -140,6 +145,27 @@ factory.register(
     ]
 )
 
-factory.doc['blueprint']['cron'] = "Add-on blueprint `yafowil.widget.cron <http://github.com/bluedynamics/yafowil.widget.cron/>`_ ."  # noqa
+factory.doc['blueprint']['cron'] ="""\
+Add-on blueprint
+`yafowil.widget.cron <http://github.com/bluedynamics/yafowil.widget.cron/>`_ .
+"""
 
 factory.defaults['cron.class'] = 'crontab widget'
+factory.doc['props']['cron.class'] = """\
+CSS classes for cron widget wrapper DOM element.
+"""
+
+factory.defaults['cron.lang'] = None
+factory.doc['props']['cron.lang'] = """\
+Language code.
+"""
+
+factory.defaults['cron.start_year'] = None
+factory.doc['props']['cron.lang'] = """\
+Start year. Defaults to current year.
+"""
+
+factory.defaults['cron.end_year'] = None
+factory.doc['props']['cron.lang'] = """\
+End year. Defaults to current year + 9
+"""
