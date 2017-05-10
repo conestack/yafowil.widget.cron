@@ -29,6 +29,111 @@ if (window.yafowil === undefined) {
 
         cron: {
 
+            i18n: {
+                en: {
+                    select_minutes: 'Select Minutes',
+                    select_hours: 'Select Hours',
+                    select_dom: 'Select Day of Month',
+                    select_month: 'Select Month',
+                    select_dow: 'Select Day of Week',
+                    select_year: 'Select Year',
+                    monthmap: {
+                        1: 'January',
+                        2: 'February',
+                        3: 'March',
+                        4: 'April',
+                        5: 'May',
+                        6: 'June',
+                        7: 'July',
+                        8: 'August',
+                        9: 'September',
+                        10: 'October',
+                        11: 'November',
+                        12: 'December'
+                    },
+                    dowmap: {
+                        1: 'Monday',
+                        2: 'Tuesday',
+                        3: 'Wednesday',
+                        4: 'Thursday',
+                        5: 'Friday',
+                        6: 'Saturday',
+                        0: 'Sunday'
+                    },
+                    summary: 'Summary',
+                    no_minutes_selected: 'No minutes selected',
+                    selected_minutes: 'Minutes: ',
+                    all_minutes_selected: 'Every minute',
+                    no_hours_selected: 'No hour selected',
+                    selected_hours: 'Hours: ',
+                    all_hours_selected: 'Every hour',
+                    no_dom_selected: 'No day of month selected',
+                    selected_dom: 'Days of month: ',
+                    all_dom_selected: 'Every day of month',
+                    no_month_selected: 'No month selected',
+                    selected_month: 'Month: ',
+                    all_month_selected: 'Every month',
+                    no_dow_selected: 'No day of week selected',
+                    selected_dow: 'Days of week: ',
+                    all_dow_selected: 'Every day of week',
+                    no_year_selected: 'No year selected',
+                    selected_years: 'Years: ',
+                    all_years_selected: 'Every year'
+                },
+                de: {
+                    select_minutes: 'Minuten auswählen',
+                    select_hours: 'Stunden auswählen',
+                    select_dom: 'Monatstage auswählen',
+                    select_month: 'Monate auswählen',
+                    select_dow: 'Wochentage auswählen',
+                    select_year: 'Jahre auswählen',
+                    monthmap: {
+                        1: 'Jänner',
+                        2: 'Feber',
+                        3: 'März',
+                        4: 'April',
+                        5: 'Mai',
+                        6: 'Juni',
+                        7: 'Juli',
+                        8: 'August',
+                        9: 'September',
+                        10: 'Oktober',
+                        11: 'November',
+                        12: 'Dezember'
+                    },
+                    dowmap: {
+                        1: 'Montag',
+                        2: 'Dienstag',
+                        3: 'Mittwoch',
+                        4: 'Donnerstag',
+                        5: 'Freitag',
+                        6: 'Samstag',
+                        0: 'Sonntag'
+                    },
+                    summary: 'Zusammenfassung',
+                    no_minutes_selected: 'Keine Minuten ausgewählt',
+                    selected_minutes: 'Minuten: ',
+                    all_minutes_selected: 'Jede Minute',
+                    no_hours_selected: 'Keine Stunden ausgewählt',
+                    selected_hours: 'Stunden: ',
+                    all_hours_selected: 'Jede Stunde',
+                    no_dom_selected: 'Keine Monatstage ausgewählt',
+                    selected_dom: 'Monatstage: ',
+                    all_dom_selected: 'Alle Monatstage',
+                    no_month_selected: 'Keine Monate ausgewählt',
+                    selected_month: 'Monate: ',
+                    all_month_selected: 'Jedes Monat',
+                    no_dow_selected: 'Keine Wochentage ausgewählt',
+                    selected_dow: 'Wochentage: ',
+                    all_dow_selected: 'Jeder Wochentag',
+                    no_year_selected: 'Kein Jahr ausgewählt',
+                    selected_years: 'Jahre: ',
+                    all_years_selected: 'Jedes Jahr'
+                }
+            },
+
+            // read lang from widget DOM wrapper data attribute
+            lang: 'en',
             // read max_year from widget DOM wrapper data attribute
             max_year: new Date().getFullYear() + 9,
             current_year: new Date().getFullYear(),
@@ -45,29 +150,16 @@ if (window.yafowil === undefined) {
                 };
             },
 
-            monthmap: {
-                1: 'January',
-                2: 'February',
-                3: 'March',
-                4: 'April',
-                5: 'May',
-                6: 'June',
-                7: 'July',
-                8: 'August',
-                9: 'September',
-                10: 'October',
-                11: 'November',
-                12: 'December'
+            translate: function(msg) {
+                return this.i18n[this.lang][msg];
             },
 
-            dowmap: {
-                1: 'Monday',
-                2: 'Tuesday',
-                3: 'Wednesday',
-                4: 'Thursday',
-                5: 'Friday',
-                6: 'Saturday',
-                0: 'Sunday'
+            monthmap: function() {
+                return this.i18n[this.lang].monthmap;
+            },
+
+            dowmap: function() {
+                return this.i18n[this.lang].dowmap;
             },
 
             get_container: function ($el) {
@@ -120,40 +212,42 @@ if (window.yafowil === undefined) {
                     var header = $('<h4 />');
                     var content = $('<div class="editcontainer" />');
                     if (mode === 'minute') {
-                        header.text('Select Minutes');
+                        header.text(cron.translate('select_minutes'));
                         for (cnt=0; cnt <= 59; cnt++) {
                             content.append(cron.valuebutton(cnt, cnt, mode));
                         }
                     } else if (mode === 'hour') {
-                        header.text('Select Hours');
+                        header.text(cron.translate('select_hours'));
                         for (cnt=1; cnt <= 24; cnt++) {
                             // "0" should be rendered as last element.
                             var hour = cnt < 24 ? cnt : 0;
                             content.append(cron.valuebutton(hour, hour, mode));
                         }
                     } else if (mode === 'dom') {
-                        header.text('Select Day of Month');
+                        header.text(cron.translate('select_dom'));
                         for (cnt=1; cnt <= 31; cnt++) {
                             content.append(cron.valuebutton(cnt, cnt, mode));
                         }
                     } else if (mode === 'month') {
-                        header.text('Select Month');
+                        header.text(cron.translate('select_month'));
+                        var monthmap = cron.monthmap();
                         for (cnt=1; cnt <= 12; cnt++) {
                             content.append(cron.valuebutton(
-                                cnt, cron.monthmap[cnt], mode
+                                cnt, monthmap[cnt], mode
                             ));
                         }
                     } else if (mode === 'dow') {
-                        header.text('Select Day of Week');
+                        header.text(cron.translate('select_dow'));
+                        var dowmap = cron.dowmap();
                         for (cnt=1; cnt <= 7; cnt++) {
                             // "0" should be rendered as last element.
                             var dow = cnt < 7 ? cnt : 0;
                             content.append(cron.valuebutton(
-                                dow, cron.dowmap[dow], mode
+                                dow, dowmap[dow], mode
                             ));
                         }
                     } else if (mode === 'year') {
-                        header.text('Select Year');
+                        header.text(cron.translate('select_year'));
                         for (cnt=cron.current_year; cnt <= cron.max_year; cnt++) {
                             content.append(cron.valuebutton(cnt, cnt, mode));
                         }
@@ -166,7 +260,7 @@ if (window.yafowil === undefined) {
                 });
                 var summarycontainer_template =
                     '<article class="crontab_summary">' +
-                        '<strong>Summary</strong>' +
+                        '<strong>' + cron.translate('summary') + '</strong>' +
                         '<p class="summary"></p>' +
                     '</article>';
                 $('.crontab.widget').each(function () {
@@ -399,7 +493,8 @@ if (window.yafowil === undefined) {
                 },
 
                 summarize: function () {
-                    var maxlengths = yafowil.cron.maxlengths();
+                    var cron = yafowil.cron;
+                    var maxlengths = cron.maxlengths();
                     var value = this.value;
                     var minute_len = value.minute.length,
                         hour_len = value.hour.length,
@@ -409,60 +504,66 @@ if (window.yafowil === undefined) {
                         year_len = value.year.length;
                     var minute, hour, dom, month, dow, year;
                     if (minute_len === 0) {
-                        minute = 'No minutes selected';
+                        minute = cron.translate('no_minutes_selected');
                     } else if (minute_len < maxlengths.minute) {
-                        minute = 'Minutes: ' + this.format_groups(
+                        minute = cron.translate('selected_minutes');
+                        minute += this.format_groups(
                             this.group_value(value.minute)
                         );
                     } else {
-                        minute = 'Every minute';
+                        minute = cron.translate('all_minutes_selected');
                     }
                     if (hour_len === 0) {
-                        hour = 'No hour selected';
+                        hour = cron.translate('no_hours_selected');
                     } else if (hour_len < maxlengths.hour) {
-                        hour = 'Hours: ' + this.format_groups(
+                        hour = cron.translate('selected_hours');
+                        hour += this.format_groups(
                             this.group_value(value.hour)
                         );
                     } else {
-                        hour = 'Every hour';
+                        hour = cron.translate('all_hours_selected');
                     }
                     if (dom_len === 0) {
-                        dom = 'No day of month selected';
+                        dom = cron.translate('no_dom_selected');
                     } else if (dom_len < maxlengths.dom) {
-                        dom = 'Days of month: ' + this.format_groups(
+                        dom = cron.translate('selected_dom');
+                        dom += this.format_groups(
                             this.group_value(value.dom)
                         );
                     } else {
-                        dom = 'Every day of month';
+                        dom = cron.translate('all_dom_selected');
                     }
                     if (month_len === 0) {
-                        month = 'No month selected';
+                        month = cron.translate('no_month_selected');
                     } else if (month_len < maxlengths.month) {
-                        month = 'Month: ' + this.format_groups(
+                        month = cron.translate('selected_month');
+                        month += this.format_groups(
                             this.group_value(value.month),
-                            yafowil.cron.monthmap
+                            cron.monthmap()
                         );
                     } else {
-                        month = 'Every month';
+                        month = cron.translate('all_month_selected');
                     }
                     if (dow_len === 0) {
-                        dow = 'No day of week selected';
+                        dow = cron.translate('no_dow_selected');
                     } else if (dow_len < maxlengths.dow) {
-                        dow = 'Days of week: ' + this.format_groups(
+                        dow = cron.translate('selected_dow');
+                        dow += this.format_groups(
                             this.group_value(value.dow),
-                            yafowil.cron.dowmap
+                            cron.dowmap()
                         );
                     } else {
-                        dow = 'Every day of week';
+                        dow = cron.translate('all_dow_selected');
                     }
                     if (year_len === 0) {
-                        year = 'No year selected';
+                        year = cron.translate('no_year_selected');
                     } else if (year_len < maxlengths.year) {
-                        year = 'Years: ' + this.format_groups(
+                        year = cron.translate('selected_years');
+                        year += this.format_groups(
                             this.group_value(value.year)
                         );
                     } else {
-                        year = 'Every year';
+                        year = cron.translate('all_years_selected');
                     }
                     return [minute, hour, dom, month, dow, year].join('<br/>');
                 }
