@@ -75,37 +75,37 @@ def cron_edit_renderer(widget, data):
     container['minute'] = factory(
         'div:hidden:action_edit',
         props={
-            'label': _('label_minute', u'Minute'),
+            'label': _('label_minute', default='Minute'),
             'div.class': 'cron-value minute'
         })
     container['hour'] = factory(
         'div:hidden:action_edit',
         props={
-            'label': _('label_hour', u'Hour'),
+            'label': _('label_hour', default='Hour'),
             'div.class': 'cron-value hour'
         })
     container['dom'] = factory(
         'div:hidden:action_edit',
         props={
-            'label': _('label_dom', u'Day of Month'),
+            'label': _('label_dom', default='Day of Month'),
             'div.class': 'cron-value dom'
         })
     container['month'] = factory(
         'div:hidden:action_edit',
         props={
-            'label': _('label_month', u'Month'),
+            'label': _('label_month', default='Month'),
             'div.class': 'cron-value month'
         })
     container['dow'] = factory(
         'div:hidden:action_edit',
         props={
-            'label': _('label_dow', u'Day of Week'),
+            'label': _('label_dow', default='Day of Week'),
             'div.class': 'cron-value dow'
         })
     container['year'] = factory(
         'div:hidden:action_edit',
         props={
-            'label': _('label_year', u'Year'),
+            'label': _('label_year', default='Year'),
             'div.class': 'cron-value year'
         })
     container['editarea'] = factory(

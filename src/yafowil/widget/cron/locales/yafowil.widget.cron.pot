@@ -1,51 +1,47 @@
-# 
+#
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-07-30 16:45+0200\n"
+"POT-Creation-Date: 2017-05-10 13:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
+"Generated-By: Lingua 4.11\n"
 
-#. Default: Not a valid time input.
-#: ./src/yafowil/widget/datetime/widget.py:47
-msgid "input_not_valid_time"
+#. Default: Minute
+#: ./src/yafowil/widget/cron/widget.py:78
+msgid "label_minute"
 msgstr ""
 
-#. Default: Hours not a number.
-#: ./src/yafowil/widget/datetime/widget.py:65
-msgid "hours_not_a_number"
+#. Default: Hour
+#: ./src/yafowil/widget/cron/widget.py:84
+msgid "label_hour"
 msgstr ""
 
-#. Default: Minutes not a number.
-#: ./src/yafowil/widget/datetime/widget.py:71
-msgid "minutes_not_a_number"
+#. Default: Day of Month
+#: ./src/yafowil/widget/cron/widget.py:90
+msgid "label_dom"
 msgstr ""
 
-#. Default: Hours must be in range 0..23.
-#: ./src/yafowil/widget/datetime/widget.py:78
-msgid "invalid_hours_range"
+#. Default: Month
+#: ./src/yafowil/widget/cron/widget.py:96
+msgid "label_month"
 msgstr ""
 
-#. Default: Minutes must be in range 0..59.
-#: ./src/yafowil/widget/datetime/widget.py:82
-msgid "invalid_minutes_range"
+#. Default: Day of Week
+#: ./src/yafowil/widget/cron/widget.py:102
+msgid "label_dow"
 msgstr ""
 
-#. Default: Not a valid date input.
-#: ./src/yafowil/widget/datetime/widget.py:226
-msgid "input_not_valid_date"
-msgstr ""
-
-#. Default: Failed to parse time input.
-#: ./src/yafowil/widget/datetime/widget.py:58
-msgid "failed_to_parse_time"
+#. Default: Year
+#: ./src/yafowil/widget/cron/widget.py:108
+msgid "label_year"
 msgstr ""
