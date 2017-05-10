@@ -29,7 +29,8 @@ if (window.yafowil === undefined) {
 
         cron: {
 
-            max_year: 2099,
+            // read max_year from widget DOM wrapper data attribute
+            max_year: new Date().getFullYear() + 9,
             current_year: new Date().getFullYear(),
             instant: false,
 
@@ -302,11 +303,11 @@ if (window.yafowil === undefined) {
                             start = yafowil.cron.current_year;
                             end = yafowil.cron.max_year;
                         }
-                        for (cnt=start; cnt<end+1; cnt++) {
+                        for (cnt=start; cnt < end + 1; cnt++) {
                             this.value[mode].push(cnt);
                         }
                     } else {
-                        for (cnt=0; cnt<value.length; cnt++) {
+                        for (cnt=0; cnt < value.length; cnt++) {
                             var val = value[cnt];
                             if (val === '') {
                                 continue;
@@ -323,7 +324,6 @@ if (window.yafowil === undefined) {
                         // int-sort - otherwise it's a lexical sort.
                         return parseInt(a, 10) - parseInt(b, 10);
                     });
-
                     var maxlength = yafowil.cron.maxlengths()[mode];
                     if (vals.length >= maxlength) {
                         return '*';
@@ -349,6 +349,55 @@ if (window.yafowil === undefined) {
                     $input.val(this.serialize(mode));
                 },
 
+                group_value: function(arr) {
+                    var groups = new Array();
+                    var group = new Array();
+                    var idx, nidx;
+                    for (idx=0; idx < arr.length; idx++) {
+                        nidx = idx + 1;
+                        if (idx == arr.length - 1) {
+                            group.push(arr[idx]);
+                            groups.push(group);
+                        } else if (parseInt(arr[idx]) + 1 == parseInt(arr[nidx])) {
+                            group.push(arr[idx]);
+                        } else {
+                            group.push(arr[idx]);
+                            groups.push(group);
+                            group = new Array();
+                        }
+                    }
+                    return groups;
+                },
+
+                display_value: function(value, value_map) {
+                    if (value_map) {
+                        return value_map[value];
+                    }
+                    return value;
+                },
+
+                format_groups: function(groups, value_map) {
+                    var ret = '';
+                    var idx, group;
+                    for (idx=0; idx < groups.length; idx++) {
+                        group = groups[idx];
+                        if (group.length == 1) {
+                            ret += this.display_value(group[0], value_map);
+                        } else {
+                            ret += this.display_value(group[0], value_map);
+                            ret += '-';
+                            ret += this.display_value(
+                                group[group.length - 1],
+                                value_map
+                            );
+                        }
+                        if (idx != groups.length - 1) {
+                            ret += ', ';
+                        }
+                    }
+                    return ret;
+                },
+
                 summarize: function () {
                     var maxlengths = yafowil.cron.maxlengths();
                     var value = this.value;
@@ -360,54 +409,60 @@ if (window.yafowil === undefined) {
                         year_len = value.year.length;
                     var minute, hour, dom, month, dow, year;
                     if (minute_len === 0) {
-                        minute = 'No minute selected';
+                        minute = 'No minutes selected';
                     } else if (minute_len < maxlengths.minute) {
-                        minute = 'Every ';
-                        minute += value.minute.join(', ') + ' minute';
+                        minute = 'Minutes: ' + this.format_groups(
+                            this.group_value(value.minute)
+                        );
                     } else {
-                        minute = 'Each minute';
+                        minute = 'Every minute';
                     }
                     if (hour_len === 0) {
                         hour = 'No hour selected';
                     } else if (hour_len < maxlengths.hour) {
-                        hour = 'Every ' + value.hour.join(', ') + ' hour';
+                        hour = 'Hours: ' + this.format_groups(
+                            this.group_value(value.hour)
+                        );
                     } else {
-                        hour = 'Each hour';
+                        hour = 'Every hour';
                     }
                     if (dom_len === 0) {
                         dom = 'No day of month selected';
                     } else if (dom_len < maxlengths.dom) {
-                        dom = 'Every ' + value.dom.join(', ');
-                        dom += ' day of the month';
+                        dom = 'Days of month: ' + this.format_groups(
+                            this.group_value(value.dom)
+                        );
                     } else {
-                        dom = 'Any day of the month';
+                        dom = 'Every day of month';
                     }
                     if (month_len === 0) {
                         month = 'No month selected';
                     } else if (month_len < maxlengths.month) {
-                        month = 'In the months: ';
-                        month += value.month.map(
-                            function (el) { return yafowil.cron.monthmap[el]; }
-                        ).join(', ');
+                        month = 'Month: ' + this.format_groups(
+                            this.group_value(value.month),
+                            yafowil.cron.monthmap
+                        );
                     } else {
-                        month = 'Any month';
+                        month = 'Every month';
                     }
                     if (dow_len === 0) {
                         dow = 'No day of week selected';
                     } else if (dow_len < maxlengths.dow) {
-                        dow = 'On ';
-                        dow += value.dow.map(
-                            function (el) { return yafowil.cron.dowmap[el]; }
-                        ).join(', ');
+                        dow = 'Days of week: ' + this.format_groups(
+                            this.group_value(value.dow),
+                            yafowil.cron.dowmap
+                        );
                     } else {
-                        dow = 'On any day';
+                        dow = 'Every day of week';
                     }
                     if (year_len === 0) {
                         year = 'No year selected';
                     } else if (year_len < maxlengths.year) {
-                        year = 'In the years: ' + value.year.join(', ');
+                        year = 'Years: ' + this.format_groups(
+                            this.group_value(value.year)
+                        );
                     } else {
-                        year = 'Any year';
+                        year = 'Every year';
                     }
                     return [minute, hour, dom, month, dow, year].join('<br/>');
                 }
