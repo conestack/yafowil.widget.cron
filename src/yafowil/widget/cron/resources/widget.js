@@ -133,7 +133,7 @@ if (window.yafowil === undefined) {
             },
 
             // read lang from widget DOM wrapper data attribute
-            lang: 'en',
+            lang: 'de',
             // read max_year from widget DOM wrapper data attribute
             max_year: new Date().getFullYear() + 9,
             current_year: new Date().getFullYear(),
@@ -151,15 +151,18 @@ if (window.yafowil === undefined) {
             },
 
             translate: function(msg) {
-                return this.i18n[this.lang][msg];
+                var that = yafowil.cron;
+                return that.i18n[that.lang][msg];
             },
 
             monthmap: function() {
-                return this.i18n[this.lang].monthmap;
+                var that = yafowil.cron;
+                return that.i18n[that.lang].monthmap;
             },
 
             dowmap: function() {
-                return this.i18n[this.lang].dowmap;
+                var that = yafowil.cron;
+                return that.i18n[that.lang].dowmap;
             },
 
             get_container: function ($el) {
@@ -444,9 +447,10 @@ if (window.yafowil === undefined) {
                 },
 
                 group_value: function(arr) {
-                    var groups = new Array();
-                    var group = new Array();
-                    var idx, nidx;
+                    var groups = new Array(),
+                        group = new Array(),
+                        idx,
+                        nidx;
                     for (idx=0; idx < arr.length; idx++) {
                         nidx = idx + 1;
                         if (idx == arr.length - 1) {
@@ -471,8 +475,9 @@ if (window.yafowil === undefined) {
                 },
 
                 format_groups: function(groups, value_map) {
-                    var ret = '';
-                    var idx, group;
+                    var ret = '',
+                        idx,
+                        group;
                     for (idx=0; idx < groups.length; idx++) {
                         group = groups[idx];
                         if (group.length == 1) {
@@ -492,80 +497,56 @@ if (window.yafowil === undefined) {
                     return ret;
                 },
 
+                format_part: function(value_name, no_values_selected,
+                                      values_selected, all_values_selected,
+                                      value_map) {
+                    var value = this.value[value_name],
+                        value_len = value.length,
+                        max_len = yafowil.cron.maxlengths()[value_name],
+                        translate = yafowil.cron.translate,
+                        ret;
+                    if (value_len === 0) {
+                        ret = translate(no_values_selected);
+                    } else if (value_len < max_len) {
+                        ret = translate(values_selected) + this.format_groups(
+                            this.group_value(value),
+                            value_map
+                        );
+                    } else {
+                        ret = translate(all_values_selected);
+                    }
+                    return ret;
+                },
+
                 summarize: function () {
-                    var cron = yafowil.cron;
-                    var maxlengths = cron.maxlengths();
-                    var value = this.value;
-                    var minute_len = value.minute.length,
-                        hour_len = value.hour.length,
-                        dom_len = value.dom.length,
-                        month_len = value.month.length,
-                        dow_len = value.dow.length,
-                        year_len = value.year.length;
-                    var minute, hour, dom, month, dow, year;
-                    if (minute_len === 0) {
-                        minute = cron.translate('no_minutes_selected');
-                    } else if (minute_len < maxlengths.minute) {
-                        minute = cron.translate('selected_minutes');
-                        minute += this.format_groups(
-                            this.group_value(value.minute)
-                        );
-                    } else {
-                        minute = cron.translate('all_minutes_selected');
-                    }
-                    if (hour_len === 0) {
-                        hour = cron.translate('no_hours_selected');
-                    } else if (hour_len < maxlengths.hour) {
-                        hour = cron.translate('selected_hours');
-                        hour += this.format_groups(
-                            this.group_value(value.hour)
-                        );
-                    } else {
-                        hour = cron.translate('all_hours_selected');
-                    }
-                    if (dom_len === 0) {
-                        dom = cron.translate('no_dom_selected');
-                    } else if (dom_len < maxlengths.dom) {
-                        dom = cron.translate('selected_dom');
-                        dom += this.format_groups(
-                            this.group_value(value.dom)
-                        );
-                    } else {
-                        dom = cron.translate('all_dom_selected');
-                    }
-                    if (month_len === 0) {
-                        month = cron.translate('no_month_selected');
-                    } else if (month_len < maxlengths.month) {
-                        month = cron.translate('selected_month');
-                        month += this.format_groups(
-                            this.group_value(value.month),
-                            cron.monthmap()
-                        );
-                    } else {
-                        month = cron.translate('all_month_selected');
-                    }
-                    if (dow_len === 0) {
-                        dow = cron.translate('no_dow_selected');
-                    } else if (dow_len < maxlengths.dow) {
-                        dow = cron.translate('selected_dow');
-                        dow += this.format_groups(
-                            this.group_value(value.dow),
-                            cron.dowmap()
-                        );
-                    } else {
-                        dow = cron.translate('all_dow_selected');
-                    }
-                    if (year_len === 0) {
-                        year = cron.translate('no_year_selected');
-                    } else if (year_len < maxlengths.year) {
-                        year = cron.translate('selected_years');
-                        year += this.format_groups(
-                            this.group_value(value.year)
-                        );
-                    } else {
-                        year = cron.translate('all_years_selected');
-                    }
-                    return [minute, hour, dom, month, dow, year].join('<br/>');
+                    return [
+                        this.format_part(
+                            'minute', 'no_minutes_selected',
+                            'selected_minutes','all_minutes_selected'
+                        ),
+                        this.format_part(
+                            'hour', 'no_hours_selected',
+                            'selected_hours', 'all_hours_selected'
+                        ),
+                        this.format_part(
+                            'dom', 'no_dom_selected',
+                            'selected_dom', 'all_dom_selected',
+                        ),
+                        this.format_part(
+                            'month', 'no_month_selected',
+                            'selected_month', 'all_month_selected',
+                            yafowil.cron.monthmap()
+                        ),
+                        this.format_part(
+                            'dow', 'no_dow_selected',
+                            'selected_dow', 'all_dow_selected',
+                            yafowil.cron.dowmap()
+                        ),
+                        this.format_part(
+                            'year', 'no_year_selected',
+                            'selected_years', 'all_years_selected'
+                        )
+                    ].join('<br/>');
                 }
             }
         }
