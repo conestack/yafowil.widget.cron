@@ -439,12 +439,9 @@ if (window.yafowil === undefined) {
         },
 
         serialize_to_input: function(elem) {
-            var container = this.edit_area;
-            var mode = this.get_mode(container);
-            var input = $(
-                '.cron-value.' + mode + ' input',
-                container.closest('.crontab.widget')
-            );
+            var container = this.edit_area,
+                mode = this.get_mode(container),
+                input = $('.cron-value.' + mode + ' input', this.root);
             input.val(this.serialize(mode));
         },
 
