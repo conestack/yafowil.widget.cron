@@ -13,10 +13,10 @@ from yafowil.utils import cssid
 _ = TSF('yafowil.widget.cron')
 
 
-def action_edit_renderer(widget, data):
+def cron_value_edit_action_renderer(widget, data):
     """Renders cron value edit button.
     """
-    return data.rendered or data.tag(
+    return data.rendered + data.tag(
         'button',
         attr_value('label', widget, data),
         class_='btn btn-sm edit'
@@ -24,11 +24,11 @@ def action_edit_renderer(widget, data):
 
 
 factory.register(
-    'action_edit',
-    edit_renderers=[action_edit_renderer]
+    'cron_value_edit_action',
+    edit_renderers=[cron_value_edit_action_renderer]
 )
 # don't document internal widget
-factory.doc['blueprint']['action_edit'] = UNSET
+factory.doc['blueprint']['cron_value_edit_action'] = UNSET
 
 
 def cron_extractor(widget, data):
@@ -78,37 +78,37 @@ def cron_edit_renderer(widget, data):
             }
         })
     container['minute'] = factory(
-        'div:hidden:action_edit',
+        'div:cron_value_edit_action:hidden',
         props={
             'label': _('label_minute', default='Minute'),
             'div.class': 'cron-value minute'
         })
     container['hour'] = factory(
-        'div:hidden:action_edit',
+        'div:cron_value_edit_action:hidden',
         props={
             'label': _('label_hour', default='Hour'),
             'div.class': 'cron-value hour'
         })
     container['dom'] = factory(
-        'div:hidden:action_edit',
+        'div:cron_value_edit_action:hidden',
         props={
             'label': _('label_dom', default='Day of Month'),
             'div.class': 'cron-value dom'
         })
     container['month'] = factory(
-        'div:hidden:action_edit',
+        'div:cron_value_edit_action:hidden',
         props={
             'label': _('label_month', default='Month'),
             'div.class': 'cron-value month'
         })
     container['dow'] = factory(
-        'div:hidden:action_edit',
+        'div:cron_value_edit_action:hidden',
         props={
             'label': _('label_dow', default='Day of Week'),
             'div.class': 'cron-value dow'
         })
     container['year'] = factory(
-        'div:hidden:action_edit',
+        'div:cron_value_edit_action:hidden',
         props={
             'label': _('label_year', default='Year'),
             'div.class': 'cron-value year'
