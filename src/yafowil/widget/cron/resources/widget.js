@@ -182,9 +182,7 @@ if (window.yafowil === undefined) {
         var that = this;
 
         $('input[type="hidden"]', root).each(function () {
-            var elem = $(this),
-                container = that.get_edit_section(elem);
-            that.parse_part(elem.val(), that.get_mode(container));
+            that.parse_from_input($(this));
         });
 
         root.append($(summary_container_template));
@@ -220,7 +218,6 @@ if (window.yafowil === undefined) {
                 edit_area.attr('class', 'editarea').html('').hide();
                 return;
             }
-            this.parse_from_input(trigger);
             var header = $('<h4 />'),
                 content = $('<div class="editcontainer" />');
             if (mode === 'minute') {
@@ -434,18 +431,19 @@ if (window.yafowil === undefined) {
             }
         },
 
-        parse_from_input: function(elem) {
-            var container = this.get_edit_section(elem);
-            var input = $('input', container);
-            this.parse_part(input.val(), this.get_mode(container));
+        parse_from_input: function(input) {
+            this.parse_part(
+                input.val(),
+                this.get_mode(this.get_edit_section(input))
+            );
         },
 
         serialize_to_input: function(elem) {
             var container = this.edit_area;
             var mode = this.get_mode(container);
             var input = $(
-                '.cron.value.' + mode + ' input',
-                container.closest('.yafowil.widget')
+                '.cron-value.' + mode + ' input',
+                container.closest('.crontab.widget')
             );
             input.val(this.serialize(mode));
         },
