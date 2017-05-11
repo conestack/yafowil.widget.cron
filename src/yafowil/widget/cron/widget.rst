@@ -9,7 +9,7 @@ Load requirements::
 
 Render widget::
 
-    >>> widget = factory('cron', 'cronwidget')
+    >>> widget = factory('cron', name='cronwidget')
     >>> widget()
     u'<div class="crontab widget" id="input-cronwidget">...</div>'
 
@@ -17,7 +17,7 @@ Render with JS config properties::
 
     >>> widget = factory(
     ...     'cron',
-    ...     'cronwidget',
+    ...     name='cronwidget',
     ...     props={
     ...         'lang': 'de',
     ...         'start_year': 2010,
@@ -112,3 +112,36 @@ Widget with value::
 
     >>> data.extracted
     '0,10,20 12,18 1,15 3,6 1 *'
+
+Widget in conjunction with hybrid blueprint::
+
+    >>> value = '0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017,2018,2019'
+    >>> widget = factory(
+    ...     'div:cron',
+    ...     name='cronwidget',
+    ...     value=value,
+    ...     props={
+    ...         'leaf': True,
+    ...         'div.class': 'wrapper-div'
+    ...     })
+    >>> widget()
+    u'<div class="wrapper-div"><div class="crontab widget" ...>...</div></div>'
+
+    >>> request = {
+    ...     'cronwidget.month': u'1',
+    ...     'cronwidget.dom': u'2',
+    ...     'cronwidget.hour': u'3',
+    ...     'cronwidget.minute': u'4',
+    ...     'cronwidget.dow': u'5',
+    ...     'cronwidget.year': u'*'
+    ... }
+
+    >>> data = widget.extract(request)
+    >>> data.printtree()
+    <RuntimeData cronwidget, value='0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017,2018,2019', extracted='4 3 2 1 5 *' at ...>
+      <RuntimeData cronwidget.minute, value='0,10,20,30,40,50', extracted=u'4' at ...>
+      <RuntimeData cronwidget.hour, value='0,6,12,18', extracted=u'3' at ...>
+      <RuntimeData cronwidget.dom, value='1,15,30', extracted=u'2' at ...>
+      <RuntimeData cronwidget.month, value='3,6,9,12', extracted=u'1' at ...>
+      <RuntimeData cronwidget.dow, value='1,3,5', extracted=u'5' at ...>
+      <RuntimeData cronwidget.year, value='2017,2018,2019', extracted=u'*' at ...>

@@ -13,9 +13,9 @@ from yafowil.utils import cssid
 _ = TSF('yafowil.widget.cron')
 
 
-# Create actions blueprint
-#
 def action_edit_renderer(widget, data):
+    """Renders cron value edit button.
+    """
     return data.rendered or data.tag(
         'button',
         attr_value('label', widget, data),
@@ -65,7 +65,7 @@ def cron_edit_renderer(widget, data):
         }
     container = widget['container'] = factory(
         'div',
-        name="cron",
+        name='cron',
         value=value,
         props={
             'structural': True,

@@ -21,9 +21,10 @@ def cron_example():
     value = '0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017,2018,2019'
     part = factory(u'fieldset', name='yafowil.widget.cron')
     part['cron'] = factory(
-        'cron', # '#field:cron'
+        '#field:cron',
         value=value,
         props={
+            'leaf': True,
             'label': 'Cron Widget',
             'lang': 'en',
             'start_year': '2000',
