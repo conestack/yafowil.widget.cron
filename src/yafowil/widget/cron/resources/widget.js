@@ -437,7 +437,7 @@ if (window.yafowil === undefined) {
                     end = this.end_year;
                 }
                 for (cnt=start; cnt < end + 1; cnt++) {
-                    this.value[mode].push(cnt);
+                    this.value[mode].push(cnt.toString());
                 }
             } else {
                 var val;
