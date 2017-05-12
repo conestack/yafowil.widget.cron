@@ -36,6 +36,7 @@ if (window.yafowil === undefined) {
                     select_month: 'Select Month',
                     select_dow: 'Select Day of Week',
                     select_year: 'Select Year',
+                    select_all: 'Select All',
                     monthmap: {
                         1: 'January',
                         2: 'February',
@@ -86,6 +87,7 @@ if (window.yafowil === undefined) {
                     select_month: 'Monate auswählen',
                     select_dow: 'Wochentage auswählen',
                     select_year: 'Jahre auswählen',
+                    select_all: 'Alle auswählen',
                     monthmap: {
                         1: 'Jänner',
                         2: 'Feber',
@@ -259,9 +261,42 @@ if (window.yafowil === undefined) {
                     content.append(this.make_button(cnt, cnt, mode));
                 }
             }
+            header = header.add(this.make_button_all());
             content = header.add(content);
             edit_area.html(content).attr('class', 'editarea ' + mode).show();
             container.addClass('active');
+        },
+
+        make_button_all: function() {
+            var button = $(
+                '<button class="btn btn-sm select_all">' +
+                    this.translate('select_all') +
+                '</button>'
+            );
+            var that = this;
+            button.on('click', function(evt) {
+                evt.preventDefault();
+                var $this = $(this);
+                var mode = that.get_mode(that.edit_area);
+                if ($this.hasClass('active')) {
+                    // clear
+                    $this.parent().find('.editcontainer button').each(function () {
+                        $(this).removeClass('active');
+                    });
+                    $this.removeClass('active');
+                    that.parse_part('', mode);
+                } else {
+                    // select all
+                    $this.parent().find('.editcontainer button').each(function () {
+                        $(this).removeClass('active').addClass('active');
+                    });
+                    $this.removeClass('active').addClass('active');
+                    that.parse_part('*', mode);
+                }
+                that.serialize_to_input();
+                that.update_summary();
+            });
+            return button;
         },
 
         make_button: function(value, name, mode) {

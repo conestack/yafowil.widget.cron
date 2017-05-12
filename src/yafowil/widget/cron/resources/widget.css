@@ -17,8 +17,8 @@
 .crontab.widget .editarea .active {
   background-color: yellow;
 }
-.crontab.widget .editarea .editcontainer {
-  display: inline-block;
+.crontab.widget .editarea .select_all {
+  margin: 1em 0;
 }
 .crontab.widget .editarea .editcontainer::after {
   content: "";
@@ -35,53 +35,53 @@
 .crontab.widget .editarea .editcontainer button:last-child::after {
   clear: both;
 }
-.crontab.widget .editarea.minute button {
+.crontab.widget .editarea.minute .editcontainer button {
   width: 3em;
 }
-.crontab.widget .editarea.minute button:nth-child(11),
-.crontab.widget .editarea.minute button:nth-child(21),
-.crontab.widget .editarea.minute button:nth-child(31),
-.crontab.widget .editarea.minute button:nth-child(41),
-.crontab.widget .editarea.minute button:nth-child(51) {
+.crontab.widget .editarea.minute .editcontainer button:nth-child(11),
+.crontab.widget .editarea.minute .editcontainer button:nth-child(21),
+.crontab.widget .editarea.minute .editcontainer button:nth-child(31),
+.crontab.widget .editarea.minute .editcontainer button:nth-child(41),
+.crontab.widget .editarea.minute .editcontainer button:nth-child(51) {
   clear: left;
 }
-.crontab.widget .editarea.hour button {
+.crontab.widget .editarea.hour .editcontainer button {
   width: 3em;
 }
-.crontab.widget .editarea.hour button:nth-child(13) {
+.crontab.widget .editarea.hour .editcontainer button:nth-child(13) {
   clear: left;
 }
-.crontab.widget .editarea.dow button {
+.crontab.widget .editarea.dow .editcontainer button {
   min-width: 5em;
 }
-.crontab.widget .editarea.dom button {
+.crontab.widget .editarea.dom .editcontainer button {
   width: 3em;
 }
-.crontab.widget .editarea.dom button:nth-child(8),
-.crontab.widget .editarea.dom button:nth-child(15),
-.crontab.widget .editarea.dom button:nth-child(22),
-.crontab.widget .editarea.dom button:nth-child(29) {
+.crontab.widget .editarea.dom .editcontainer button:nth-child(8),
+.crontab.widget .editarea.dom .editcontainer button:nth-child(15),
+.crontab.widget .editarea.dom .editcontainer button:nth-child(22),
+.crontab.widget .editarea.dom .editcontainer button:nth-child(29) {
   clear: left;
 }
-.crontab.widget .editarea.month button {
+.crontab.widget .editarea.month .editcontainer button {
   min-width: 7em;
 }
-.crontab.widget .editarea.month button:nth-child(4),
-.crontab.widget .editarea.month button:nth-child(7),
-.crontab.widget .editarea.month button:nth-child(10) {
+.crontab.widget .editarea.month .editcontainer button:nth-child(4),
+.crontab.widget .editarea.month .editcontainer button:nth-child(7),
+.crontab.widget .editarea.month .editcontainer button:nth-child(10) {
   clear: left;
 }
-.crontab.widget .editarea.year button {
+.crontab.widget .editarea.year .editcontainer button {
   min-width: 4em;
 }
-.crontab.widget .editarea.year button:nth-child(11),
-.crontab.widget .editarea.year button:nth-child(21),
-.crontab.widget .editarea.year button:nth-child(31),
-.crontab.widget .editarea.year button:nth-child(41),
-.crontab.widget .editarea.year button:nth-child(51),
-.crontab.widget .editarea.year button:nth-child(61),
-.crontab.widget .editarea.year button:nth-child(71),
-.crontab.widget .editarea.year button:nth-child(81),
-.crontab.widget .editarea.year button:nth-child(91) {
+.crontab.widget .editarea.year .editcontainer button:nth-child(11),
+.crontab.widget .editarea.year .editcontainer button:nth-child(21),
+.crontab.widget .editarea.year .editcontainer button:nth-child(31),
+.crontab.widget .editarea.year .editcontainer button:nth-child(41),
+.crontab.widget .editarea.year .editcontainer button:nth-child(51),
+.crontab.widget .editarea.year .editcontainer button:nth-child(61),
+.crontab.widget .editarea.year .editcontainer button:nth-child(71),
+.crontab.widget .editarea.year .editcontainer button:nth-child(81),
+.crontab.widget .editarea.year .editcontainer button:nth-child(91) {
   clear: left;
 }
