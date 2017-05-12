@@ -261,23 +261,25 @@ if (window.yafowil === undefined) {
                     content.append(this.make_button(cnt, cnt, mode));
                 }
             }
-            header = header.add(this.make_button_all());
+            header = header.add(this.make_button_all(mode));
             content = header.add(content);
             edit_area.html(content).attr('class', 'editarea ' + mode).show();
             container.addClass('active');
         },
 
-        make_button_all: function() {
+        make_button_all: function(mode) {
             var button = $(
                 '<button class="btn btn-sm select_all">' +
                     this.translate('select_all') +
                 '</button>'
             );
+            if (this.value[mode].length >= this.maxlengths()[mode]) {
+                button.addClass('active');
+            }
             var that = this;
             button.on('click', function(evt) {
                 evt.preventDefault();
                 var $this = $(this);
-                var mode = that.get_mode(that.edit_area);
                 if ($this.hasClass('active')) {
                     // clear
                     $this.parent().find('.editcontainer button').each(function () {
