@@ -11,7 +11,7 @@ if (window.yafowil === undefined) {
 }
 
 (function($, yafowil) {
-    "use strict";
+    'use strict';
 
     $(document).ready(function() {
         // initial binding
@@ -172,7 +172,7 @@ if (window.yafowil === undefined) {
                 '<p class="summary"></p>' +
             '</article>';
 
-        if (mode == 'display') {
+        if (mode === 'display') {
             this.parse($('code', root).text());
             root.append($(summary_container_template));
             this.update_summary();
@@ -281,11 +281,11 @@ if (window.yafowil === undefined) {
                 var container = that.edit_area;
                 if (elem.hasClass('active')) {
                     that.remove(elem.attr('name'), that.get_mode(container));
-                    that.serialize_to_input(elem);
+                    that.serialize_to_input();
                     elem.removeClass('active');
                 } else {
                     that.add(elem.attr('name'), that.get_mode(container));
-                    that.serialize_to_input(elem);
+                    that.serialize_to_input();
                     elem.addClass('active');
                 }
                 that.update_summary();
@@ -335,17 +335,17 @@ if (window.yafowil === undefined) {
 
         get_mode: function(elem) {
             var klass = elem.attr('class');
-            if (klass.indexOf('minute') != -1) {
+            if (klass.indexOf('minute') !== -1) {
                 return 'minute';
-            } else if (klass.indexOf('hour') != -1) {
+            } else if (klass.indexOf('hour') !== -1) {
                 return 'hour';
-            } else if (klass.indexOf('dom') != -1) {
+            } else if (klass.indexOf('dom') !== -1) {
                 return 'dom';
-            } else if (klass.indexOf('month') != -1) {
+            } else if (klass.indexOf('month') !== -1) {
                 return 'month';
-            } else if (klass.indexOf('dow') != -1) {
+            } else if (klass.indexOf('dow') !== -1) {
                 return 'dow';
-            } else if (klass.indexOf('year') != -1) {
+            } else if (klass.indexOf('year') !== -1) {
                 return 'year';
             }
         },
@@ -438,7 +438,7 @@ if (window.yafowil === undefined) {
             );
         },
 
-        serialize_to_input: function(elem) {
+        serialize_to_input: function() {
             var container = this.edit_area,
                 mode = this.get_mode(container),
                 input = $('.cron-value.' + mode + ' input', this.root);
@@ -446,21 +446,21 @@ if (window.yafowil === undefined) {
         },
 
         group_value: function(arr) {
-            var groups = new Array(),
-                group = new Array(),
+            var groups = [],
+                group = [],
                 idx,
                 nidx;
             for (idx=0; idx < arr.length; idx++) {
                 nidx = idx + 1;
-                if (idx == arr.length - 1) {
+                if (idx === arr.length - 1) {
                     group.push(arr[idx]);
                     groups.push(group);
-                } else if (parseInt(arr[idx]) + 1 == parseInt(arr[nidx])) {
+                } else if (parseInt(arr[idx]) + 1 === parseInt(arr[nidx])) {
                     group.push(arr[idx]);
                 } else {
                     group.push(arr[idx]);
                     groups.push(group);
-                    group = new Array();
+                    group = [];
                 }
             }
             return groups;
@@ -527,7 +527,7 @@ if (window.yafowil === undefined) {
                 group;
             for (idx=0; idx < groups.length; idx++) {
                 group = groups[idx];
-                if (group.length == 1) {
+                if (group.length === 1) {
                     ret += this.display_value(group[0], value_map);
                 } else {
                     ret += this.display_value(group[0], value_map);
@@ -537,7 +537,7 @@ if (window.yafowil === undefined) {
                         value_map
                     );
                 }
-                if (idx != groups.length - 1) {
+                if (idx !== groups.length - 1) {
                     ret += ', ';
                 }
             }
