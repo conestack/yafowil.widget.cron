@@ -4,7 +4,8 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- No changes yet.
+- Convert doctests to unittests.
+  [rnix]
 
 
 1.0 (2018-01-27)
