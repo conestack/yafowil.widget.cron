@@ -14,7 +14,9 @@ They can then be used with:
 Contributors
 ============
 
-- Johannes Raggam <thetetet [at] gmail [dot] com>
+- Johannes Raggam
 
-- Robert Niederrreiter <rnix [at] squarewave [dot] at>
+- Robert Niederrreiter
+
+- Georg Bernhard
 
