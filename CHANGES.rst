@@ -4,6 +4,9 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Python 3 compatibility.
+  [rnix]
+
 - Convert doctests to unittests.
   [rnix]
 
