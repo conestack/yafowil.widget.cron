@@ -4,7 +4,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '1.1'
+version = '1.2.dev0'
 shortdesc = 'Cron widget for YAFOWIL'
 longdesc = '\n\n'.join([
     open('README.rst').read(),
