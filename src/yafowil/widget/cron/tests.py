@@ -1,8 +1,10 @@
 from node.utils import UNSET
+from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.compat import IS_PY2
-from yafowil.tests import YafowilTestCase
 from yafowil.tests import fxml
+from yafowil.tests import YafowilTestCase
+from yafowil.utils import EMPTY_VALUE
 import yafowil.loader  # noqa
 
 
@@ -74,6 +76,18 @@ class TestCronWidget(YafowilTestCase):
              data-start_year='2010'
              id="input-cronwidget">...</div>
         """, widget())
+
+    def test_display_renderer(self):
+        widget = factory(
+            'cron',
+            name='cronwidget',
+            value='* * * * *',
+            mode='display')
+        self.check_output("""
+        <div class="display-crontab widget" id="display-cronwidget">
+          <code>* * * * *</code>
+        </div>
+        """, fxml(widget()))
 
     def test_extraction_empty_request(self):
         widget = factory(
@@ -164,6 +178,74 @@ class TestCronWidget(YafowilTestCase):
         self.assertEqual(
             [year.name, year.value, year.extracted, year.errors],
             ['year', UNSET, '2017', []]
+        )
+
+    def test_extraction_empty_value(self):
+        widget = factory(
+            'cron',
+            name='cronwidget')
+        request = {
+            'cronwidget.month': '',
+            'cronwidget.dom': '',
+            'cronwidget.hour': '',
+            'cronwidget.minute': '',
+            'cronwidget.dow': '',
+            'cronwidget.year': ''
+        }
+        data = widget.extract(request)
+        self.assertEqual(data.extracted, EMPTY_VALUE)
+
+        widget = factory(
+            'cron',
+            name='cronwidget',
+            props={
+                'emptyvalue': None
+            })
+        data = widget.extract(request)
+        self.assertEqual(data.extracted, None)
+
+    def test_extraction_invalid_value(self):
+        widget = factory(
+            'cron',
+            name='cronwidget')
+        request = {
+            'cronwidget.month': '*',
+            'cronwidget.dom': '',
+            'cronwidget.hour': '',
+            'cronwidget.minute': '',
+            'cronwidget.dow': '',
+            'cronwidget.year': ''
+        }
+        data = widget.extract(request)
+        msg = (
+            'Invalid cron rule. You must at least '
+            'select one item for each criteria'
+        )
+        self.assertEqual(
+            [data.name, data.value, data.extracted, data.errors],
+            ['cronwidget', UNSET, UNSET, [ExtractionError(msg)]]
+        )
+
+    def test_extraction_required_value(self):
+        widget = factory(
+            'cron',
+            name='cronwidget',
+            props={
+                'required': True
+            })
+        request = {
+            'cronwidget.month': '',
+            'cronwidget.dom': '',
+            'cronwidget.hour': '',
+            'cronwidget.minute': '',
+            'cronwidget.dow': '',
+            'cronwidget.year': ''
+        }
+        data = widget.extract(request)
+        msg = 'Mandatory field was empty'
+        self.assertEqual(
+            [data.name, data.value, data.extracted, data.errors],
+            ['cronwidget', UNSET, EMPTY_VALUE, [ExtractionError(msg)]]
         )
 
     def test_preset_values(self):
@@ -261,6 +343,29 @@ class TestCronWidget(YafowilTestCase):
             [year.name, year.value, year.extracted, year.errors],
             ['year', '2017', '*', []]
         )
+
+        value = '1 2 3 4 5'
+        widget = factory(
+            'cron',
+            name='cronwidget',
+            value=value)
+        self.check_output("""
+        ...name="cronwidget.minute" type="hidden" value="1"
+        ...name="cronwidget.hour" type="hidden" value="2"
+        ...name="cronwidget.dom" type="hidden" value="3"
+        ...name="cronwidget.month" type="hidden" value="4"
+        ...name="cronwidget.dow" type="hidden" value="5"
+        ...name="cronwidget.year" type="hidden" value="*"
+        ...
+        """, widget())
+
+        value = '1 2 3 4'
+        widget = factory(
+            'cron',
+            name='cronwidget',
+            value=value)
+        with self.assertRaises(ValueError):
+            widget()
 
     def test_in_conjunction_with_hybrid_blueprint(self):
         value = '0,10,20,30,40,50 0,6,12,18 1,15,30 3,6,9,12 1,3,5 2017,2018,2019'

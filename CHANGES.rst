@@ -4,6 +4,17 @@ Changelog
 1.2 (unreleased)
 ----------------
 
+- Add ``generix_required_extractor`` to cron widget extractors.
+  [rnix]
+
+- Raise ``ExtractionError`` if no valid cron rule can be built from received
+  data.
+  [rnix]
+
+- If no cron rule criteria gets selected, widget extraction returns
+  empty value.
+  [rnix]
+
 - Set ``persist`` to ``False`` on all subwidgets created by
   ``cron_edit_renderer`` for correct auto persistence.
   [rnix]
