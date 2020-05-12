@@ -54,7 +54,6 @@ def cron_example2():
     # Minute Hour DayOfMonth Month DayOfWeek Year
     value2 = '* * * * * *'
     cron2 = factory('cron', name='cronwidget', value=value2)
-
     return {
         'widget': cron2,
         'doc': DOC_CRON2,

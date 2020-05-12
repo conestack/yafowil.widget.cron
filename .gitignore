@@ -10,6 +10,12 @@
 /downloads/
 /var/
 /dist/
+/coverage/
+/devsrc/
+/include/
+/lib/
+/local/
+/share/
 /.installed.cfg
 /.pydevproject
 /.project

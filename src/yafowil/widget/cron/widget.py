@@ -32,10 +32,14 @@ factory.doc['blueprint']['cron_value_edit_action'] = UNSET
 
 
 def cron_extractor(widget, data):
-    minute = data.get('minute', None)
-    if not minute or minute.extracted is UNSET:
-        # If minute not set, others are empty too.
-        return UNSET
+    # instanciate subwidgets
+    widget()
+    # extract subwidgets
+    compound_extractor(widget, data)
+    # XXX: empty value and required handling
+    minute = data['minute']
+    if not minute.extracted:
+        return minute.extracted
     value = '{0} {1} {2} {3} {4} {5}'.format(
         data['minute'].extracted,
         data['hour'].extracted,
@@ -80,36 +84,42 @@ def cron_edit_renderer(widget, data):
     container['minute'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
+            'persist': False,
             'label': _('label_minute', default='Minute'),
             'div.class': 'cron-value minute'
         })
     container['hour'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
+            'persist': False,
             'label': _('label_hour', default='Hour'),
             'div.class': 'cron-value hour'
         })
     container['dom'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
+            'persist': False,
             'label': _('label_dom', default='Day of Month'),
             'div.class': 'cron-value dom'
         })
     container['month'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
+            'persist': False,
             'label': _('label_month', default='Month'),
             'div.class': 'cron-value month'
         })
     container['dow'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
+            'persist': False,
             'label': _('label_dow', default='Day of Week'),
             'div.class': 'cron-value dow'
         })
     container['year'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
+            'persist': False,
             'label': _('label_year', default='Year'),
             'div.class': 'cron-value year'
         })
@@ -133,7 +143,6 @@ def cron_display_renderer(widget, data):
 factory.register(
     'cron',
     extractors=[
-        compound_extractor,
         cron_extractor
     ],
     edit_renderers=[

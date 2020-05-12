@@ -1,10 +1,9 @@
 from node.utils import UNSET
-from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.compat import IS_PY2
 from yafowil.tests import YafowilTestCase
 from yafowil.tests import fxml
-import yafowil.loader
+import yafowil.loader  # noqa
 
 
 if not IS_PY2:
@@ -80,8 +79,6 @@ class TestCronWidget(YafowilTestCase):
         widget = factory(
             'cron',
             name='cronwidget')
-        # need to call widget in order to instanciate subwidgets
-        widget()
         data = widget.extract({})
         self.assertEqual(
             [data.name, data.value, data.extracted, data.errors],
@@ -124,8 +121,6 @@ class TestCronWidget(YafowilTestCase):
         widget = factory(
             'cron',
             name='cronwidget')
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'cronwidget.month': u'3,6,9,12',
             'cronwidget.dom': u'1,15,30',
