@@ -5,6 +5,7 @@ from yafowil.compat import IS_PY2
 from yafowil.tests import fxml
 from yafowil.tests import YafowilTestCase
 from yafowil.utils import EMPTY_VALUE
+import unittest
 import yafowil.loader  # noqa
 
 
@@ -428,4 +429,4 @@ class TestCronWidget(YafowilTestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()                                          # pragma: no cover
+    unittest.main()

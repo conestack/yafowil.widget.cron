@@ -1,16 +1,20 @@
-# -*- coding: utf-8 -*-
-"""Installer for the yafowil.widget.cron package."""
 from setuptools import find_packages
 from setuptools import setup
+import os
+
+
+def read_file(name):
+    with open(os.path.join(os.path.dirname(__file__), name)) as f:
+        return f.read()
 
 
 version = '1.3.dev0'
 shortdesc = 'Cron widget for YAFOWIL'
-longdesc = '\n\n'.join([
-    open('README.rst').read(),
-    open('CHANGES.rst').read(),
-    open('LICENSE.rst').read(),
-])
+longdesc = '\n\n'.join([read_file(name) for name in [
+    'README.rst',
+    'CHANGES.rst',
+    'LICENSE.rst'
+]])
 tests_require = ['yafowil[test]']
 
 

@@ -1,5 +1,5 @@
-Changelog
-=========
+Changes
+=======
 
 1.3 (unreleased)
 ----------------
