@@ -173,7 +173,7 @@ factory.register(
 
 factory.doc['blueprint']['cron'] = """\
 Add-on blueprint
-`yafowil.widget.cron <http://github.com/bluedynamics/yafowil.widget.cron/>`_ .
+`yafowil.widget.cron <http://github.com/conestack/yafowil.widget.cron/>`_ .
 """
 
 factory.defaults['cron.class'] = 'crontab widget'
