@@ -3,7 +3,7 @@ import {i18n} from './i18n.js';
 
 export class CronWidget {
 
-    initialize(context) {
+    static initialize(context) {
         $('.crontab.widget', context).each(function () {
             new CronWidget($(this), 'edit');
         });
@@ -204,7 +204,7 @@ export class CronWidget {
             that.pressed = false;
         });
         return button;
-    },
+    }
 
     maxlengths() {
         return {
