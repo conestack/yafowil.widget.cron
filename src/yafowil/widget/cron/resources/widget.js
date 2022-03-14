@@ -1,4 +1,4 @@
-(function (exports, $) {
+var yafowil_cron = (function (exports, $) {
     'use strict';
 
     let i18n = {
@@ -533,4 +533,3 @@
     return exports;
 
 })({}, jQuery);
-//# sourceMappingURL=widget.js.map

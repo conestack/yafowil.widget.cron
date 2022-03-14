@@ -1,10 +1,11 @@
 Changes
 =======
 
-1.3 (unreleased)
+2.0 (unreleased)
 ----------------
 
-- No changes yet.
+- Rewrite JavaScript using ES6.
+  [rnix]
 
 
 1.2 (2020-05-30)

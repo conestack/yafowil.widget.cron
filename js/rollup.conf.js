@@ -17,15 +17,14 @@ export default args => {
             cleanup()
         ],
         output: [{
+            name: 'yafowil_cron',
             file: `${out_dir}/widget.js`,
             format: 'iife',
             outro: outro,
             globals: {
                 jquery: 'jQuery'
             },
-            interop: 'default',
-            sourcemap: true,
-            sourcemapExcludeSources: true
+            interop: 'default'
         }],
         external: [
             'jquery'
@@ -33,6 +32,7 @@ export default args => {
     };
     if (args.configDebug !== true) {
         conf.output.push({
+            name: 'yafowil_cron',
             file: `${out_dir}/widget.min.js`,
             format: 'iife',
             plugins: [
@@ -42,9 +42,7 @@ export default args => {
             globals: {
                 jquery: 'jQuery'
             },
-            interop: 'default',
-            sourcemap: true,
-            sourcemapExcludeSources: true
+            interop: 'default'
         });
     }
     return conf;
