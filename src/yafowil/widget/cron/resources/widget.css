@@ -3,6 +3,7 @@
   display: table;
   clear: both;
 }
+
 .crontab.widget .cron-value {
   display: inline-block;
   margin-right: 2px;
@@ -13,27 +14,6 @@
 .crontab.widget .editarea {
   display: none;
   width: 100%;
-}
-.crontab.widget .editarea .active {
-  background-color: yellow;
-}
-.crontab.widget .editarea .select_all {
-  margin: 1em 0;
-}
-.crontab.widget .editarea .editcontainer::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.crontab.widget .editarea .editcontainer button {
-  display: block;
-  vertical-align: top;
-  float: left;
-  margin: 0 2px 2px 0;
-  padding: 0.4em;
-}
-.crontab.widget .editarea .editcontainer button:last-child::after {
-  clear: both;
 }
 .crontab.widget .editarea.minute .editcontainer button {
   width: 3em;
@@ -85,3 +65,27 @@
 .crontab.widget .editarea.year .editcontainer button:nth-child(91) {
   clear: left;
 }
+.crontab.widget .editarea .active {
+  background-color: var(--yafowil-accent-color, #0d6efd);
+  color: var(--yafowil-accent-font-color, #fff);
+}
+.crontab.widget .editarea .select_all {
+  margin: 1em 0;
+}
+.crontab.widget .editarea .editcontainer::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.crontab.widget .editarea .editcontainer button {
+  display: block;
+  vertical-align: top;
+  float: left;
+  margin: 0 2px 2px 0;
+  padding: 0.4em;
+}
+.crontab.widget .editarea .editcontainer button:last-child::after {
+  clear: both;
+}
+
+/*# sourceMappingURL=widget.css.map */
