@@ -118,11 +118,11 @@ var yafowil_cron = (function (exports, $) {
         constructor(root, mode) {
             this.root = root;
             this.mode = mode;
-            var lang = root.data('lang');
+            let lang = root.data('lang');
             this.lang = lang ? lang : 'en';
-            var start_year = root.data('start_year');
+            let start_year = root.data('start_year');
             this.start_year = start_year ? start_year : new Date().getFullYear();
-            var end_year = root.data('end_year');
+            let end_year = root.data('end_year');
             this.end_year = end_year ? end_year : new Date().getFullYear() + 9;
             this.pressed = false;
             this.value = {
@@ -133,7 +133,7 @@ var yafowil_cron = (function (exports, $) {
                 dow: [],
                 year: []
             };
-            var summary_container_template =
+            let summary_container_template =
                 '<article class="crontab_summary">' +
                     '<strong>' + this.translate('summary') + '</strong>' +
                     '<p class="summary"></p>' +
@@ -144,7 +144,7 @@ var yafowil_cron = (function (exports, $) {
                 this.update_summary();
                 return;
             }
-            var that = this;
+            let that = this;
             $('input[type="hidden"]', root).each(function () {
                 that.parse_from_input($(this));
             });
@@ -163,7 +163,7 @@ var yafowil_cron = (function (exports, $) {
             });
         }
         show_edit_section(trigger) {
-            var cnt,
+            let cnt,
                 edit_area = this.edit_area,
                 container = this.get_edit_section(trigger),
                 mode = this.get_mode(container);
@@ -172,7 +172,7 @@ var yafowil_cron = (function (exports, $) {
                 edit_area.attr('class', 'editarea').html('').hide();
                 return;
             }
-            var header = $('<h4 />'),
+            let header = $('<h4 />'),
                 content = $('<div class="editcontainer" />');
             if (mode === 'minute') {
                 header.text(this.translate('select_minutes'));
@@ -181,7 +181,7 @@ var yafowil_cron = (function (exports, $) {
                 }
             } else if (mode === 'hour') {
                 header.text(this.translate('select_hours'));
-                var hour;
+                let hour;
                 for (cnt=1; cnt <= 24; cnt++) {
                     hour = cnt < 24 ? cnt : 0;
                     content.append(this.make_button(hour, hour, mode));
@@ -193,13 +193,13 @@ var yafowil_cron = (function (exports, $) {
                 }
             } else if (mode === 'month') {
                 header.text(this.translate('select_month'));
-                var monthmap = this.monthmap();
+                let monthmap = this.monthmap();
                 for (cnt=1; cnt <= 12; cnt++) {
                     content.append(this.make_button(cnt, monthmap[cnt], mode));
                 }
             } else if (mode === 'dow') {
                 header.text(this.translate('select_dow'));
-                var dowmap = this.dowmap(),
+                let dowmap = this.dowmap(),
                     dow;
                 for (cnt=1; cnt <= 7; cnt++) {
                     dow = cnt < 7 ? cnt : 0;
@@ -217,7 +217,7 @@ var yafowil_cron = (function (exports, $) {
             container.addClass('active');
         }
         make_button_all(mode) {
-            var button = $(
+            let button = $(
                 '<button class="btn btn-sm select_all">' +
                     this.translate('select_all') +
                 '</button>'
@@ -225,10 +225,10 @@ var yafowil_cron = (function (exports, $) {
             if (this.value[mode].length >= this.maxlengths()[mode]) {
                 button.addClass('active');
             }
-            var that = this;
+            let that = this;
             button.on('click', function(evt) {
                 evt.preventDefault();
-                var $this = $(this);
+                let $this = $(this);
                 if ($this.hasClass('active')) {
                     $this.parent().find('.editcontainer button').each(function () {
                         $(this).removeClass('active');
@@ -248,7 +248,7 @@ var yafowil_cron = (function (exports, $) {
             return button;
         }
         make_button(value, name, mode) {
-            var button = $(
+            let button = $(
                 '<button class="btn btn-sm" name=' + value + '>' +
                     name +
                 '</button>'
@@ -256,11 +256,11 @@ var yafowil_cron = (function (exports, $) {
             if (this.has(value, mode)) {
                 button.addClass('active');
             }
-            var that = this;
-            var handler = function(evt) {
+            let that = this;
+            let handler = function(evt) {
                 evt.preventDefault();
-                var elem = $(this);
-                var container = that.edit_area;
+                let elem = $(this);
+                let container = that.edit_area;
                 if (elem.hasClass('active')) {
                     that.remove(elem.attr('name'), that.get_mode(container));
                     that.serialize_to_input();
@@ -309,7 +309,7 @@ var yafowil_cron = (function (exports, $) {
             return elem.closest('.cron-value');
         }
         get_mode(elem) {
-            var klass = elem.attr('class');
+            let klass = elem.attr('class');
             if (klass.indexOf('minute') !== -1) {
                 return 'minute';
             } else if (klass.indexOf('hour') !== -1) {
@@ -328,7 +328,7 @@ var yafowil_cron = (function (exports, $) {
             this.value[mode].push(value.toString());
         }
         remove(value, mode) {
-            var index = this.value[mode].indexOf(value.toString());
+            let index = this.value[mode].indexOf(value.toString());
             if (index > -1) {
                 this.value[mode].splice(index, 1);
             }
@@ -353,9 +353,9 @@ var yafowil_cron = (function (exports, $) {
                 value = value.split(',');
             }
             this.value[mode] = [];
-            var cnt;
+            let cnt;
             if (value[0] === '*') {
-                var start, end;
+                let start, end;
                 if (mode === 'minute') {
                     start = 0; end = 59;
                 } else if (mode === 'hour') {
@@ -374,7 +374,7 @@ var yafowil_cron = (function (exports, $) {
                     this.value[mode].push(cnt.toString());
                 }
             } else {
-                var val;
+                let val;
                 for (cnt=0; cnt < value.length; cnt++) {
                     val = value[cnt];
                     if (val === '') {
@@ -386,11 +386,11 @@ var yafowil_cron = (function (exports, $) {
             }
         }
         serialize(mode) {
-            var vals = this.value[mode];
+            let vals = this.value[mode];
             vals.sort(function(a, b) {
                 return parseInt(a, 10) - parseInt(b, 10);
             });
-            var maxlength = this.maxlengths()[mode];
+            let maxlength = this.maxlengths()[mode];
             if (vals.length >= maxlength) {
                 return '*';
             } else {
@@ -404,13 +404,13 @@ var yafowil_cron = (function (exports, $) {
             );
         }
         serialize_to_input() {
-            var container = this.edit_area,
+            let container = this.edit_area,
                 mode = this.get_mode(container),
                 input = $('.cron-value.' + mode + ' input', this.root);
             input.val(this.serialize(mode));
         }
         group_value(arr) {
-            var groups = [],
+            let groups = [],
                 group = [],
                 idx,
                 nidx;
@@ -464,7 +464,7 @@ var yafowil_cron = (function (exports, $) {
         }
         format_part(value_name, no_values_selected, values_selected,
                     all_values_selected, value_map) {
-            var value = this.value[value_name],
+            let value = this.value[value_name],
                 value_len = value.length,
                 max_len = this.maxlengths()[value_name],
                 ret;
@@ -481,7 +481,7 @@ var yafowil_cron = (function (exports, $) {
             return ret;
         }
         format_groups(groups, value_map) {
-            var ret = '',
+            let ret = '',
                 idx,
                 group;
             for (idx=0; idx < groups.length; idx++) {
