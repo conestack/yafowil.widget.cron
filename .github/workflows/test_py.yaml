@@ -1,7 +1,9 @@
-name: Test cron
+name: PY Test cron
 
 on:
   push:
+    paths:
+    - '**.py'
 
 jobs:
   test:

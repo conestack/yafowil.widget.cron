@@ -29,6 +29,19 @@ module.exports = function(config) {
             'progress',
             'coverage'
         ],
+        coverageReporter: {
+            reporters: [
+                {
+                    type: 'json-summary',
+                    dir: 'coverage/',
+                    subdir: '.'
+                }, {
+                    type: 'html',
+                    dir: 'coverage/',
+                    subdir: 'chrome-headless'
+                }
+            ]
+        },
         preprocessors: {
             '../src/*.js': [
                 'coverage',
