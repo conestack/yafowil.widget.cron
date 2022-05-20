@@ -13,6 +13,7 @@ export class CronWidget {
     }
 
     constructor(root, mode) {
+        root.data('yafowil-cron', this);
         this.root = root;
         this.mode = mode;
 
