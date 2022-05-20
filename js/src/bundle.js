@@ -8,6 +8,8 @@ export * from './widget.js';
 $(function() {
     if (window.ts !== undefined) {
         ts.ajax.register(CronWidget.initialize, true);
+    } else if (window.bdajax !== undefined) {
+        bdajax.register(CronWidget.initialize, true);
     } else {
         CronWidget.initialize();
     }
