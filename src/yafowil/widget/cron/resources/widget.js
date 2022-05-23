@@ -116,6 +116,7 @@ var yafowil_cron = (function (exports, $) {
             });
         }
         constructor(root, mode) {
+            root.data('yafowil-cron', this);
             this.root = root;
             this.mode = mode;
             let lang = root.data('lang');
@@ -513,6 +514,8 @@ var yafowil_cron = (function (exports, $) {
     $(function() {
         if (window.ts !== undefined) {
             ts.ajax.register(CronWidget.initialize, true);
+        } else if (window.bdajax !== undefined) {
+            bdajax.register(CronWidget.initialize, true);
         } else {
             CronWidget.initialize();
         }
@@ -524,9 +527,7 @@ var yafowil_cron = (function (exports, $) {
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    if (window.yafowil === undefined) {
-        window.yafowil = {};
-    }
+    window.yafowil = window.yafowil || {};
     window.yafowil.cron = exports;
 
 
