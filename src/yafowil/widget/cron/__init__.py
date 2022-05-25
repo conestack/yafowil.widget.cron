@@ -13,7 +13,10 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 
 # webresource ################################################################
 
-scripts = wr.ResourceGroup(name='yafowil-cron-scripts')
+scripts = wr.ResourceGroup(
+    name='yafowil-cron-scripts',
+    path='yafowil.widget.cron'
+)
 scripts.add(wr.ScriptResource(
     name='yafowil-cron-js',
     depends='jquery-js',
@@ -22,7 +25,10 @@ scripts.add(wr.ScriptResource(
     compressed='widget.min.js'
 ))
 
-styles = wr.ResourceGroup(name='yafowil-cron-styles')
+styles = wr.ResourceGroup(
+    name='yafowil-cron-styles',
+    path='yafowil.widget.cron'
+)
 styles.add(wr.StyleResource(
     name='yafowil-cron-css',
     directory=resources_dir,
