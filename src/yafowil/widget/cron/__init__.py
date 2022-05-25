@@ -13,7 +13,7 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 
 # webresource ################################################################
 
-scripts = wr.ResourceGroup(name='scripts')
+scripts = wr.ResourceGroup(name='yafowil-cron-scripts')
 scripts.add(wr.ScriptResource(
     name='yafowil-cron-js',
     depends='jquery-js',
@@ -22,16 +22,12 @@ scripts.add(wr.ScriptResource(
     compressed='widget.min.js'
 ))
 
-styles = wr.ResourceGroup(name='styles')
+styles = wr.ResourceGroup(name='yafowil-cron-styles')
 styles.add(wr.StyleResource(
     name='yafowil-cron-css',
     directory=resources_dir,
     resource='widget.css'
 ))
-
-resources = wr.ResourceGroup(name='cron-resources')
-resources.add(scripts)
-resources.add(styles)
 
 # B/C resources ##############################################################
 
@@ -58,5 +54,7 @@ def register():
     # Default
     factory.register_theme(
         'default', 'yafowil.widget.cron', resources_dir,
-        js=js, css=css, resources=resources
+        js=js, css=css
     )
+    factory.register_scripts('default', 'yafowil.widget.cron', scripts)
+    factory.register_styles('default', 'yafowil.widget.cron', styles)
