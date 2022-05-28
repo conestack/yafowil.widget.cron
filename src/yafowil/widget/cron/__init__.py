@@ -13,25 +13,19 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 
 # webresource ################################################################
 
-scripts = wr.ResourceGroup(
-    name='yafowil-cron-scripts',
-    path='yafowil.widget.cron'
+resources = wr.ResourceGroup(
+    name='yafowil-cron-resources',
+    directory=resources_dir,
+    path='yafowil-cron'
 )
-scripts.add(wr.ScriptResource(
+resources.add(wr.ScriptResource(
     name='yafowil-cron-js',
     depends='jquery-js',
-    directory=resources_dir,
     resource='widget.js',
     compressed='widget.min.js'
 ))
-
-styles = wr.ResourceGroup(
-    name='yafowil-cron-styles',
-    path='yafowil.widget.cron'
-)
-styles.add(wr.StyleResource(
+resources.add(wr.StyleResource(
     name='yafowil-cron-css',
-    directory=resources_dir,
     resource='widget.css'
 ))
 
@@ -57,10 +51,14 @@ css = [{
 def register():
     from yafowil.widget.cron import widget  # noqa
 
+    widget_name = 'yafowil.widget.cron'
+
     # Default
     factory.register_theme(
-        'default', 'yafowil.widget.cron', resources_dir,
-        js=js, css=css
+        'default',
+        widget_name,
+        resources_dir,
+        js=js,
+        css=css
     )
-    factory.register_scripts('default', 'yafowil.widget.cron', scripts)
-    factory.register_styles('default', 'yafowil.widget.cron', styles)
+    factory.register_resources('default', widget_name, resources)
