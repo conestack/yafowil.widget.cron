@@ -25,7 +25,7 @@ class TestCronWidget(YafowilTestCase):
         widget = factory(
             'cron',
             name='cronwidget')
-        self.check_output("""
+        self.checkOutput("""
         <div class="crontab widget" id="input-cronwidget">
           <div class="cron-value minute">
             <input class="hidden" id="input-cronwidget-minute"
@@ -70,7 +70,7 @@ class TestCronWidget(YafowilTestCase):
                 'start_year': 2010,
                 'end_year': 2020
             })
-        self.check_output("""
+        self.checkOutput("""
         <div class="crontab widget"
              data-end_year='2020'
              data-lang='de'
@@ -84,7 +84,7 @@ class TestCronWidget(YafowilTestCase):
             name='cronwidget',
             value='* * * * *',
             mode='display')
-        self.check_output("""
+        self.checkOutput("""
         <div class="display-crontab widget" id="display-cronwidget">
           <code>* * * * *</code>
         </div>
@@ -255,7 +255,7 @@ class TestCronWidget(YafowilTestCase):
             'cron',
             name='cronwidget',
             value=value)
-        self.check_output("""
+        self.checkOutput("""
         ...name="cronwidget.minute" type="hidden" value="0,10,20,30,40,50"
         ...name="cronwidget.hour" type="hidden" value="0,6,12,18"
         ...name="cronwidget.dom" type="hidden" value="1,15,30"
@@ -350,7 +350,7 @@ class TestCronWidget(YafowilTestCase):
             'cron',
             name='cronwidget',
             value=value)
-        self.check_output("""
+        self.checkOutput("""
         ...name="cronwidget.minute" type="hidden" value="1"
         ...name="cronwidget.hour" type="hidden" value="2"
         ...name="cronwidget.dom" type="hidden" value="3"
@@ -378,7 +378,7 @@ class TestCronWidget(YafowilTestCase):
                 'leaf': True,
                 'div.class': 'wrapper-div'
             })
-        self.check_output("""
+        self.checkOutput("""
         <div class="wrapper-div"><div class="crontab widget" ...>...</div></div>
         """, widget())
 
