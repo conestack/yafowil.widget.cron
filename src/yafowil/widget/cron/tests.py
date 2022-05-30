@@ -22,7 +22,8 @@ class TestCronWidget(YafowilTestCase):
     def setUp(self):
         super(TestCronWidget, self).setUp()
         from yafowil.widget import cron
-        reload(cron.widget)
+        from yafowil.widget.cron import widget
+        reload(widget)
         cron.register()
 
     def test_edit_renderer(self):
