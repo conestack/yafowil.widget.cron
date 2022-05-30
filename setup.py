@@ -15,7 +15,6 @@ longdesc = '\n\n'.join([read_file(name) for name in [
     'CHANGES.rst',
     'LICENSE.rst'
 ]])
-tests_require = ['yafowil[test]']
 
 
 setup(
@@ -49,10 +48,14 @@ setup(
         'crontab',
         'yafowil>2.2',
     ],
-    tests_require=tests_require,
-    extras_require=dict(
-        test=tests_require,
-    ),
+    tests_require=[
+        'lxml',
+        'zope.testrunner'
+    ],
+    extras_require=dict(test=[
+        'lxml',
+        'zope.testrunner'
+    ]),
     test_suite="yafowil.widget.cron.tests",
     entry_points="""
     [yafowil.plugin]

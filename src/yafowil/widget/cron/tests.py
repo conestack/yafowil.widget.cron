@@ -437,6 +437,7 @@ class TestCronWidget(YafowilTestCase):
         factory.theme = 'default'
         resources = factory.get_resources('yafowil.widget.cron')
         self.assertTrue(resources.directory.endswith(np('/cron/resources')))
+        self.assertEqual(resources.name, 'yafowil.widget.cron')
         self.assertEqual(resources.path, 'yafowil-cron')
 
         scripts = resources.scripts

@@ -14,7 +14,7 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 # webresource ################################################################
 
 resources = wr.ResourceGroup(
-    name='yafowil-cron-resources',
+    name='yafowil.widget.cron',
     directory=resources_dir,
     path='yafowil-cron'
 )
