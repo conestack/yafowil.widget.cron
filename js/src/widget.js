@@ -5,9 +5,15 @@ export class CronWidget {
 
     static initialize(context) {
         $('.crontab.widget', context).each(function () {
+            if ($(this).parents('.arraytemplate').length) {
+                return;
+            }
             new CronWidget($(this), 'edit');
         });
         $('.display-crontab.widget', context).each(function () {
+            if ($(this).parents('.arraytemplate').length) {
+                return;
+            }
             new CronWidget($(this), 'display');
         });
     }
@@ -451,3 +457,18 @@ export class CronWidget {
         return value;
     }
 };
+
+//////////////////////////////////////////////////////////////////////////////
+// yafowil.widget.array integration
+//////////////////////////////////////////////////////////////////////////////
+
+export function cron_on_array_add(inst, context) {
+    CronWidget.initialize(context);
+}
+
+export function register_array_subscribers() {
+    if (window.yafowil_array === undefined) {
+        return;
+    }
+    window.yafowil_array.on_array_event('on_add', cron_on_array_add);
+}
