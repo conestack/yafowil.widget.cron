@@ -109,10 +109,20 @@ var yafowil_cron = (function (exports, $) {
     class CronWidget {
         static initialize(context) {
             $('.crontab.widget', context).each(function () {
-                new CronWidget($(this), 'edit');
+                let elem = $(this);
+                if (window.yafowil_array !== undefined &&
+                    window.yafowil_array.inside_template(elem)) {
+                    return;
+                }
+                new CronWidget(elem, 'edit');
             });
             $('.display-crontab.widget', context).each(function () {
-                new CronWidget($(this), 'display');
+                let elem = $(this);
+                if (window.yafowil_array !== undefined &&
+                    window.yafowil_array.inside_template(elem)) {
+                    return;
+                }
+                new CronWidget(elem, 'display');
             });
         }
         constructor(root, mode) {
@@ -509,6 +519,14 @@ var yafowil_cron = (function (exports, $) {
             }
             return value;
         }
+    }function cron_on_array_add(inst, context) {
+        CronWidget.initialize(context);
+    }
+    function register_array_subscribers() {
+        if (window.yafowil_array === undefined) {
+            return;
+        }
+        window.yafowil_array.on_array_event('on_add', cron_on_array_add);
     }
 
     $(function() {
@@ -519,10 +537,13 @@ var yafowil_cron = (function (exports, $) {
         } else {
             CronWidget.initialize();
         }
+        register_array_subscribers();
     });
 
     exports.CronWidget = CronWidget;
+    exports.cron_on_array_add = cron_on_array_add;
     exports.i18n = i18n;
+    exports.register_array_subscribers = register_array_subscribers;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

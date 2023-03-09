@@ -5,10 +5,20 @@ export class CronWidget {
 
     static initialize(context) {
         $('.crontab.widget', context).each(function () {
-            new CronWidget($(this), 'edit');
+            let elem = $(this);
+            if (window.yafowil_array !== undefined &&
+                window.yafowil_array.inside_template(elem)) {
+                return;
+            }
+            new CronWidget(elem, 'edit');
         });
         $('.display-crontab.widget', context).each(function () {
-            new CronWidget($(this), 'display');
+            let elem = $(this);
+            if (window.yafowil_array !== undefined &&
+                window.yafowil_array.inside_template(elem)) {
+                return;
+            }
+            new CronWidget(elem, 'display');
         });
     }
 
@@ -451,3 +461,18 @@ export class CronWidget {
         return value;
     }
 };
+
+//////////////////////////////////////////////////////////////////////////////
+// yafowil.widget.array integration
+//////////////////////////////////////////////////////////////////////////////
+
+export function cron_on_array_add(inst, context) {
+    CronWidget.initialize(context);
+}
+
+export function register_array_subscribers() {
+    if (window.yafowil_array === undefined) {
+        return;
+    }
+    window.yafowil_array.on_array_event('on_add', cron_on_array_add);
+}
