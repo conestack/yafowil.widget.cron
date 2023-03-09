@@ -5,7 +5,8 @@ export class CronWidget {
 
     static initialize(context) {
         $('.crontab.widget', context).each(function () {
-            if ($(this).parents('.arraytemplate').length) {
+            if (window.yafowil_array !== undefined &&
+                window.yafowil_array.inside_template($(this))) {
                 return;
             }
             new CronWidget($(this), 'edit');
