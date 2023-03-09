@@ -109,17 +109,20 @@ var yafowil_cron = (function (exports, $) {
     class CronWidget {
         static initialize(context) {
             $('.crontab.widget', context).each(function () {
+                let elem = $(this);
                 if (window.yafowil_array !== undefined &&
-                    window.yafowil_array.inside_template($(this))) {
+                    window.yafowil_array.inside_template(elem)) {
                     return;
                 }
-                new CronWidget($(this), 'edit');
+                new CronWidget(elem, 'edit');
             });
             $('.display-crontab.widget', context).each(function () {
-                if ($(this).parents('.arraytemplate').length) {
+                let elem = $(this);
+                if (window.yafowil_array !== undefined &&
+                    window.yafowil_array.inside_template(elem)) {
                     return;
                 }
-                new CronWidget($(this), 'display');
+                new CronWidget(elem, 'display');
             });
         }
         constructor(root, mode) {
