@@ -20,3 +20,4 @@ Contributors
 
 - Georg Bernhard
 
+- Lena Daxenbichler

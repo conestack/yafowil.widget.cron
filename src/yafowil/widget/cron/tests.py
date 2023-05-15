@@ -5,27 +5,33 @@ from yafowil.compat import IS_PY2
 from yafowil.tests import fxml
 from yafowil.tests import YafowilTestCase
 from yafowil.utils import EMPTY_VALUE
+import os
 import unittest
-import yafowil.loader  # noqa
 
 
 if not IS_PY2:
     from importlib import reload
 
 
+def np(path):
+    return path.replace('/', os.path.sep)
+
+
 class TestCronWidget(YafowilTestCase):
 
     def setUp(self):
         super(TestCronWidget, self).setUp()
+        from yafowil.widget import cron
         from yafowil.widget.cron import widget
         reload(widget)
+        cron.register()
 
     def test_edit_renderer(self):
         # Render widget
         widget = factory(
             'cron',
             name='cronwidget')
-        self.check_output("""
+        self.checkOutput("""
         <div class="crontab widget" id="input-cronwidget">
           <div class="cron-value minute">
             <input class="hidden" id="input-cronwidget-minute"
@@ -70,7 +76,7 @@ class TestCronWidget(YafowilTestCase):
                 'start_year': 2010,
                 'end_year': 2020
             })
-        self.check_output("""
+        self.checkOutput("""
         <div class="crontab widget"
              data-end_year='2020'
              data-lang='de'
@@ -84,7 +90,7 @@ class TestCronWidget(YafowilTestCase):
             name='cronwidget',
             value='* * * * *',
             mode='display')
-        self.check_output("""
+        self.checkOutput("""
         <div class="display-crontab widget" id="display-cronwidget">
           <code>* * * * *</code>
         </div>
@@ -255,7 +261,7 @@ class TestCronWidget(YafowilTestCase):
             'cron',
             name='cronwidget',
             value=value)
-        self.check_output("""
+        self.checkOutput("""
         ...name="cronwidget.minute" type="hidden" value="0,10,20,30,40,50"
         ...name="cronwidget.hour" type="hidden" value="0,6,12,18"
         ...name="cronwidget.dom" type="hidden" value="1,15,30"
@@ -350,7 +356,7 @@ class TestCronWidget(YafowilTestCase):
             'cron',
             name='cronwidget',
             value=value)
-        self.check_output("""
+        self.checkOutput("""
         ...name="cronwidget.minute" type="hidden" value="1"
         ...name="cronwidget.hour" type="hidden" value="2"
         ...name="cronwidget.dom" type="hidden" value="3"
@@ -378,7 +384,7 @@ class TestCronWidget(YafowilTestCase):
                 'leaf': True,
                 'div.class': 'wrapper-div'
             })
-        self.check_output("""
+        self.checkOutput("""
         <div class="wrapper-div"><div class="crontab widget" ...>...</div></div>
         """, widget())
 
@@ -426,6 +432,29 @@ class TestCronWidget(YafowilTestCase):
             [year.name, year.value, year.extracted, year.errors],
             ['year', '2017,2018,2019', '*', []]
         )
+
+    def test_resources(self):
+        factory.theme = 'default'
+        resources = factory.get_resources('yafowil.widget.cron')
+        self.assertTrue(resources.directory.endswith(np('/cron/resources')))
+        self.assertEqual(resources.name, 'yafowil.widget.cron')
+        self.assertEqual(resources.path, 'yafowil-cron')
+
+        scripts = resources.scripts
+        self.assertEqual(len(scripts), 1)
+
+        self.assertTrue(scripts[0].directory.endswith(np('/cron/resources')))
+        self.assertEqual(scripts[0].path, 'yafowil-cron')
+        self.assertEqual(scripts[0].file_name, 'widget.min.js')
+        self.assertTrue(os.path.exists(scripts[0].file_path))
+
+        styles = resources.styles
+        self.assertEqual(len(styles), 1)
+
+        self.assertTrue(styles[0].directory.endswith(np('/cron/resources')))
+        self.assertEqual(styles[0].path, 'yafowil-cron')
+        self.assertEqual(styles[0].file_name, 'widget.css')
+        self.assertTrue(os.path.exists(styles[0].file_path))
 
 
 if __name__ == '__main__':

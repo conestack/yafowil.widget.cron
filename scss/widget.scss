@@ -1,0 +1,126 @@
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.crontab.widget {
+  .cron-value {
+    display: inline-block;
+    margin-right: 2px;
+  }
+  .crontab_summary {
+    margin-top: 1em;
+  }
+  .editarea {
+    display: none;
+    width: 100%;
+
+    &.minute {
+      .editcontainer {
+        button {
+          width: 3em;
+        }
+        button:nth-child(11),
+        button:nth-child(21),
+        button:nth-child(31),
+        button:nth-child(41),
+        button:nth-child(51) {
+          clear: left;
+        }
+      }
+    }
+
+    &.hour {
+      .editcontainer {
+        button {
+          width: 3em;
+        }
+        button:nth-child(13) {
+          clear: left;
+        }
+      }
+    }
+
+    &.dow {
+      .editcontainer {
+        button {
+          min-width: 5em;
+        }
+      }
+    }
+
+    &.dom {
+      .editcontainer {
+        button {
+          width: 3em;
+        }
+        button:nth-child(8),
+        button:nth-child(15),
+        button:nth-child(22),
+        button:nth-child(29) {
+          clear: left;
+        }
+      }
+    }
+
+    &.month {
+      .editcontainer {
+        button {
+          min-width: 7em;
+        }
+        button:nth-child(4),
+        button:nth-child(7),
+        button:nth-child(10) {
+          clear: left;
+        }
+      }
+    }
+
+    &.year {
+      .editcontainer {
+        button {
+          min-width: 4em;
+        }
+        button:nth-child(11),
+        button:nth-child(21),
+        button:nth-child(31),
+        button:nth-child(41),
+        button:nth-child(51),
+        button:nth-child(61),
+        button:nth-child(71),
+        button:nth-child(81),
+        button:nth-child(91) {
+          clear: left;
+        }
+      }
+    }
+
+    .active {
+      background-color: var(--yafowil-accent-color, #0d6efd);
+      color: var(--yafowil-accent-font-color, #fff);
+    }
+    .select_all {
+      margin: 1em 0;
+    }
+    .editcontainer {
+      &::after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      button {
+        display: block;
+        vertical-align: top;
+        float: left;
+        margin: 0 2px 2px 0;
+        padding: 0.4em;
+
+        &:last-child::after {
+          clear: both;
+        }
+      }
+    }
+  }
+}
+

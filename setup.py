@@ -8,14 +8,13 @@ def read_file(name):
         return f.read()
 
 
-version = '1.3.dev0'
+version = '2.0a2.dev0'
 shortdesc = 'Cron widget for YAFOWIL'
 longdesc = '\n\n'.join([read_file(name) for name in [
     'README.rst',
     'CHANGES.rst',
     'LICENSE.rst'
 ]])
-tests_require = ['yafowil[test]']
 
 
 setup(
@@ -49,10 +48,14 @@ setup(
         'crontab',
         'yafowil>2.2',
     ],
-    tests_require=tests_require,
-    extras_require=dict(
-        test=tests_require,
-    ),
+    tests_require=[
+        'lxml',
+        'zope.testrunner'
+    ],
+    extras_require=dict(test=[
+        'lxml',
+        'zope.testrunner'
+    ]),
     test_suite="yafowil.widget.cron.tests",
     entry_points="""
     [yafowil.plugin]
