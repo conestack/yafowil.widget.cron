@@ -145,10 +145,12 @@ var yafowil_cron = (function (exports, $) {
                 year: []
             };
             let summary_container_template =
-                '<article class="crontab_summary">' +
-                    '<strong>' + this.translate('summary') + '</strong>' +
+            '<article class="card crontab_summary">' +
+                '<div class="card-body">' +
+                    '<h5 class="card-title">' + this.translate('summary') + '</h5>' +
                     '<p class="summary"></p>' +
-                '</article>';
+                '</div>' +
+            '</article>';
             if (mode === 'display') {
                 this.parse($('code', root).text());
                 root.append($(summary_container_template));
@@ -171,10 +173,12 @@ var yafowil_cron = (function (exports, $) {
             });
             $('button.edit', root).on('click', function(evt) {
                 evt.preventDefault();
+                $('button.edit', root).removeClass('active');
                 that.show_edit_section($(this));
             });
         }
         show_edit_section(trigger) {
+            trigger.addClass('active');
             let cnt,
                 edit_area = this.edit_area,
                 container = this.get_edit_section(trigger),
@@ -230,7 +234,7 @@ var yafowil_cron = (function (exports, $) {
         }
         make_button_all(mode) {
             let button = $(
-                '<button class="btn btn-sm select_all">' +
+                '<button class="btn btn-outline-primary select_all">' +
                     this.translate('select_all') +
                 '</button>'
             );
@@ -261,7 +265,7 @@ var yafowil_cron = (function (exports, $) {
         }
         make_button(value, name, mode) {
             let button = $(
-                '<button class="btn btn-sm" name=' + value + '>' +
+                '<button class="btn btn-outline-secondary" name=' + value + '>' +
                     name +
                 '</button>'
             );
@@ -472,25 +476,30 @@ var yafowil_cron = (function (exports, $) {
                     'year', 'no_year_selected',
                     'selected_years', 'all_years_selected'
                 )
-            ].join('<br/>');
+            ].join('');
         }
         format_part(value_name, no_values_selected, values_selected,
                     all_values_selected, value_map) {
             let value = this.value[value_name],
                 value_len = value.length,
                 max_len = this.maxlengths()[value_name],
-                ret;
+                ret,
+                ret_values = '';
             if (value_len === 0) {
                 ret = this.translate(no_values_selected);
             } else if (value_len < max_len) {
-                ret = this.translate(values_selected) + this.format_groups(
+                ret = this.translate(values_selected);
+                ret_values = this.format_groups(
                     this.group_value(value),
                     value_map
                 );
             } else {
                 ret = this.translate(all_values_selected);
             }
-            return ret;
+            return '<div class="d-flex gap-3">' +
+                    `<h6 class="col-3 m-0">${ret}</h6>` +
+                    `<span class="col-9">${ret_values}</span>` +
+                '</div>';
         }
         format_groups(groups, value_map) {
             let ret = '',

@@ -44,6 +44,37 @@ css = [{
 
 
 ##############################################################################
+# Bootstrap 5
+##############################################################################
+
+# webresource ################################################################
+
+bootstrap5_resources = wr.ResourceGroup(
+    name='yafowil.widget.cron',
+    directory=resources_dir,
+    path='yafowil-cron'
+)
+bootstrap5_resources.add(wr.ScriptResource(
+    name='yafowil-cron-js',
+    depends='jquery-js',
+    resource='bootstrap5/widget.js',
+    # compressed='widget.min.js'
+))
+bootstrap5_resources.add(wr.StyleResource(
+    name='yafowil-cron-css',
+    resource='widget.css'
+))
+
+# B/C resources ##############################################################
+
+bootstrap5_js = [{
+    'group': 'yafowil.widget.cron.common',
+    'resource': 'bootstrap5/widget.js',
+    'order': 21,
+}]
+
+
+##############################################################################
 # Registration
 ##############################################################################
 
@@ -62,3 +93,18 @@ def register():
         css=css
     )
     factory.register_resources('default', widget_name, resources)
+
+    # Bootstrap 5
+    factory.register_theme(
+        ['bootstrap5'],
+        widget_name,
+        resources_dir,
+        js=bootstrap5_js,
+        css=css
+    )
+
+    factory.register_resources(
+        ['bootstrap5'],
+        widget_name,
+        bootstrap5_resources
+    )
