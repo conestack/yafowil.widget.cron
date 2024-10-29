@@ -1,5 +1,6 @@
 import cleanup from 'rollup-plugin-cleanup';
-import {terser} from 'rollup-plugin-terser';
+import postcss from 'rollup-plugin-postcss';
+import terser from '@rollup/plugin-terser';
 
 const out_dir = 'src/yafowil/widget/cron/resources';
 
@@ -43,5 +44,22 @@ export default args => {
             interop: 'default'
         });
     }
-    return conf;
+    let scss = {
+        input: ['scss/widget.scss'],
+        output: [{
+            file: `${out_dir}/widget.css`,
+            format: 'es',
+            plugins: [terser()], // Optional: Minify the output
+        }],
+        plugins: [
+            postcss({
+                extract: true,
+                minimize: true,
+                use: [
+                    ['sass', { outputStyle: 'compressed' }],
+                ],
+            }),
+        ],
+    };
+    return [conf, scss];
 };

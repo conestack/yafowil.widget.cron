@@ -48,15 +48,10 @@ setup(
         'crontab',
         'yafowil>2.2',
     ],
-    tests_require=[
-        'lxml',
-        'zope.testrunner'
-    ],
     extras_require=dict(test=[
         'lxml',
-        'zope.testrunner'
+        'pytest'
     ]),
-    test_suite="yafowil.widget.cron.tests",
     entry_points="""
     [yafowil.plugin]
     register = yafowil.widget.cron:register
