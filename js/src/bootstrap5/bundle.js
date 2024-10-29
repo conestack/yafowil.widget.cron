@@ -3,7 +3,7 @@ import $ from 'jquery';
 import {CronWidget} from './widget.js';
 import {register_array_subscribers} from './widget.js';
 
-export * from '../i18n.js';
+export * from '../default/i18n.js';
 export * from './widget.js';
 
 $(function() {

@@ -1,5 +1,6 @@
-import {CronWidget} from "../src/widget";
-import {register_array_subscribers} from "../src/widget";
+import {CronWidget} from "../src/default/widget";
+import {register_array_subscribers} from "../src/default/widget";
+import $ from 'jquery';
 
 QUnit.test('initialize', assert => {
     let el = $('<div />').addClass('crontab').addClass('widget');

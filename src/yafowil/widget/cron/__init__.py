@@ -21,24 +21,24 @@ resources = wr.ResourceGroup(
 resources.add(wr.ScriptResource(
     name='yafowil-cron-js',
     depends='jquery-js',
-    resource='widget.js',
-    compressed='widget.min.js'
+    resource='default/widget.js',
+    compressed='default/widget.min.js'
 ))
 resources.add(wr.StyleResource(
     name='yafowil-cron-css',
-    resource='widget.css'
+    resource='default/widget.css'
 ))
 
 # B/C resources ##############################################################
 
 js = [{
     'group': 'yafowil.widget.cron.common',
-    'resource': 'widget.js',
+    'resource': 'default/widget.js',
     'order': 21,
 }]
 css = [{
     'group': 'yafowil.widget.cron.common',
-    'resource': 'widget.css',
+    'resource': 'default/widget.css',
     'order': 21,
 }]
 
@@ -62,7 +62,7 @@ bootstrap5_resources.add(wr.ScriptResource(
 ))
 bootstrap5_resources.add(wr.StyleResource(
     name='yafowil-cron-css',
-    resource='widget.css'
+    resource='default/widget.css'
 ))
 
 # B/C resources ##############################################################
