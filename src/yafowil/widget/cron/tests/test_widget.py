@@ -472,17 +472,17 @@ class TestCronWidget(YafowilTestCase):
         scripts = resources.scripts
         self.assertEqual(len(scripts), 1)
 
-        self.assertTrue(scripts[0].directory.endswith(np('/cron/resources')))
+        self.assertTrue(scripts[0].directory.endswith(np('/cron/resources/default')))
         self.assertEqual(scripts[0].path, 'yafowil-cron')
-        self.assertEqual(scripts[0].file_name, 'default/widget.min.js')
+        self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
         self.assertEqual(len(styles), 1)
 
-        self.assertTrue(styles[0].directory.endswith(np('/cron/resources')))
+        self.assertTrue(styles[0].directory.endswith(np('/cron/resources/default')))
         self.assertEqual(styles[0].path, 'yafowil-cron')
-        self.assertEqual(styles[0].file_name, 'default/widget.css')
+        self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
 
 
