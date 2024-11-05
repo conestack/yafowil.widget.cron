@@ -3,6 +3,9 @@ import {i18n} from '../default/i18n.js';
 
 export class CronWidget {
 
+    /**
+     * @param {HTMLElement} context - DOM context for initialization.
+     */
     static initialize(context) {
         $('.crontab.widget', context).each(function () {
             let elem = $(this);
@@ -22,6 +25,10 @@ export class CronWidget {
         });
     }
 
+    /**
+     * @param {jQuery} root - The root element for this widget.
+     * @param {string} mode - The mode of the widget ('edit' or 'display').
+     */
     constructor(root, mode) {
         root.data('yafowil-cron', this);
         this.root = root;
@@ -48,12 +55,12 @@ export class CronWidget {
         };
 
         let summary_container_template =
-        '<article class="card crontab_summary">' +
-            '<div class="card-body">' +
-                '<h5 class="card-title">' + this.translate('summary') + '</h5>' +
-                '<p class="summary"></p>' + 
-            '</div>' +
-        '</article>';
+            '<article class="card crontab_summary">' +
+                '<div class="card-body">' +
+                    '<h5 class="card-title">' + this.translate('summary') + '</h5>' +
+                    '<p class="summary"></p>' + 
+                '</div>' +
+            '</article>';
 
         if (mode === 'display') {
             this.parse($('code', root).text());
@@ -89,6 +96,11 @@ export class CronWidget {
         });
     }
 
+    /**
+     * Displays the edit section corresponding to the clicked button.
+     * 
+     * @param {jQuery} trigger - The button that triggered this action.
+     */
     show_edit_section(trigger) {
         trigger.addClass('active');
         let cnt,
@@ -147,6 +159,12 @@ export class CronWidget {
         container.addClass('active');
     }
 
+    /**
+     * Creates a button that selects or clears all options for a given mode.
+     * 
+     * @param {string} mode - The mode for which to create the button.
+     * @returns {jQuery} - The button element.
+     */
     make_button_all(mode) {
         let button = $(
             '<button class="btn btn-outline-primary select_all">' +
@@ -181,6 +199,14 @@ export class CronWidget {
         return button;
     }
 
+    /**
+     * Creates a button for a specific value.
+     * 
+     * @param {string} value - The value for the button.
+     * @param {string} name - The text to display on the button.
+     * @param {string} mode - The mode for which the button is created.
+     * @returns {jQuery} - The button element.
+     */
     make_button(value, name, mode) {
         let button = $(
             '<button class="btn btn-outline-secondary" name=' + value + '>' +
@@ -223,6 +249,11 @@ export class CronWidget {
         return button;
     }
 
+    /**
+     * Returns the maximum number of selectable values for each mode.
+     * 
+     * @returns {Object} - An object containing maximum values for each mode.
+     */
     maxlengths() {
         return {
             minute: 60,
@@ -234,22 +265,51 @@ export class CronWidget {
         };
     }
 
+    /**
+     * Translates a message key into the corresponding language string.
+     * 
+     * @param {string} msg - The message key to translate.
+     * @returns {string} - The translated string.
+     */
     translate(msg) {
         return i18n[this.lang][msg];
     }
 
+
+    /**
+     * Gets the month mapping for the current language.
+     * 
+     * @returns {Object} - An object mapping month numbers to their names in the current language.
+     */
     monthmap() {
         return i18n[this.lang].monthmap;
     }
 
+    /**
+     * Gets the day of the week mapping for the current language.
+     * 
+     * @returns {Object} - An object mapping day of week numbers to their names in the current language.
+     */
     dowmap() {
         return i18n[this.lang].dowmap;
     }
 
+    /**
+     * Gets the closest edit section for the specified element.
+     * 
+     * @param {jQuery} elem - The jQuery element from which to find the closest section.
+     * @returns {jQuery} - The closest section element.
+     */
     get_edit_section(elem) {
         return elem.closest('.cron-value');
     }
 
+    /**
+     * Determines the mode of the specified edit section element.
+     * 
+     * @param {jQuery} elem - The jQuery element to check the mode for.
+     * @returns {string} - The mode of the element.
+     */
     get_mode(elem) {
         let klass = elem.attr('class');
         if (klass.indexOf('minute') !== -1) {
@@ -267,10 +327,22 @@ export class CronWidget {
         }
     }
 
+    /**
+     * Adds a value to the specified mode.
+     * 
+     * @param {string} value - The value to add.
+     * @param {string} mode - The mode to add the value to.
+     */
     add(value, mode) {
         this.value[mode].push(value.toString());
     }
 
+    /**
+     * Removes a value from the specified mode.
+     * 
+     * @param {string} value - The value to remove.
+     * @param {string} mode - The mode to remove the value from.
+     */
     remove(value, mode) {
         let index = this.value[mode].indexOf(value.toString());
         if (index > -1) {
@@ -278,10 +350,22 @@ export class CronWidget {
         }
     }
 
+    /**
+     * Checks if a value exists in the specified mode.
+     * 
+     * @param {string} value - The value to check for.
+     * @param {string} mode - The mode to check against.
+     * @returns {boolean} - True if the value exists, otherwise false.
+     */
     has(value, mode) {
         return this.value[mode].indexOf(value.toString()) > -1;
     }
 
+    /**
+     * Parses a cron expression string and updates the widget values.
+     * 
+     * @param {string} value - The cron expression to parse.
+     */
     parse(value) {
         value = value.split(' ');
         if (value.length === 5) {
@@ -296,6 +380,12 @@ export class CronWidget {
         this.parse_part(value[5].trim(), 'year');
     }
 
+    /**
+     * Parses a specific part of the cron expression and updates the corresponding mode values.
+     * 
+     * @param {string} value - The value to parse for the mode.
+     * @param {string} mode - The mode to update with the parsed values.
+     */
     parse_part(value, mode) {
         if (typeof value === 'string') {
             value = value.split(',');
@@ -334,6 +424,12 @@ export class CronWidget {
         }
     }
 
+    /**
+     * Serializes the values of a specified mode into a cron expression format.
+     * 
+     * @param {string} mode - The mode to serialize.
+     * @returns {string} - The serialized part for the mode.
+     */
     serialize(mode) {
         let vals = this.value[mode];
         vals.sort(function(a, b) {
@@ -348,6 +444,11 @@ export class CronWidget {
         }
     }
 
+    /**
+     * Parses values from an input element.
+     * 
+     * @param {jQuery} input - The input element to parse values from.
+     */
     parse_from_input(input) {
         this.parse_part(
             input.val(),
@@ -355,6 +456,9 @@ export class CronWidget {
         );
     }
 
+    /**
+     * Serializes the current values into hidden input elements.
+     */
     serialize_to_input() {
         let container = this.edit_area,
             mode = this.get_mode(container),
@@ -362,6 +466,12 @@ export class CronWidget {
         input.val(this.serialize(mode));
     }
 
+    /**
+     * Groups consecutive values in an array into sub-arrays.
+     * 
+     * @param {Array} arr - The array of values to group.
+     * @returns {Array} - An array of grouped value arrays.
+     */
     group_value(arr) {
         let groups = [],
             group = [],
@@ -383,10 +493,18 @@ export class CronWidget {
         return groups;
     }
 
+    /**
+     * Updates the summary display in the widget.
+     */
     update_summary() {
         $('.crontab_summary .summary', this.root).html(this.summarize());
     }
 
+    /**
+     * Summarizes and formats the current values.
+     * 
+     * @returns {string} - HTML string containing the summary of values.
+     */
     summarize() {
         return [
             this.format_part(
@@ -418,6 +536,16 @@ export class CronWidget {
         ].join('');
     }
 
+    /**
+     * Formats a specific part of the summary display.
+     * 
+     * @param {string} value_name - The name of the value category.
+     * @param {string} no_values_selected - Translation key for no values selected message.
+     * @param {string} values_selected - Translation key for selected values message.
+     * @param {string} all_values_selected - Translation key for all values selected message.
+     * @param {Object} [value_map] - An optional map for displaying value names.
+     * @returns {string} - The formatted HTML string for the value part.
+     */
     format_part(value_name, no_values_selected, values_selected,
                 all_values_selected, value_map) {
         let value = this.value[value_name],
@@ -442,6 +570,13 @@ export class CronWidget {
             '</div>';
     }
 
+    /**
+     * Formats groups of values into a display string.
+     * 
+     * @param {Array} groups - The grouped values to format.
+     * @param {Object} value_map - A mapping for displaying value names.
+     * @returns {string} - The formatted string for the groups.
+     */
     format_groups(groups, value_map) {
         let ret = '',
             idx,
@@ -465,6 +600,13 @@ export class CronWidget {
         return ret;
     }
 
+    /**
+     * Displays the value using the value map or returns the original value.
+     * 
+     * @param {string} value - The value to display.
+     * @param {Object} [value_map] - An optional map for displaying value names.
+     * @returns {string} - The display string for the value.
+     */
     display_value(value, value_map) {
         if (value_map) {
             return value_map[value];
@@ -477,10 +619,16 @@ export class CronWidget {
 // yafowil.widget.array integration
 //////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Re-initializes widget on array add event.
+ */
 export function cron_on_array_add(inst, context) {
     CronWidget.initialize(context);
 }
 
+/**
+ * Registers subscribers to yafowil array events.
+ */
 export function register_array_subscribers() {
     if (window.yafowil_array === undefined) {
         return;
