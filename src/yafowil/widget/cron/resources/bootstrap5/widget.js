@@ -145,12 +145,12 @@ var yafowil_cron = (function (exports, $) {
                 year: []
             };
             let summary_container_template =
-            '<article class="card crontab_summary">' +
-                '<div class="card-body">' +
-                    '<h5 class="card-title">' + this.translate('summary') + '</h5>' +
-                    '<p class="summary"></p>' +
-                '</div>' +
-            '</article>';
+                '<article class="card crontab_summary">' +
+                    '<div class="card-body">' +
+                        '<h5 class="card-title">' + this.translate('summary') + '</h5>' +
+                        '<p class="summary"></p>' +
+                    '</div>' +
+                '</article>';
             if (mode === 'display') {
                 this.parse($('code', root).text());
                 root.append($(summary_container_template));
@@ -185,6 +185,8 @@ var yafowil_cron = (function (exports, $) {
                 mode = this.get_mode(container);
             if (edit_area.is(':visible') && edit_area.hasClass(mode)) {
                 container.removeClass('active');
+                trigger.removeClass('active');
+                trigger.blur();
                 edit_area.attr('class', this.editarea_cls).html('').hide();
                 return;
             }

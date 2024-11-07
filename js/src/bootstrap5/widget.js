@@ -4,6 +4,8 @@ import {i18n} from '../default/i18n.js';
 export class CronWidget {
 
     /**
+     * Initializes each widget in the given DOM context.
+     * 
      * @param {HTMLElement} context - DOM context for initialization.
      */
     static initialize(context) {
@@ -109,6 +111,8 @@ export class CronWidget {
             mode = this.get_mode(container);
         if (edit_area.is(':visible') && edit_area.hasClass(mode)) {
             container.removeClass('active');
+            trigger.removeClass('active');
+            trigger.blur();
             edit_area.attr('class', this.editarea_cls).html('').hide();
             return;
         }
@@ -279,7 +283,8 @@ export class CronWidget {
     /**
      * Gets the month mapping for the current language.
      * 
-     * @returns {Object} - An object mapping month numbers to their names in the current language.
+     * @returns {Object} - An object mapping month numbers to their names
+     *                     in the current language.
      */
     monthmap() {
         return i18n[this.lang].monthmap;
@@ -288,7 +293,8 @@ export class CronWidget {
     /**
      * Gets the day of the week mapping for the current language.
      * 
-     * @returns {Object} - An object mapping day of week numbers to their names in the current language.
+     * @returns {Object} - An object mapping day of week numbers to their names
+     *                     in the current language.
      */
     dowmap() {
         return i18n[this.lang].dowmap;
@@ -297,7 +303,8 @@ export class CronWidget {
     /**
      * Gets the closest edit section for the specified element.
      * 
-     * @param {jQuery} elem - The jQuery element from which to find the closest section.
+     * @param {jQuery} elem - The jQuery element from which to find
+     *                        the closest section.
      * @returns {jQuery} - The closest section element.
      */
     get_edit_section(elem) {
@@ -305,7 +312,7 @@ export class CronWidget {
     }
 
     /**
-     * Determines the mode of the specified edit section element.
+     * Acquires the mode of the specified edit section element.
      * 
      * @param {jQuery} elem - The jQuery element to check the mode for.
      * @returns {string} - The mode of the element.
@@ -381,7 +388,8 @@ export class CronWidget {
     }
 
     /**
-     * Parses a specific part of the cron expression and updates the corresponding mode values.
+     * Parses a specific part of the cron expression and updates the
+     * corresponding mode values.
      * 
      * @param {string} value - The value to parse for the mode.
      * @param {string} mode - The mode to update with the parsed values.
