@@ -6,6 +6,8 @@
 #: core.mxenv
 #: core.mxfiles
 #: core.packages
+#: i18n.gettext
+#: i18n.lingua
 #: js.nodejs
 #: js.rollup
 #: js.wtr
@@ -181,6 +183,33 @@ COVERAGE_COMMAND?=\
 		-m pytest src/yafowil/widget/cron/tests \
 	&& $(VENV_FOLDER)/bin/coverage report --fail-under=99
 
+## i18n.gettext
+
+# Path of directory containing the message catalogs.
+# Default: locale
+GETTEXT_LOCALES_PATH?=src/yafowil/widget/cron/locales
+
+# Translation domain to use.
+# No default value.
+GETTEXT_DOMAIN?=yafowil.widget.cron
+
+# Space separated list of language identifiers.
+# No default value.
+GETTEXT_LANGUAGES?=de en
+
+## i18n.lingua
+
+# Path of directory to extract translatable texts from.
+# Default: src
+LINGUA_SEARCH_PATH?=src
+
+# Python packages containing lingua extensions.
+# No default value.
+LINGUA_PLUGINS?=
+
+# Command line options passed to `pot-create`
+# No default value.
+LINGUA_OPTIONS?=
 
 ##############################################################################
 # END SETTINGS - DO NOT EDIT BELOW THIS LINE
@@ -528,6 +557,82 @@ coverage-clean: coverage-dirty
 INSTALL_TARGETS+=$(COVERAGE_TARGET)
 DIRTY_TARGETS+=coverage-dirty
 CLEAN_TARGETS+=coverage-clean
+
+##############################################################################
+# gettext
+##############################################################################
+
+# case `system.dependencies` domain is included
+SYSTEM_DEPENDENCIES+=gettext
+
+.PHONY: gettext-create
+gettext-create:
+	@if [ ! -e "$(GETTEXT_LOCALES_PATH)/$(GETTEXT_DOMAIN).pot" ]; then \
+		echo "Create pot file"; \
+		mkdir -p "$(GETTEXT_LOCALES_PATH)"; \
+		touch "$(GETTEXT_LOCALES_PATH)/$(GETTEXT_DOMAIN).pot"; \
+	fi
+	@for lang in $(GETTEXT_LANGUAGES); do \
+		if [ ! -e "$(GETTEXT_LOCALES_PATH)/$$lang/LC_MESSAGES/$(GETTEXT_DOMAIN).po" ]; then \
+			mkdir -p "$(GETTEXT_LOCALES_PATH)/$$lang/LC_MESSAGES"; \
+			msginit \
+				-i "$(GETTEXT_LOCALES_PATH)/$(GETTEXT_DOMAIN).pot" \
+				-o "$(GETTEXT_LOCALES_PATH)/$$lang/LC_MESSAGES/$(GETTEXT_DOMAIN).po" \
+				-l $$lang; \
+		fi \
+	done
+
+.PHONY: gettext-update
+gettext-update:
+	@echo "Update translations"
+	@for lang in $(GETTEXT_LANGUAGES); do \
+		msgmerge -o \
+			"$(GETTEXT_LOCALES_PATH)/$$lang/LC_MESSAGES/$(GETTEXT_DOMAIN).po" \
+			"$(GETTEXT_LOCALES_PATH)/$$lang/LC_MESSAGES/$(GETTEXT_DOMAIN).po" \
+			"$(GETTEXT_LOCALES_PATH)/$(GETTEXT_DOMAIN).pot"; \
+	done
+
+.PHONY: gettext-compile
+gettext-compile:
+	@echo "Compile message catalogs"
+	@for lang in $(GETTEXT_LANGUAGES); do \
+		msgfmt --statistics -o \
+			"$(GETTEXT_LOCALES_PATH)/$$lang/LC_MESSAGES/$(GETTEXT_DOMAIN).mo" \
+			"$(GETTEXT_LOCALES_PATH)/$$lang/LC_MESSAGES/$(GETTEXT_DOMAIN).po"; \
+	done
+
+##############################################################################
+# lingua
+##############################################################################
+
+LINGUA_TARGET:=$(SENTINEL_FOLDER)/lingua.sentinel
+$(LINGUA_TARGET): $(MXENV_TARGET)
+	@echo "Install Lingua"
+	@$(PYTHON_PACKAGE_COMMAND) install chameleon lingua $(LINGUA_PLUGINS)
+	@touch $(LINGUA_TARGET)
+
+PHONY: lingua-extract
+lingua-extract: $(LINGUA_TARGET)
+	@echo "Extract messages"
+	@pot-create \
+		"$(LINGUA_SEARCH_PATH)" $(LINGUA_OPTIONS) \
+		-o "$(GETTEXT_LOCALES_PATH)/$(GETTEXT_DOMAIN).pot"
+
+PHONY: lingua
+lingua: gettext-create lingua-extract gettext-update gettext-compile
+
+.PHONY: lingua-dirty
+lingua-dirty:
+	@rm -f $(LINGUA_TARGET)
+
+.PHONY: lingua-clean
+lingua-clean: lingua-dirty
+	@test -e $(MXENV_PYTHON) && $(MXENV_PYTHON) -m pip uninstall -y \
+		chameleon lingua $(LINGUA_PLUGINS) || :
+
+INSTALL_TARGETS+=$(LINGUA_TARGET)
+DIRTY_TARGETS+=lingua-dirty
+CLEAN_TARGETS+=lingua-clean
 
 ##############################################################################
 # Custom includes

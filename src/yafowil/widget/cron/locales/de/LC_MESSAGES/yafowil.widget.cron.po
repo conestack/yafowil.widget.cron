@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-05-10 13:40+0200\n"
+"POT-Creation-Date: 2025-03-21 10:47+0100\n"
 "PO-Revision-Date: 2017-05-10 13:37+0200\n"
 "Last-Translator: Robert Niederreiter <rnix@squarewave.at>\n"
 "Language-Team: German\n"
@@ -15,32 +15,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/yafowil/widget/cron/widget.py:61
+msgid "invalid_cron_rule"
+msgstr ""
+"Ungültige Cron-Regel. Wählen Sie mindestens ein Element für jedes Kriterium."
+
 #. Default: Minute
-#: src/yafowil/widget/cron/widget.py:78
+#: src/yafowil/widget/cron/widget.py:123
 msgid "label_minute"
 msgstr "Minute"
 
 #. Default: Hour
-#: src/yafowil/widget/cron/widget.py:84
+#: src/yafowil/widget/cron/widget.py:131
 msgid "label_hour"
 msgstr "Stunde"
 
 #. Default: Day of Month
-#: src/yafowil/widget/cron/widget.py:90
+#: src/yafowil/widget/cron/widget.py:139
 msgid "label_dom"
 msgstr "Monatstag"
 
 #. Default: Month
-#: src/yafowil/widget/cron/widget.py:96
+#: src/yafowil/widget/cron/widget.py:147
 msgid "label_month"
 msgstr "Monat"
 
 #. Default: Day of Week
-#: src/yafowil/widget/cron/widget.py:102
+#: src/yafowil/widget/cron/widget.py:155
 msgid "label_dow"
 msgstr "Wochentag"
 
 #. Default: Year
-#: src/yafowil/widget/cron/widget.py:108
+#: src/yafowil/widget/cron/widget.py:163
 msgid "label_year"
 msgstr "Jahr"
