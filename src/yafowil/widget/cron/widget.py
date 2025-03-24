@@ -174,9 +174,13 @@ def cron_edit_renderer(widget, data):
 
 def cron_display_renderer(widget, data):
     value = fetch_value(widget, data)
+    cssclasses = [
+        attr_value("display_class", widget, data),
+        f'display-{attr_value("class", widget, data) or "generic"}'
+    ]
     attrs = {
         'id': cssid(widget, 'display'),
-        'class_': 'display-%s' % attr_value('class', widget, data)
+        'class_': ' '.join([_ for _ in cssclasses if _ is not None])
     }
     return data.tag('div', data.tag('code', value), **attrs)
 
