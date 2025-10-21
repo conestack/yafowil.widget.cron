@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yafowil.widget.cron"
+version = "2.0a2.dev0"
+description = "Cron widget for YAFOWIL"
+readme = "README.rst"
+license = {text = "Simplified BSD"}
+authors = [{name = "Yafowil Contributors", email = "dev@conestack.org"}]
+classifiers = [
+    "License :: OSI Approved :: BSD License",
+    "Environment :: Web Environment",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+]
+dependencies = [
+    "crontab",
+    "yafowil>2.2",
+]
+
+[project.optional-dependencies]
+test = [
+    "lxml",
+    "pytest",
+]
+
+[project.entry-points."yafowil.plugin"]
+register = "yafowil.widget.cron:register"
+example = "yafowil.widget.cron.example:get_example"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.zest-releaser]
+create-wheel = true
