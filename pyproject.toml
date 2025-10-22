@@ -14,11 +14,12 @@ classifiers = [
     "Environment :: Web Environment",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
-    "Programming Language :: Python :: 2.7",
-    "Programming Language :: Python :: 3.5",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
 ]
 dependencies = [
     "crontab",
@@ -34,7 +35,6 @@ test = [
 [project.entry-points."yafowil.plugin"]
 register = "yafowil.widget.cron:register"
 example = "yafowil.widget.cron.example:get_example"
-
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/yafowil"]
