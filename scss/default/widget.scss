@@ -98,6 +98,7 @@
 
     .active {
       background-color: var(--yafowil-accent-color, #0d6efd);
+      border-color: var(--yafowil-accent-color, #0d6efd);
       color: var(--yafowil-accent-font-color, #fff);
     }
     .select_all {
@@ -111,7 +112,7 @@
       }
       button {
         display: block;
-        vertical-align: top;
+        border-radius: 2px;
         float: left;
         margin: 0 2px 2px 0;
         padding: 0.4em;

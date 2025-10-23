@@ -34,6 +34,7 @@ var yafowil_cron = (function (exports, $) {
                 0: 'Sunday'
             },
             summary: 'Summary',
+            no_times_selected: 'No times selected',
             no_minutes_selected: 'No minutes selected',
             selected_minutes: 'Minutes: ',
             all_minutes_selected: 'Every minute',
@@ -85,6 +86,7 @@ var yafowil_cron = (function (exports, $) {
                 0: 'Sonntag'
             },
             summary: 'Zusammenfassung',
+            no_times_selected: 'Keine Zeiten ausgewählt',
             no_minutes_selected: 'Keine Minuten ausgewählt',
             selected_minutes: 'Minuten: ',
             all_minutes_selected: 'Jede Minute',
@@ -162,6 +164,7 @@ var yafowil_cron = (function (exports, $) {
             root.append($(summary_container_template));
             this.update_summary();
             this.edit_area = $('.editarea', root);
+            this.editarea_cls = this.edit_area.attr('class');
             this.edit_area.on('mousedown touchstart', function (evt) {
                 that.pressed = true;
             });
@@ -180,7 +183,7 @@ var yafowil_cron = (function (exports, $) {
                 mode = this.get_mode(container);
             if (edit_area.is(':visible') && edit_area.hasClass(mode)) {
                 container.removeClass('active');
-                edit_area.attr('class', 'editarea').html('').hide();
+                edit_area.attr('class', this.editarea_cls).html('').hide();
                 return;
             }
             let header = $('<h4 />'),
@@ -224,7 +227,7 @@ var yafowil_cron = (function (exports, $) {
             }
             header = header.add(this.make_button_all(mode));
             content = header.add(content);
-            edit_area.html(content).attr('class', 'editarea ' + mode).show();
+            edit_area.html(content).attr('class', this.editarea_cls + ' ' + mode).show();
             container.addClass('active');
         }
         make_button_all(mode) {

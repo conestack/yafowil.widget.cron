@@ -70,6 +70,8 @@ export class CronWidget {
         this.update_summary();
 
         this.edit_area = $('.editarea', root);
+        this.editarea_cls = this.edit_area.attr('class');
+
         this.edit_area.on('mousedown touchstart', function (evt) {
             that.pressed = true;
         });
@@ -91,7 +93,7 @@ export class CronWidget {
             mode = this.get_mode(container);
         if (edit_area.is(':visible') && edit_area.hasClass(mode)) {
             container.removeClass('active');
-            edit_area.attr('class', 'editarea').html('').hide();
+            edit_area.attr('class', this.editarea_cls).html('').hide();
             return;
         }
         let header = $('<h4 />'),
@@ -137,7 +139,7 @@ export class CronWidget {
         }
         header = header.add(this.make_button_all(mode));
         content = header.add(content);
-        edit_area.html(content).attr('class', 'editarea ' + mode).show();
+        edit_area.html(content).attr('class', this.editarea_cls + ' ' + mode).show();
         container.addClass('active');
     }
 

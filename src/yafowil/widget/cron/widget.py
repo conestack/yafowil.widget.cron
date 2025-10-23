@@ -17,13 +17,14 @@ from yafowil.utils import managedprops
 _ = TSF('yafowil.widget.cron')
 
 
+@managedprops('edit_btn_class')
 def cron_value_edit_action_renderer(widget, data):
     """Renders cron value edit button.
     """
     return data.rendered + data.tag(
         'button',
         attr_value('label', widget, data),
-        class_='btn btn-sm edit'
+        class_=attr_value('btn.class', widget, data)
     )
 
 
@@ -97,61 +98,89 @@ def cron_edit_renderer(widget, data):
                 'end_year': attr_value('end_year', widget, data)
             }
         })
-    container['minute'] = factory(
+    edit_container = container['edit-container'] = factory(
+        'div',
+        props={
+            'structural': True,
+            'class': attr_value('edit_container_class', widget, data)
+        })
+    options_container = edit_container['options'] = factory(
+        'div',
+        props={
+            'structural': True,
+            'class': attr_value('options_container_class', widget, data)
+        })
+    options_header = options_container['options_header'] = factory(
+        'div',
+        props={
+            'structural': True,
+            'class': attr_value('options_header_class', widget, data)
+        })
+    options_header['minute'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
             'persist': False,
             'label': _('label_minute', default='Minute'),
-            'div.class': 'cron-value minute'
+            'div.class': 'cron-value minute',
+            'btn.class': attr_value('edit_btn_class', widget, data)
         })
-    container['hour'] = factory(
+    options_header['hour'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
             'persist': False,
             'label': _('label_hour', default='Hour'),
-            'div.class': 'cron-value hour'
+            'div.class': 'cron-value hour',
+            'btn.class': attr_value('edit_btn_class', widget, data)
         })
-    container['dom'] = factory(
+    options_header['dom'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
             'persist': False,
             'label': _('label_dom', default='Day of Month'),
-            'div.class': 'cron-value dom'
+            'div.class': 'cron-value dom',
+            'btn.class': attr_value('edit_btn_class', widget, data)
         })
-    container['month'] = factory(
+    options_header['month'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
             'persist': False,
             'label': _('label_month', default='Month'),
-            'div.class': 'cron-value month'
+            'div.class': 'cron-value month',
+            'btn.class': attr_value('edit_btn_class', widget, data)
         })
-    container['dow'] = factory(
+    options_header['dow'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
             'persist': False,
             'label': _('label_dow', default='Day of Week'),
-            'div.class': 'cron-value dow'
+            'div.class': 'cron-value dow',
+            'btn.class': attr_value('edit_btn_class', widget, data)
         })
-    container['year'] = factory(
+    options_header['year'] = factory(
         'div:cron_value_edit_action:hidden',
         props={
             'persist': False,
             'label': _('label_year', default='Year'),
-            'div.class': 'cron-value year'
+            'div.class': 'cron-value year',
+            'btn.class': attr_value('edit_btn_class', widget, data)
         })
-    container['editarea'] = factory(
+    edit_container['editarea'] = factory(
         'div',
         props={
             'structural': True,
-            'class': 'editarea',
+            'class': attr_value('editarea_class', widget, data),
         })
 
 
 def cron_display_renderer(widget, data):
     value = fetch_value(widget, data)
+    cssclasses = [
+        attr_value("display_class", widget, data),
+        f'display-{attr_value("class", widget, data) or "generic"}'
+    ]
     attrs = {
         'id': cssid(widget, 'display'),
-        'class_': 'display-%s' % attr_value('class', widget, data)
+        'class_': ' '.join([_ for _ in cssclasses if _ is not None])
     }
     return data.tag('div', data.tag('code', value), **attrs)
 
@@ -179,6 +208,31 @@ Add-on blueprint
 factory.defaults['cron.class'] = 'crontab widget'
 factory.doc['props']['cron.class'] = """\
 CSS classes for cron widget wrapper DOM element.
+"""
+
+factory.defaults['cron.edit_container_class'] = 'edit-container'
+factory.doc['props']['cron.edit_container_class'] = """\
+CSS classes for cron widget editarea wrapper DOM element.
+"""
+
+factory.defaults['cron.options_container_class'] = ''
+factory.doc['props']['cron.options_container_class'] = """\
+CSS classes for cron widget edit options wrapper DOM element.
+"""
+
+factory.defaults['cron.options_header_class'] = ''
+factory.doc['props']['cron.options_header_class'] = """\
+CSS classes for cron widget edit options header DOM element.
+"""
+
+factory.defaults['cron.edit_btn_class'] = 'btn btn-sm edit'
+factory.doc['props']['cron.edit_btn_class'] = """\
+CSS classes for cron widget edit button DOM elements.
+"""
+
+factory.defaults['cron.editarea_class'] = 'editarea'
+factory.doc['props']['cron.editarea_class'] = """\
+CSS classes for cron widget editarea DOM element.
 """
 
 factory.defaults['cron.lang'] = None
