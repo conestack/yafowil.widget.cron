@@ -33,37 +33,66 @@ class TestCronWidget(YafowilTestCase):
             name='cronwidget')
         self.checkOutput("""
         <div class="crontab widget" id="input-cronwidget">
-          <div class="cron-value minute">
-            <input class="hidden" id="input-cronwidget-minute"
-                   name="cronwidget.minute" type="hidden" value=""/>
-            <button class="btn btn-sm edit">Minute</button>
+          <div class="edit-container">
+            <div>
+              <div>
+                <div class="cron-value minute">
+                  <input class="hidden" id="input-cronwidget-minute" name="cronwidget.minute" type="hidden" value=""/>
+                  <button class="btn btn-sm edit">Minute</button>
+                </div>
+                <div class="cron-value hour">
+                  <input class="hidden" id="input-cronwidget-hour" name="cronwidget.hour" type="hidden" value=""/>
+                  <button class="btn btn-sm edit">Hour</button>
+                </div>
+                <div class="cron-value dom">
+                  <input class="hidden" id="input-cronwidget-dom" name="cronwidget.dom" type="hidden" value=""/>
+                  <button class="btn btn-sm edit">Day of Month</button>
+                </div>
+                <div class="cron-value month">
+                  <input class="hidden" id="input-cronwidget-month" name="cronwidget.month" type="hidden" value=""/>
+                  <button class="btn btn-sm edit">Month</button>
+                </div>
+                <div class="cron-value dow">
+                  <input class="hidden" id="input-cronwidget-dow" name="cronwidget.dow" type="hidden" value=""/>
+                  <button class="btn btn-sm edit">Day of Week</button>
+                </div>
+                <div class="cron-value year">
+                  <input class="hidden" id="input-cronwidget-year" name="cronwidget.year" type="hidden" value=""/>
+                  <button class="btn btn-sm edit">Year</button>
+                </div>
+              </div>
+            </div>
+            <div class="editarea">
+              <div>
+                <div>
+                  <div class="cron-value minute">
+                    <input class="hidden" id="input-cronwidget-minute" name="cronwidget.minute" type="hidden" value=""/>
+                    <button class="btn btn-sm edit">Minute</button>
+                  </div>
+                  <div class="cron-value hour">
+                    <input class="hidden" id="input-cronwidget-hour" name="cronwidget.hour" type="hidden" value=""/>
+                    <button class="btn btn-sm edit">Hour</button>
+                  </div>
+                  <div class="cron-value dom">
+                    <input class="hidden" id="input-cronwidget-dom" name="cronwidget.dom" type="hidden" value=""/>
+                    <button class="btn btn-sm edit">Day of Month</button>
+                  </div>
+                  <div class="cron-value month">
+                    <input class="hidden" id="input-cronwidget-month" name="cronwidget.month" type="hidden" value=""/>
+                    <button class="btn btn-sm edit">Month</button>
+                  </div>
+                  <div class="cron-value dow">
+                    <input class="hidden" id="input-cronwidget-dow" name="cronwidget.dow" type="hidden" value=""/>
+                    <button class="btn btn-sm edit">Day of Week</button>
+                  </div>
+                  <div class="cron-value year">
+                    <input class="hidden" id="input-cronwidget-year" name="cronwidget.year" type="hidden" value=""/>
+                    <button class="btn btn-sm edit">Year</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="cron-value hour">
-            <input class="hidden" id="input-cronwidget-hour"
-                   name="cronwidget.hour" type="hidden" value=""/>
-            <button class="btn btn-sm edit">Hour</button>
-          </div>
-          <div class="cron-value dom">
-            <input class="hidden" id="input-cronwidget-dom"
-                   name="cronwidget.dom" type="hidden" value=""/>
-            <button class="btn btn-sm edit">Day of Month</button>
-          </div>
-          <div class="cron-value month">
-            <input class="hidden" id="input-cronwidget-month"
-                   name="cronwidget.month" type="hidden" value=""/>
-            <button class="btn btn-sm edit">Month</button>
-          </div>
-          <div class="cron-value dow">
-            <input class="hidden" id="input-cronwidget-dow"
-                   name="cronwidget.dow" type="hidden" value=""/>
-            <button class="btn btn-sm edit">Day of Week</button>
-          </div>
-          <div class="cron-value year">
-            <input class="hidden" id="input-cronwidget-year"
-                   name="cronwidget.year" type="hidden" value=""/>
-            <button class="btn btn-sm edit">Year</button>
-          </div>
-          <div class="editarea"/>
         </div>
         """, fxml(widget()))
 
@@ -443,17 +472,17 @@ class TestCronWidget(YafowilTestCase):
         scripts = resources.scripts
         self.assertEqual(len(scripts), 1)
 
-        self.assertTrue(scripts[0].directory.endswith(np('/cron/resources')))
-        self.assertEqual(scripts[0].path, 'yafowil-cron')
+        self.assertTrue(scripts[0].directory.endswith(np('/cron/resources/default')))
+        self.assertEqual(scripts[0].path, 'yafowil-cron/default')
         self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
         self.assertEqual(len(styles), 1)
 
-        self.assertTrue(styles[0].directory.endswith(np('/cron/resources')))
-        self.assertEqual(styles[0].path, 'yafowil-cron')
-        self.assertEqual(styles[0].file_name, 'widget.css')
+        self.assertTrue(styles[0].directory.endswith(np('/cron/resources/default')))
+        self.assertEqual(styles[0].path, 'yafowil-cron/default')
+        self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
 
 
