@@ -514,6 +514,11 @@ export class CronWidget {
      * @returns {string} - HTML string containing the summary of values.
      */
     summarize() {
+        const no_values = Object.values(this.value).every(v => Array.isArray(v) && v.length === 0);
+        if (no_values) {
+            return `<div>${this.translate('no_times_selected')}</div>`
+        }
+
         return [
             this.format_part(
                 'minute', 'no_minutes_selected',
@@ -558,11 +563,14 @@ export class CronWidget {
                 all_values_selected, value_map) {
         let value = this.value[value_name],
             value_len = value.length,
+            is_msg = false,
             max_len = this.maxlengths()[value_name],
             ret,
             ret_values = '';
         if (value_len === 0) {
-            ret = this.translate(no_values_selected);
+            ret = this.translate(values_selected);
+            ret_values = this.translate(no_values_selected);
+            is_msg = true;
         } else if (value_len < max_len) {
             ret = this.translate(values_selected);
             ret_values = this.format_groups(
@@ -570,9 +578,10 @@ export class CronWidget {
                 value_map
             );
         } else {
-            ret = this.translate(all_values_selected);
+            ret = this.translate(values_selected);
+            ret_values = this.translate(all_values_selected);
         }
-        return '<div class="d-flex gap-3">' +
+        return `<div class="d-flex gap-3${is_msg ? ' opacity-25' : ''}">` +
                 `<h6 class="col-3 m-0">${ret}</h6>` +
                 `<span class="col-9">${ret_values}</span>` +
             '</div>';

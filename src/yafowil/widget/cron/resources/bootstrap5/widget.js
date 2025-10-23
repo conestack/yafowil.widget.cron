@@ -34,6 +34,7 @@ var yafowil_cron = (function (exports, $) {
                 0: 'Sunday'
             },
             summary: 'Summary',
+            no_times_selected: 'No times selected',
             no_minutes_selected: 'No minutes selected',
             selected_minutes: 'Minutes: ',
             all_minutes_selected: 'Every minute',
@@ -85,6 +86,7 @@ var yafowil_cron = (function (exports, $) {
                 0: 'Sonntag'
             },
             summary: 'Zusammenfassung',
+            no_times_selected: 'Keine Zeiten ausgewählt',
             no_minutes_selected: 'Keine Minuten ausgewählt',
             selected_minutes: 'Minuten: ',
             all_minutes_selected: 'Jede Minute',
@@ -451,6 +453,10 @@ var yafowil_cron = (function (exports, $) {
             $('.crontab_summary .summary', this.root).html(this.summarize());
         }
         summarize() {
+            const no_values = Object.values(this.value).every(v => Array.isArray(v) && v.length === 0);
+            if (no_values) {
+                return `<div>${this.translate('no_times_selected')}</div>`
+            }
             return [
                 this.format_part(
                     'minute', 'no_minutes_selected',
@@ -484,11 +490,14 @@ var yafowil_cron = (function (exports, $) {
                     all_values_selected, value_map) {
             let value = this.value[value_name],
                 value_len = value.length,
+                is_msg = false,
                 max_len = this.maxlengths()[value_name],
                 ret,
                 ret_values = '';
             if (value_len === 0) {
-                ret = this.translate(no_values_selected);
+                ret = this.translate(values_selected);
+                ret_values = this.translate(no_values_selected);
+                is_msg = true;
             } else if (value_len < max_len) {
                 ret = this.translate(values_selected);
                 ret_values = this.format_groups(
@@ -496,9 +505,10 @@ var yafowil_cron = (function (exports, $) {
                     value_map
                 );
             } else {
-                ret = this.translate(all_values_selected);
+                ret = this.translate(values_selected);
+                ret_values = this.translate(all_values_selected);
             }
-            return '<div class="d-flex gap-3">' +
+            return `<div class="d-flex gap-3${is_msg ? ' opacity-25' : ''}">` +
                     `<h6 class="col-3 m-0">${ret}</h6>` +
                     `<span class="col-9">${ret_values}</span>` +
                 '</div>';

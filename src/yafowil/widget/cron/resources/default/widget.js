@@ -34,6 +34,7 @@ var yafowil_cron = (function (exports, $) {
                 0: 'Sunday'
             },
             summary: 'Summary',
+            no_times_selected: 'No times selected',
             no_minutes_selected: 'No minutes selected',
             selected_minutes: 'Minutes: ',
             all_minutes_selected: 'Every minute',
@@ -85,6 +86,7 @@ var yafowil_cron = (function (exports, $) {
                 0: 'Sonntag'
             },
             summary: 'Zusammenfassung',
+            no_times_selected: 'Keine Zeiten ausgewählt',
             no_minutes_selected: 'Keine Minuten ausgewählt',
             selected_minutes: 'Minuten: ',
             all_minutes_selected: 'Jede Minute',
