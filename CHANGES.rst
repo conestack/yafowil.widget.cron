@@ -4,7 +4,8 @@ Changes
 1.3 (unreleased)
 ----------------
 
-- No changes yet.
+- Pin upper versions of dependencies.
+  [lenadax]
 
 
 1.2 (2020-05-30)
