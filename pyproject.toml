@@ -23,7 +23,7 @@ classifiers = [
 ]
 dependencies = [
     "crontab",
-    "yafowil>2.2",
+    "yafowil>3.99",
 ]
 
 [project.optional-dependencies]
