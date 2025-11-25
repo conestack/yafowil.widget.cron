@@ -48,6 +48,19 @@ path = "CHANGES.rst"
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
 path = "LICENSE.rst"
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github/",
+    "/js/",
+    "/Makefile",
+    "/mx.ini",
+    "/mxmake.yaml",
+    "/package.json",
+    "/pnpm-lock.yaml",
+    "/scss",
+    "/.jshintrc"
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/yafowil"]
 
