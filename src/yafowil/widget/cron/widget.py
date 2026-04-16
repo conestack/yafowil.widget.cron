@@ -38,8 +38,9 @@ factory.doc['blueprint']['cron_value_edit_action'] = UNSET
 
 @managedprops('emptyvalue')
 def cron_extractor(widget, data):
-    # instanciate subwidgets
-    widget()
+    # instanciate subwidgets only if not already done by renderer
+    if not len(widget):
+        widget()
     # extract subwidgets
     compound_extractor(widget, data)
     minute = data['minute']
