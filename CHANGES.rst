@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.0.1 (unreleased)
+2.0.1 (2026-04-28)
 ------------------
 
 - Fix crontab rendering duplicate hidden inputs when renderer has already been called.
