@@ -4,7 +4,8 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix crontab rendering duplicate hidden inputs when renderer has already been called.
+  [lenadax]
 
 
 2.0.0 (2026-02-03)
