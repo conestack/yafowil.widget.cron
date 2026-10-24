@@ -6,7 +6,6 @@ from yafowil.tests import fxml
 from yafowil.tests import YafowilTestCase
 from yafowil.utils import EMPTY_VALUE
 import os
-import unittest
 
 
 def np(path):
@@ -480,7 +479,3 @@ class TestCronWidget(YafowilTestCase):
         self.assertEqual(styles[0].path, 'yafowil-cron/default')
         self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
-
-
-if __name__ == '__main__':
-    unittest.main()
