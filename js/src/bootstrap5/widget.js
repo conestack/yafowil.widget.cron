@@ -1,26 +1,23 @@
 import $ from 'jquery';
-import {i18n} from '../default/i18n.js';
+import { i18n } from '../default/i18n.js';
 
 export class CronWidget {
-
     /**
      * Initializes each widget in the given DOM context.
-     * 
+     *
      * @param {HTMLElement} context - DOM context for initialization.
      */
     static initialize(context) {
         $('.crontab.widget', context).each(function () {
-            let elem = $(this);
-            if (window.yafowil_array !== undefined &&
-                window.yafowil_array.inside_template(elem)) {
+            const elem = $(this);
+            if (window.yafowil_array?.inside_template(elem)) {
                 return;
             }
             new CronWidget(elem, 'edit');
         });
         $('.display-crontab.widget', context).each(function () {
-            let elem = $(this);
-            if (window.yafowil_array !== undefined &&
-                window.yafowil_array.inside_template(elem)) {
+            const elem = $(this);
+            if (window.yafowil_array?.inside_template(elem)) {
                 return;
             }
             new CronWidget(elem, 'display');
@@ -36,13 +33,13 @@ export class CronWidget {
         this.root = root;
         this.mode = mode;
 
-        let lang = root.data('lang');
+        const lang = root.data('lang');
         this.lang = lang ? lang : 'en';
 
-        let start_year = root.data('start_year');
+        const start_year = root.data('start_year');
         this.start_year = start_year ? start_year : new Date().getFullYear();
 
-        let end_year = root.data('end_year');
+        const end_year = root.data('end_year');
         this.end_year = end_year ? end_year : new Date().getFullYear() + 9;
 
         this.pressed = false;
@@ -53,15 +50,17 @@ export class CronWidget {
             dom: [],
             month: [],
             dow: [],
-            year: []
+            year: [],
         };
 
-        let summary_container_template =
+        const summary_container_template =
             '<article class="card crontab_summary">' +
-                '<div class="card-body">' +
-                    '<h5 class="card-title">' + this.translate('summary') + '</h5>' +
-                    '<p class="summary"></p>' + 
-                '</div>' +
+            '<div class="card-body">' +
+            '<h5 class="card-title">' +
+            this.translate('summary') +
+            '</h5>' +
+            '<p class="summary"></p>' +
+            '</div>' +
             '</article>';
 
         if (mode === 'display') {
@@ -71,7 +70,7 @@ export class CronWidget {
             return;
         }
 
-        let that = this;
+        const that = this;
 
         $('input[type="hidden"]', root).each(function () {
             that.parse_from_input($(this));
@@ -83,15 +82,15 @@ export class CronWidget {
         this.edit_area = $('.editarea', root);
         this.editarea_cls = this.edit_area.attr('class');
 
-        this.edit_area.on('mousedown touchstart', function (evt) {
+        this.edit_area.on('mousedown touchstart', () => {
             that.pressed = true;
         });
 
-        $(document).on('mouseup touchend', function (evt) {
+        $(document).on('mouseup touchend', () => {
             that.pressed = false;
         });
 
-        $('button.edit', root).on('click', function(evt) {
+        $('button.edit', root).on('click', function (evt) {
             evt.preventDefault();
             $('button.edit', root).removeClass('active');
             that.show_edit_section($(this));
@@ -100,7 +99,7 @@ export class CronWidget {
 
     /**
      * Displays the edit section corresponding to the clicked button.
-     * 
+     *
      * @param {jQuery} trigger - The button that triggered this action.
      */
     show_edit_section(trigger) {
@@ -120,80 +119,86 @@ export class CronWidget {
             content = $('<div class="editcontainer" />');
         if (mode === 'minute') {
             header.text(this.translate('select_minutes'));
-            for (cnt=0; cnt <= 59; cnt++) {
+            for (cnt = 0; cnt <= 59; cnt++) {
                 content.append(this.make_button(cnt, cnt, mode));
             }
         } else if (mode === 'hour') {
             header.text(this.translate('select_hours'));
             let hour;
-            for (cnt=1; cnt <= 24; cnt++) {
+            for (cnt = 1; cnt <= 24; cnt++) {
                 // "0" should be rendered as last element.
                 hour = cnt < 24 ? cnt : 0;
                 content.append(this.make_button(hour, hour, mode));
             }
         } else if (mode === 'dom') {
             header.text(this.translate('select_dom'));
-            for (cnt=1; cnt <= 31; cnt++) {
+            for (cnt = 1; cnt <= 31; cnt++) {
                 content.append(this.make_button(cnt, cnt, mode));
             }
         } else if (mode === 'month') {
             header.text(this.translate('select_month'));
-            let monthmap = this.monthmap();
-            for (cnt=1; cnt <= 12; cnt++) {
+            const monthmap = this.monthmap();
+            for (cnt = 1; cnt <= 12; cnt++) {
                 content.append(this.make_button(cnt, monthmap[cnt], mode));
             }
         } else if (mode === 'dow') {
             header.text(this.translate('select_dow'));
             let dowmap = this.dowmap(),
                 dow;
-            for (cnt=1; cnt <= 7; cnt++) {
+            for (cnt = 1; cnt <= 7; cnt++) {
                 // "0" should be rendered as last element.
                 dow = cnt < 7 ? cnt : 0;
                 content.append(this.make_button(dow, dowmap[dow], mode));
             }
         } else if (mode === 'year') {
             header.text(this.translate('select_year'));
-            for (cnt=this.start_year; cnt <= this.end_year; cnt++) {
+            for (cnt = this.start_year; cnt <= this.end_year; cnt++) {
                 content.append(this.make_button(cnt, cnt, mode));
             }
         }
         header = header.add(this.make_button_all(mode));
         content = header.add(content);
-        edit_area.html(content).attr('class', this.editarea_cls + ' ' + mode).show();
+        edit_area.html(content).attr('class', `${this.editarea_cls} ${mode}`).show();
         container.addClass('active');
     }
 
     /**
      * Creates a button that selects or clears all options for a given mode.
-     * 
+     *
      * @param {string} mode - The mode for which to create the button.
      * @returns {jQuery} - The button element.
      */
     make_button_all(mode) {
-        let button = $(
+        const button = $(
             '<button class="btn btn-outline-primary select_all">' +
                 this.translate('select_all') +
-            '</button>'
+                '</button>',
         );
         if (this.value[mode].length >= this.maxlengths()[mode]) {
             button.addClass('active');
         }
-        let that = this;
-        button.on('click', function(evt) {
+        const that = this;
+        button.on('click', function (evt) {
             evt.preventDefault();
-            let $this = $(this);
+            const $this = $(this);
             if ($this.hasClass('active')) {
                 // clear
-                $this.parent().find('.editcontainer button').each(function () {
-                    $(this).removeClass('active');
-                });
+                $this
+                    .parent()
+                    .find('.editcontainer button')
+                    .each(function () {
+                        $(this).removeClass('active');
+                    });
                 $this.removeClass('active');
                 that.parse_part('', mode);
             } else {
                 // select all
-                $this.parent().find('.editcontainer button').each(function () {
-                    $(this).removeClass('active').addClass('active');
-                });
+                $this
+                    .parent()
+                    .find('.editcontainer button')
+                    .each(function () {
+                        $(this).removeClass('active').addClass('active');
+                    });
                 $this.removeClass('active').addClass('active');
                 that.parse_part('*', mode);
             }
@@ -205,27 +210,25 @@ export class CronWidget {
 
     /**
      * Creates a button for a specific value.
-     * 
+     *
      * @param {string} value - The value for the button.
      * @param {string} name - The text to display on the button.
      * @param {string} mode - The mode for which the button is created.
      * @returns {jQuery} - The button element.
      */
     make_button(value, name, mode) {
-        let button = $(
-            '<button class="btn btn-outline-secondary" name=' + value + '>' +
-                name +
-            '</button>'
+        const button = $(
+            `<button class="btn btn-outline-secondary" name=${value}>${name}</button>`,
         );
         if (this.has(value, mode)) {
             button.addClass('active');
         }
-        let that = this;
+        const that = this;
 
-        let handler = function(evt) {
+        const handler = function (evt) {
             evt.preventDefault();
-            let elem = $(this);
-            let container = that.edit_area;
+            const elem = $(this);
+            const container = that.edit_area;
             if (elem.hasClass('active')) {
                 that.remove(elem.attr('name'), that.get_mode(container));
                 that.serialize_to_input();
@@ -238,24 +241,26 @@ export class CronWidget {
             that.update_summary();
         };
 
-        button.on('click', function (evt) {
-            evt.preventDefault();
-        }).on('mousedown touchstart',
-            handler
-        ).on('mouseenter touchenter', function (evt) {
-            if (evt.shiftKey === false && that.pressed === false) {
-                return;
-            }
-            handler.bind(this)(evt);
-        }).on('mouseup touchend', function (evt) {
-            that.pressed = false;
-        });
+        button
+            .on('click', (evt) => {
+                evt.preventDefault();
+            })
+            .on('mousedown touchstart', handler)
+            .on('mouseenter touchenter', function (evt) {
+                if (evt.shiftKey === false && that.pressed === false) {
+                    return;
+                }
+                handler.bind(this)(evt);
+            })
+            .on('mouseup touchend', () => {
+                that.pressed = false;
+            });
         return button;
     }
 
     /**
      * Returns the maximum number of selectable values for each mode.
-     * 
+     *
      * @returns {Object} - An object containing maximum values for each mode.
      */
     maxlengths() {
@@ -265,13 +270,13 @@ export class CronWidget {
             dom: 31,
             month: 12,
             dow: 7,
-            year: this.end_year - this.start_year + 1
+            year: this.end_year - this.start_year + 1,
         };
     }
 
     /**
      * Translates a message key into the corresponding language string.
-     * 
+     *
      * @param {string} msg - The message key to translate.
      * @returns {string} - The translated string.
      */
@@ -279,10 +284,9 @@ export class CronWidget {
         return i18n[this.lang][msg];
     }
 
-
     /**
      * Gets the month mapping for the current language.
-     * 
+     *
      * @returns {Object} - An object mapping month numbers to their names
      *                     in the current language.
      */
@@ -292,7 +296,7 @@ export class CronWidget {
 
     /**
      * Gets the day of the week mapping for the current language.
-     * 
+     *
      * @returns {Object} - An object mapping day of week numbers to their names
      *                     in the current language.
      */
@@ -302,7 +306,7 @@ export class CronWidget {
 
     /**
      * Gets the closest edit section for the specified element.
-     * 
+     *
      * @param {jQuery} elem - The jQuery element from which to find
      *                        the closest section.
      * @returns {jQuery} - The closest section element.
@@ -313,12 +317,12 @@ export class CronWidget {
 
     /**
      * Acquires the mode of the specified edit section element.
-     * 
+     *
      * @param {jQuery} elem - The jQuery element to check the mode for.
      * @returns {string} - The mode of the element.
      */
     get_mode(elem) {
-        let klass = elem.attr('class');
+        const klass = elem.attr('class');
         if (klass.indexOf('minute') !== -1) {
             return 'minute';
         } else if (klass.indexOf('hour') !== -1) {
@@ -336,7 +340,7 @@ export class CronWidget {
 
     /**
      * Adds a value to the specified mode.
-     * 
+     *
      * @param {string} value - The value to add.
      * @param {string} mode - The mode to add the value to.
      */
@@ -346,12 +350,12 @@ export class CronWidget {
 
     /**
      * Removes a value from the specified mode.
-     * 
+     *
      * @param {string} value - The value to remove.
      * @param {string} mode - The mode to remove the value from.
      */
     remove(value, mode) {
-        let index = this.value[mode].indexOf(value.toString());
+        const index = this.value[mode].indexOf(value.toString());
         if (index > -1) {
             this.value[mode].splice(index, 1);
         }
@@ -359,7 +363,7 @@ export class CronWidget {
 
     /**
      * Checks if a value exists in the specified mode.
-     * 
+     *
      * @param {string} value - The value to check for.
      * @param {string} mode - The mode to check against.
      * @returns {boolean} - True if the value exists, otherwise false.
@@ -370,7 +374,7 @@ export class CronWidget {
 
     /**
      * Parses a cron expression string and updates the widget values.
-     * 
+     *
      * @param {string} value - The cron expression to parse.
      */
     parse(value) {
@@ -390,7 +394,7 @@ export class CronWidget {
     /**
      * Parses a specific part of the cron expression and updates the
      * corresponding mode values.
-     * 
+     *
      * @param {string} value - The value to parse for the mode.
      * @param {string} mode - The mode to update with the parsed values.
      */
@@ -403,25 +407,30 @@ export class CronWidget {
         if (value[0] === '*') {
             let start, end;
             if (mode === 'minute') {
-                start = 0; end = 59;
+                start = 0;
+                end = 59;
             } else if (mode === 'hour') {
-                start = 0; end = 23;
+                start = 0;
+                end = 23;
             } else if (mode === 'dom') {
-                start = 1; end = 31;
+                start = 1;
+                end = 31;
             } else if (mode === 'month') {
-                start = 1; end = 12;
+                start = 1;
+                end = 12;
             } else if (mode === 'dow') {
-                start = 0; end = 6;
+                start = 0;
+                end = 6;
             } else if (mode === 'year') {
                 start = this.start_year;
                 end = this.end_year;
             }
-            for (cnt=start; cnt < end + 1; cnt++) {
+            for (cnt = start; cnt < end + 1; cnt++) {
                 this.value[mode].push(cnt.toString());
             }
         } else {
             let val;
-            for (cnt=0; cnt < value.length; cnt++) {
+            for (cnt = 0; cnt < value.length; cnt++) {
                 val = value[cnt];
                 if (val === '') {
                     continue;
@@ -434,17 +443,17 @@ export class CronWidget {
 
     /**
      * Serializes the values of a specified mode into a cron expression format.
-     * 
+     *
      * @param {string} mode - The mode to serialize.
      * @returns {string} - The serialized part for the mode.
      */
     serialize(mode) {
-        let vals = this.value[mode];
-        vals.sort(function(a, b) {
+        const vals = this.value[mode];
+        vals.sort((a, b) => {
             // int-sort - otherwise it's a lexical sort.
             return parseInt(a, 10) - parseInt(b, 10);
         });
-        let maxlength = this.maxlengths()[mode];
+        const maxlength = this.maxlengths()[mode];
         if (vals.length >= maxlength) {
             return '*';
         } else {
@@ -454,29 +463,26 @@ export class CronWidget {
 
     /**
      * Parses values from an input element.
-     * 
+     *
      * @param {jQuery} input - The input element to parse values from.
      */
     parse_from_input(input) {
-        this.parse_part(
-            input.val(),
-            this.get_mode(this.get_edit_section(input))
-        );
+        this.parse_part(input.val(), this.get_mode(this.get_edit_section(input)));
     }
 
     /**
      * Serializes the current values into hidden input elements.
      */
     serialize_to_input() {
-        let container = this.edit_area,
+        const container = this.edit_area,
             mode = this.get_mode(container),
-            input = $('.cron-value.' + mode + ' input', this.root);
+            input = $(`.cron-value.${mode} input`, this.root);
         input.val(this.serialize(mode));
     }
 
     /**
      * Groups consecutive values in an array into sub-arrays.
-     * 
+     *
      * @param {Array} arr - The array of values to group.
      * @returns {Array} - An array of grouped value arrays.
      */
@@ -485,12 +491,12 @@ export class CronWidget {
             group = [],
             idx,
             nidx;
-        for (idx=0; idx < arr.length; idx++) {
+        for (idx = 0; idx < arr.length; idx++) {
             nidx = idx + 1;
             if (idx === arr.length - 1) {
                 group.push(arr[idx]);
                 groups.push(group);
-            } else if (parseInt(arr[idx]) + 1 === parseInt(arr[nidx])) {
+            } else if (parseInt(arr[idx], 10) + 1 === parseInt(arr[nidx], 10)) {
                 group.push(arr[idx]);
             } else {
                 group.push(arr[idx]);
@@ -510,48 +516,47 @@ export class CronWidget {
 
     /**
      * Summarizes and formats the current values.
-     * 
+     *
      * @returns {string} - HTML string containing the summary of values.
      */
     summarize() {
-        const no_values = Object.values(this.value).every(v => Array.isArray(v) && v.length === 0);
+        const no_values = Object.values(this.value).every(
+            (v) => Array.isArray(v) && v.length === 0,
+        );
         if (no_values) {
-            return `<div>${this.translate('no_times_selected')}</div>`
+            return `<div>${this.translate('no_times_selected')}</div>`;
         }
 
         return [
             this.format_part(
-                'minute', 'no_minutes_selected',
-                'selected_minutes','all_minutes_selected'
+                'minute',
+                'no_minutes_selected',
+                'selected_minutes',
+                'all_minutes_selected',
+            ),
+            this.format_part('hour', 'no_hours_selected', 'selected_hours', 'all_hours_selected'),
+            this.format_part('dom', 'no_dom_selected', 'selected_dom', 'all_dom_selected'),
+            this.format_part(
+                'month',
+                'no_month_selected',
+                'selected_month',
+                'all_month_selected',
+                this.monthmap(),
             ),
             this.format_part(
-                'hour', 'no_hours_selected',
-                'selected_hours', 'all_hours_selected'
+                'dow',
+                'no_dow_selected',
+                'selected_dow',
+                'all_dow_selected',
+                this.dowmap(),
             ),
-            this.format_part(
-                'dom', 'no_dom_selected',
-                'selected_dom', 'all_dom_selected'
-            ),
-            this.format_part(
-                'month', 'no_month_selected',
-                'selected_month', 'all_month_selected',
-                this.monthmap()
-            ),
-            this.format_part(
-                'dow', 'no_dow_selected',
-                'selected_dow', 'all_dow_selected',
-                this.dowmap()
-            ),
-            this.format_part(
-                'year', 'no_year_selected',
-                'selected_years', 'all_years_selected'
-            )
+            this.format_part('year', 'no_year_selected', 'selected_years', 'all_years_selected'),
         ].join('');
     }
 
     /**
      * Formats a specific part of the summary display.
-     * 
+     *
      * @param {string} value_name - The name of the value category.
      * @param {string} no_values_selected - Translation key for no values selected message.
      * @param {string} values_selected - Translation key for selected values message.
@@ -559,8 +564,7 @@ export class CronWidget {
      * @param {Object} [value_map] - An optional map for displaying value names.
      * @returns {string} - The formatted HTML string for the value part.
      */
-    format_part(value_name, no_values_selected, values_selected,
-                all_values_selected, value_map) {
+    format_part(value_name, no_values_selected, values_selected, all_values_selected, value_map) {
         let value = this.value[value_name],
             value_len = value.length,
             is_msg = false,
@@ -573,23 +577,22 @@ export class CronWidget {
             is_msg = true;
         } else if (value_len < max_len) {
             ret = this.translate(values_selected);
-            ret_values = this.format_groups(
-                this.group_value(value),
-                value_map
-            );
+            ret_values = this.format_groups(this.group_value(value), value_map);
         } else {
             ret = this.translate(values_selected);
             ret_values = this.translate(all_values_selected);
         }
-        return `<div class="d-flex gap-3${is_msg ? ' opacity-25' : ''}">` +
-                `<h6 class="col-3 m-0">${ret}</h6>` +
-                `<span class="col-9">${ret_values}</span>` +
-            '</div>';
+        return (
+            `<div class="d-flex gap-3${is_msg ? ' opacity-25' : ''}">` +
+            `<h6 class="col-3 m-0">${ret}</h6>` +
+            `<span class="col-9">${ret_values}</span>` +
+            '</div>'
+        );
     }
 
     /**
      * Formats groups of values into a display string.
-     * 
+     *
      * @param {Array} groups - The grouped values to format.
      * @param {Object} value_map - A mapping for displaying value names.
      * @returns {string} - The formatted string for the groups.
@@ -598,17 +601,14 @@ export class CronWidget {
         let ret = '',
             idx,
             group;
-        for (idx=0; idx < groups.length; idx++) {
+        for (idx = 0; idx < groups.length; idx++) {
             group = groups[idx];
             if (group.length === 1) {
                 ret += this.display_value(group[0], value_map);
             } else {
                 ret += this.display_value(group[0], value_map);
                 ret += '-';
-                ret += this.display_value(
-                    group[group.length - 1],
-                    value_map
-                );
+                ret += this.display_value(group[group.length - 1], value_map);
             }
             if (idx !== groups.length - 1) {
                 ret += ', ';
@@ -619,7 +619,7 @@ export class CronWidget {
 
     /**
      * Displays the value using the value map or returns the original value.
-     * 
+     *
      * @param {string} value - The value to display.
      * @param {Object} [value_map] - An optional map for displaying value names.
      * @returns {string} - The display string for the value.
@@ -630,7 +630,7 @@ export class CronWidget {
         }
         return value;
     }
-};
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // yafowil.widget.array integration
@@ -639,7 +639,7 @@ export class CronWidget {
 /**
  * Re-initializes widget on array add event.
  */
-export function cron_on_array_add(inst, context) {
+export function cron_on_array_add(_inst, context) {
     CronWidget.initialize(context);
 }
 

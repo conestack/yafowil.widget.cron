@@ -10,7 +10,6 @@
 /htmlcov/
 /node_modules/
 /package-lock.json
-/pnpm-lock.yaml
 /py2/
 /py3/
 /pypy3/

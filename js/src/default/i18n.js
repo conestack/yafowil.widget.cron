@@ -1,4 +1,4 @@
-export let i18n = {
+export const i18n = {
     en: {
         select_minutes: 'Select Minutes',
         select_hours: 'Select Hours',
@@ -19,7 +19,7 @@ export let i18n = {
             9: 'September',
             10: 'October',
             11: 'November',
-            12: 'December'
+            12: 'December',
         },
         dowmap: {
             1: 'Monday',
@@ -28,7 +28,7 @@ export let i18n = {
             4: 'Thursday',
             5: 'Friday',
             6: 'Saturday',
-            0: 'Sunday'
+            0: 'Sunday',
         },
         summary: 'Summary',
         no_times_selected: 'No times selected',
@@ -49,7 +49,7 @@ export let i18n = {
         all_dow_selected: 'Every day of week',
         no_year_selected: 'No year selected',
         selected_years: 'Years: ',
-        all_years_selected: 'Every year'
+        all_years_selected: 'Every year',
     },
     de: {
         select_minutes: 'Minuten auswählen',
@@ -71,7 +71,7 @@ export let i18n = {
             9: 'September',
             10: 'Oktober',
             11: 'November',
-            12: 'Dezember'
+            12: 'Dezember',
         },
         dowmap: {
             1: 'Montag',
@@ -80,7 +80,7 @@ export let i18n = {
             4: 'Donnerstag',
             5: 'Freitag',
             6: 'Samstag',
-            0: 'Sonntag'
+            0: 'Sonntag',
         },
         summary: 'Zusammenfassung',
         no_times_selected: 'Keine Zeiten ausgewählt',
@@ -101,6 +101,6 @@ export let i18n = {
         all_dow_selected: 'Jeder Wochentag',
         no_year_selected: 'Kein Jahr ausgewählt',
         selected_years: 'Jahre: ',
-        all_years_selected: 'Jedes Jahr'
-    }
-}
+        all_years_selected: 'Jedes Jahr',
+    },
+};

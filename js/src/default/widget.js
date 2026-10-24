@@ -1,21 +1,18 @@
 import $ from 'jquery';
-import {i18n} from './i18n.js';
+import { i18n } from './i18n.js';
 
 export class CronWidget {
-
     static initialize(context) {
         $('.crontab.widget', context).each(function () {
-            let elem = $(this);
-            if (window.yafowil_array !== undefined &&
-                window.yafowil_array.inside_template(elem)) {
+            const elem = $(this);
+            if (window.yafowil_array?.inside_template(elem)) {
                 return;
             }
             new CronWidget(elem, 'edit');
         });
         $('.display-crontab.widget', context).each(function () {
-            let elem = $(this);
-            if (window.yafowil_array !== undefined &&
-                window.yafowil_array.inside_template(elem)) {
+            const elem = $(this);
+            if (window.yafowil_array?.inside_template(elem)) {
                 return;
             }
             new CronWidget(elem, 'display');
@@ -27,13 +24,13 @@ export class CronWidget {
         this.root = root;
         this.mode = mode;
 
-        let lang = root.data('lang');
+        const lang = root.data('lang');
         this.lang = lang ? lang : 'en';
 
-        let start_year = root.data('start_year');
+        const start_year = root.data('start_year');
         this.start_year = start_year ? start_year : new Date().getFullYear();
 
-        let end_year = root.data('end_year');
+        const end_year = root.data('end_year');
         this.end_year = end_year ? end_year : new Date().getFullYear() + 9;
 
         this.pressed = false;
@@ -44,13 +41,15 @@ export class CronWidget {
             dom: [],
             month: [],
             dow: [],
-            year: []
+            year: [],
         };
 
-        let summary_container_template =
+        const summary_container_template =
             '<article class="crontab_summary">' +
-                '<strong>' + this.translate('summary') + '</strong>' +
-                '<p class="summary"></p>' +
+            '<strong>' +
+            this.translate('summary') +
+            '</strong>' +
+            '<p class="summary"></p>' +
             '</article>';
 
         if (mode === 'display') {
@@ -60,7 +59,7 @@ export class CronWidget {
             return;
         }
 
-        let that = this;
+        const that = this;
 
         $('input[type="hidden"]', root).each(function () {
             that.parse_from_input($(this));
@@ -72,15 +71,15 @@ export class CronWidget {
         this.edit_area = $('.editarea', root);
         this.editarea_cls = this.edit_area.attr('class');
 
-        this.edit_area.on('mousedown touchstart', function (evt) {
+        this.edit_area.on('mousedown touchstart', () => {
             that.pressed = true;
         });
 
-        $(document).on('mouseup touchend', function (evt) {
+        $(document).on('mouseup touchend', () => {
             that.pressed = false;
         });
 
-        $('button.edit', root).on('click', function(evt) {
+        $('button.edit', root).on('click', function (evt) {
             evt.preventDefault();
             that.show_edit_section($(this));
         });
@@ -100,74 +99,78 @@ export class CronWidget {
             content = $('<div class="editcontainer" />');
         if (mode === 'minute') {
             header.text(this.translate('select_minutes'));
-            for (cnt=0; cnt <= 59; cnt++) {
+            for (cnt = 0; cnt <= 59; cnt++) {
                 content.append(this.make_button(cnt, cnt, mode));
             }
         } else if (mode === 'hour') {
             header.text(this.translate('select_hours'));
             let hour;
-            for (cnt=1; cnt <= 24; cnt++) {
+            for (cnt = 1; cnt <= 24; cnt++) {
                 // "0" should be rendered as last element.
                 hour = cnt < 24 ? cnt : 0;
                 content.append(this.make_button(hour, hour, mode));
             }
         } else if (mode === 'dom') {
             header.text(this.translate('select_dom'));
-            for (cnt=1; cnt <= 31; cnt++) {
+            for (cnt = 1; cnt <= 31; cnt++) {
                 content.append(this.make_button(cnt, cnt, mode));
             }
         } else if (mode === 'month') {
             header.text(this.translate('select_month'));
-            let monthmap = this.monthmap();
-            for (cnt=1; cnt <= 12; cnt++) {
+            const monthmap = this.monthmap();
+            for (cnt = 1; cnt <= 12; cnt++) {
                 content.append(this.make_button(cnt, monthmap[cnt], mode));
             }
         } else if (mode === 'dow') {
             header.text(this.translate('select_dow'));
             let dowmap = this.dowmap(),
                 dow;
-            for (cnt=1; cnt <= 7; cnt++) {
+            for (cnt = 1; cnt <= 7; cnt++) {
                 // "0" should be rendered as last element.
                 dow = cnt < 7 ? cnt : 0;
                 content.append(this.make_button(dow, dowmap[dow], mode));
             }
         } else if (mode === 'year') {
             header.text(this.translate('select_year'));
-            for (cnt=this.start_year; cnt <= this.end_year; cnt++) {
+            for (cnt = this.start_year; cnt <= this.end_year; cnt++) {
                 content.append(this.make_button(cnt, cnt, mode));
             }
         }
         header = header.add(this.make_button_all(mode));
         content = header.add(content);
-        edit_area.html(content).attr('class', this.editarea_cls + ' ' + mode).show();
+        edit_area.html(content).attr('class', `${this.editarea_cls} ${mode}`).show();
         container.addClass('active');
     }
 
     make_button_all(mode) {
-        let button = $(
-            '<button class="btn btn-sm select_all">' +
-                this.translate('select_all') +
-            '</button>'
+        const button = $(
+            `<button class="btn btn-sm select_all">${this.translate('select_all')}</button>`,
         );
         if (this.value[mode].length >= this.maxlengths()[mode]) {
             button.addClass('active');
         }
-        let that = this;
-        button.on('click', function(evt) {
+        const that = this;
+        button.on('click', function (evt) {
             evt.preventDefault();
-            let $this = $(this);
+            const $this = $(this);
             if ($this.hasClass('active')) {
                 // clear
-                $this.parent().find('.editcontainer button').each(function () {
-                    $(this).removeClass('active');
-                });
+                $this
+                    .parent()
+                    .find('.editcontainer button')
+                    .each(function () {
+                        $(this).removeClass('active');
+                    });
                 $this.removeClass('active');
                 that.parse_part('', mode);
             } else {
                 // select all
-                $this.parent().find('.editcontainer button').each(function () {
-                    $(this).removeClass('active').addClass('active');
-                });
+                $this
+                    .parent()
+                    .find('.editcontainer button')
+                    .each(function () {
+                        $(this).removeClass('active').addClass('active');
+                    });
                 $this.removeClass('active').addClass('active');
                 that.parse_part('*', mode);
             }
@@ -178,20 +181,16 @@ export class CronWidget {
     }
 
     make_button(value, name, mode) {
-        let button = $(
-            '<button class="btn btn-sm" name=' + value + '>' +
-                name +
-            '</button>'
-        );
+        const button = $(`<button class="btn btn-sm" name=${value}>${name}</button>`);
         if (this.has(value, mode)) {
             button.addClass('active');
         }
-        let that = this;
+        const that = this;
 
-        let handler = function(evt) {
+        const handler = function (evt) {
             evt.preventDefault();
-            let elem = $(this);
-            let container = that.edit_area;
+            const elem = $(this);
+            const container = that.edit_area;
             if (elem.hasClass('active')) {
                 that.remove(elem.attr('name'), that.get_mode(container));
                 that.serialize_to_input();
@@ -204,18 +203,20 @@ export class CronWidget {
             that.update_summary();
         };
 
-        button.on('click', function (evt) {
-            evt.preventDefault();
-        }).on('mousedown touchstart',
-            handler
-        ).on('mouseenter touchenter', function (evt) {
-            if (evt.shiftKey === false && that.pressed === false) {
-                return;
-            }
-            handler.bind(this)(evt);
-        }).on('mouseup touchend', function (evt) {
-            that.pressed = false;
-        });
+        button
+            .on('click', (evt) => {
+                evt.preventDefault();
+            })
+            .on('mousedown touchstart', handler)
+            .on('mouseenter touchenter', function (evt) {
+                if (evt.shiftKey === false && that.pressed === false) {
+                    return;
+                }
+                handler.bind(this)(evt);
+            })
+            .on('mouseup touchend', () => {
+                that.pressed = false;
+            });
         return button;
     }
 
@@ -226,7 +227,7 @@ export class CronWidget {
             dom: 31,
             month: 12,
             dow: 7,
-            year: this.end_year - this.start_year + 1
+            year: this.end_year - this.start_year + 1,
         };
     }
 
@@ -247,7 +248,7 @@ export class CronWidget {
     }
 
     get_mode(elem) {
-        let klass = elem.attr('class');
+        const klass = elem.attr('class');
         if (klass.indexOf('minute') !== -1) {
             return 'minute';
         } else if (klass.indexOf('hour') !== -1) {
@@ -268,7 +269,7 @@ export class CronWidget {
     }
 
     remove(value, mode) {
-        let index = this.value[mode].indexOf(value.toString());
+        const index = this.value[mode].indexOf(value.toString());
         if (index > -1) {
             this.value[mode].splice(index, 1);
         }
@@ -301,25 +302,30 @@ export class CronWidget {
         if (value[0] === '*') {
             let start, end;
             if (mode === 'minute') {
-                start = 0; end = 59;
+                start = 0;
+                end = 59;
             } else if (mode === 'hour') {
-                start = 0; end = 23;
+                start = 0;
+                end = 23;
             } else if (mode === 'dom') {
-                start = 1; end = 31;
+                start = 1;
+                end = 31;
             } else if (mode === 'month') {
-                start = 1; end = 12;
+                start = 1;
+                end = 12;
             } else if (mode === 'dow') {
-                start = 0; end = 6;
+                start = 0;
+                end = 6;
             } else if (mode === 'year') {
                 start = this.start_year;
                 end = this.end_year;
             }
-            for (cnt=start; cnt < end + 1; cnt++) {
+            for (cnt = start; cnt < end + 1; cnt++) {
                 this.value[mode].push(cnt.toString());
             }
         } else {
             let val;
-            for (cnt=0; cnt < value.length; cnt++) {
+            for (cnt = 0; cnt < value.length; cnt++) {
                 val = value[cnt];
                 if (val === '') {
                     continue;
@@ -331,12 +337,12 @@ export class CronWidget {
     }
 
     serialize(mode) {
-        let vals = this.value[mode];
-        vals.sort(function(a, b) {
+        const vals = this.value[mode];
+        vals.sort((a, b) => {
             // int-sort - otherwise it's a lexical sort.
             return parseInt(a, 10) - parseInt(b, 10);
         });
-        let maxlength = this.maxlengths()[mode];
+        const maxlength = this.maxlengths()[mode];
         if (vals.length >= maxlength) {
             return '*';
         } else {
@@ -345,16 +351,13 @@ export class CronWidget {
     }
 
     parse_from_input(input) {
-        this.parse_part(
-            input.val(),
-            this.get_mode(this.get_edit_section(input))
-        );
+        this.parse_part(input.val(), this.get_mode(this.get_edit_section(input)));
     }
 
     serialize_to_input() {
-        let container = this.edit_area,
+        const container = this.edit_area,
             mode = this.get_mode(container),
-            input = $('.cron-value.' + mode + ' input', this.root);
+            input = $(`.cron-value.${mode} input`, this.root);
         input.val(this.serialize(mode));
     }
 
@@ -363,12 +366,12 @@ export class CronWidget {
             group = [],
             idx,
             nidx;
-        for (idx=0; idx < arr.length; idx++) {
+        for (idx = 0; idx < arr.length; idx++) {
             nidx = idx + 1;
             if (idx === arr.length - 1) {
                 group.push(arr[idx]);
                 groups.push(group);
-            } else if (parseInt(arr[idx]) + 1 === parseInt(arr[nidx])) {
+            } else if (parseInt(arr[idx], 10) + 1 === parseInt(arr[nidx], 10)) {
                 group.push(arr[idx]);
             } else {
                 group.push(arr[idx]);
@@ -386,36 +389,32 @@ export class CronWidget {
     summarize() {
         return [
             this.format_part(
-                'minute', 'no_minutes_selected',
-                'selected_minutes','all_minutes_selected'
+                'minute',
+                'no_minutes_selected',
+                'selected_minutes',
+                'all_minutes_selected',
+            ),
+            this.format_part('hour', 'no_hours_selected', 'selected_hours', 'all_hours_selected'),
+            this.format_part('dom', 'no_dom_selected', 'selected_dom', 'all_dom_selected'),
+            this.format_part(
+                'month',
+                'no_month_selected',
+                'selected_month',
+                'all_month_selected',
+                this.monthmap(),
             ),
             this.format_part(
-                'hour', 'no_hours_selected',
-                'selected_hours', 'all_hours_selected'
+                'dow',
+                'no_dow_selected',
+                'selected_dow',
+                'all_dow_selected',
+                this.dowmap(),
             ),
-            this.format_part(
-                'dom', 'no_dom_selected',
-                'selected_dom', 'all_dom_selected'
-            ),
-            this.format_part(
-                'month', 'no_month_selected',
-                'selected_month', 'all_month_selected',
-                this.monthmap()
-            ),
-            this.format_part(
-                'dow', 'no_dow_selected',
-                'selected_dow', 'all_dow_selected',
-                this.dowmap()
-            ),
-            this.format_part(
-                'year', 'no_year_selected',
-                'selected_years', 'all_years_selected'
-            )
+            this.format_part('year', 'no_year_selected', 'selected_years', 'all_years_selected'),
         ].join('<br/>');
     }
 
-    format_part(value_name, no_values_selected, values_selected,
-                all_values_selected, value_map) {
+    format_part(value_name, no_values_selected, values_selected, all_values_selected, value_map) {
         let value = this.value[value_name],
             value_len = value.length,
             max_len = this.maxlengths()[value_name],
@@ -423,10 +422,9 @@ export class CronWidget {
         if (value_len === 0) {
             ret = this.translate(no_values_selected);
         } else if (value_len < max_len) {
-            ret = this.translate(values_selected) + this.format_groups(
-                this.group_value(value),
-                value_map
-            );
+            ret =
+                this.translate(values_selected) +
+                this.format_groups(this.group_value(value), value_map);
         } else {
             ret = this.translate(all_values_selected);
         }
@@ -437,17 +435,14 @@ export class CronWidget {
         let ret = '',
             idx,
             group;
-        for (idx=0; idx < groups.length; idx++) {
+        for (idx = 0; idx < groups.length; idx++) {
             group = groups[idx];
             if (group.length === 1) {
                 ret += this.display_value(group[0], value_map);
             } else {
                 ret += this.display_value(group[0], value_map);
                 ret += '-';
-                ret += this.display_value(
-                    group[group.length - 1],
-                    value_map
-                );
+                ret += this.display_value(group[group.length - 1], value_map);
             }
             if (idx !== groups.length - 1) {
                 ret += ', ';
@@ -462,13 +457,13 @@ export class CronWidget {
         }
         return value;
     }
-};
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // yafowil.widget.array integration
 //////////////////////////////////////////////////////////////////////////////
 
-export function cron_on_array_add(inst, context) {
+export function cron_on_array_add(_inst, context) {
     CronWidget.initialize(context);
 }
 
