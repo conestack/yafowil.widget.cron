@@ -194,7 +194,7 @@ def cron_display_renderer(widget, data):
         'id': cssid(widget, 'display'),
         'class_': ' '.join([_ for _ in cssclasses if _ is not None]),
     }
-    return data.tag('div', data.tag('code', value), **attrs)
+    return data.tag('div', data.tag('code', data.tag.escape(value)), **attrs)
 
 
 factory.register(

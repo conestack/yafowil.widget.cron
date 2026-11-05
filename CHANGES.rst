@@ -4,7 +4,8 @@ Changes
 2.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Encode the value in display mode. Requires ``yafowil`` 4.2.0.
+  [rnix]
 
 
 2.0.2 (2026-10-31)

@@ -120,6 +120,10 @@ class TestCronWidget(YafowilTestCase):
             fxml(widget()),
         )
 
+    def test_display_renderer_encodes_value(self):
+        widget = factory('cron', name='cronwidget', value='<b>x</b>&', mode='display')
+        self.assertIn('<code>&lt;b&gt;x&lt;/b&gt;&amp;</code>', widget())
+
     def test_extraction_empty_request(self):
         widget = factory('cron', name='cronwidget')
         data = widget.extract({})
