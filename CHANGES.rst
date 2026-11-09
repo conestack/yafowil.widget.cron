@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.0.3 (unreleased)
+2.0.3 (2026-11-09)
 ------------------
 
 - Encode the value in display mode. Requires ``yafowil`` 4.2.0.
